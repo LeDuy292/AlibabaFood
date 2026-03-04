@@ -1,0 +1,235 @@
+.hero-section {
+    background-color: var(--bg-footer);
+    min-height: 500px;
+    position: relative;
+    overflow: hidden;
+    padding-top: 80px;
+    /* space for navbar */
+}
+
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4rem 2rem;
+    position: relative;
+    z-index: 10;
+}
+
+@media (min-width: 992px) {
+    .hero-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6rem 2rem;
+    }
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 600px;
+    z-index: 20;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    color: var(--primary-dark);
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .hero-title {
+        font-size: 4.5rem;
+    }
+}
+
+.hero-title .light-text {
+    font-weight: 300;
+}
+
+.hero-title .bold-text {
+    font-weight: 800;
+}
+
+.hero-subtitle {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--text-gray);
+    margin-bottom: 2rem;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(19, 78, 21, 0.2);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--primary-dark);
+    border: 2px solid var(--primary-light);
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.hero-cta {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.cta-link {
+    color: red;
+    font-weight: bold;
+}
+
+/* Image Container */
+.hero-image-container {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 1;
+    margin-top: 3rem;
+}
+
+@media (min-width: 992px) {
+    .hero-image-container {
+        margin-top: 0;
+    }
+}
+
+/* Floating Animations */
+@keyframes float {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-15px) rotate(5deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+}
+
+@keyframes pulse-soft {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.03);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.hero-blob {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 90%;
+    background-color: var(--white);
+    border-radius: 50%;
+    z-index: 1;
+    animation: pulse-soft 8s ease-in-out infinite;
+    box-shadow: inset 0 0 50px rgba(19, 78, 21, 0.05);
+    /* Subtle inner depth */
+}
+
+.hero-main-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: 2;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Floating Elements placeholders */
+.floating-lemon {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: #fde047;
+    border-radius: 50%;
+    opacity: 0.8;
+    z-index: 3;
+    animation: float 6s ease-in-out infinite;
+    box-shadow: 0 8px 16px rgba(253, 224, 71, 0.4);
+}
+
+.floating-lemon.top-left {
+    top: 0;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.floating-lemon.bottom-right {
+    bottom: 10%;
+    right: 0;
+    animation-delay: 3s;
+}
+
+.floating-leaf {
+    position: absolute;
+    width: 80px;
+    height: 120px;
+    background-color: var(--primary-dark);
+    border-radius: 0 100px 0 100px;
+    /* simple leaf shape */
+    opacity: 0.7;
+    z-index: 0;
+    animation: float 8s ease-in-out infinite;
+}
+
+.floating-leaf.side-left {
+    top: 20%;
+    left: -100px;
+    transform: rotate(-30deg);
+    animation-delay: 1s;
+}
+
+.floating-leaf.side-right {
+    bottom: -50px;
+    right: -50px;
+    transform: rotate(45deg);
+    animation-delay: 4s;
+}

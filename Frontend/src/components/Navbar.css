@@ -1,0 +1,102 @@
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 1.5rem 0;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo */
+.logo-placeholder {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    font-size: 2rem;
+    background-color: var(--pill-bg);
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.logo-text {
+    font-size: 0.8rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--primary-dark);
+}
+
+/* Links */
+.navbar-links {
+    display: none;
+    /* Hide on mobile by default */
+}
+
+@media (min-width: 768px) {
+    .navbar-links {
+        display: flex;
+        gap: 2rem;
+    }
+}
+
+.navbar-links a {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+    color: var(--primary-dark);
+}
+
+/* Actions */
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.search-bar {
+    display: none;
+}
+
+@media (min-width: 1024px) {
+    .search-bar {
+        display: block;
+        position: relative;
+    }
+}
+
+.search-bar input {
+    background-color: var(--primary-dark);
+    color: var(--white);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 0.8rem;
+    width: 150px;
+    outline: none;
+}
+
+.search-bar input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text-dark);
+}

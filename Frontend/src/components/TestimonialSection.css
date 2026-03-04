@@ -1,0 +1,142 @@
+.testimonial-section {
+    padding: 4rem 2rem;
+}
+
+.testimonial-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .testimonial-grid {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.testimonial-section .highlight {
+    color: var(--primary-dark);
+}
+
+.testimonial-card-container {
+    flex: 1;
+    max-width: 500px;
+}
+
+.testimonial-card {
+    background-color: var(--bg-footer);
+    border-radius: 20px;
+    padding: 2.5rem;
+    position: relative;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5), 0 20px 40px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+}
+
+.testimonial-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 1rem;
+}
+
+.customer-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.customer-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+}
+
+.customer-rating {
+    font-size: 0.8rem;
+}
+
+.testimonial-text {
+    font-size: 0.95rem;
+    color: var(--text-gray);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+.customer-thumbnails {
+    display: flex;
+    gap: 10px;
+}
+
+.customer-thumbnails img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--white);
+}
+
+.testimonial-image-collage {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.collage-bg-shape {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80%;
+    height: 100%;
+    background-color: var(--primary-dark);
+    border-radius: 100px 0 0 100px;
+    z-index: 1;
+}
+
+.collage-img-main {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: 2;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+    transform: translateX(-30px);
+    border: 4px solid var(--white);
+    transition: transform 0.4s ease;
+}
+
+.collage-img-main:hover {
+    transform: translateX(-35px) scale(1.02);
+}
+
+.collage-img-small {
+    position: absolute;
+    bottom: -10px;
+    right: 5%;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: 3;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border: 6px solid var(--white);
+    transition: transform 0.4s ease;
+}
+
+.collage-img-small:hover {
+    transform: scale(1.05) rotate(-5deg);
+}
