@@ -1,49 +1,68 @@
 import React from 'react';
-import FoodCard from './FoodCard';
 import './LatestFoodSection.css';
 
-const LATEST_FOODS = [
+const latestFoods = [
     {
         id: 1,
-        title: 'Mì Quảng',
-        price: '2',
-        image: 'https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&q=80&w=400'
+        name: 'Mì Quảng',
+        price: '$2',
+        image: 'https://images.unsplash.com/photo-1555126634-323283e090fa?w=400&h=400&fit=crop',
     },
     {
         id: 2,
-        title: 'Gà BBQ',
-        price: '10',
-        image: 'https://images.unsplash.com/photo-1598514982205-f36b96d1e8d4?auto=format&fit=crop&q=80&w=400'
+        name: 'Gà BBQ',
+        price: '$10',
+        image: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=400&h=400&fit=crop',
     },
     {
         id: 3,
-        title: 'Bún Thịt Nướng',
-        price: '2',
-        image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=400'
+        name: 'Bún Thịt Nướng',
+        price: '$2',
+        image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop',
     },
     {
         id: 4,
-        title: 'Bún Chả',
-        price: '2',
-        image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&q=80&w=400'
-    }
+        name: 'Bún Chả',
+        price: '$2',
+        image: 'https://images.unsplash.com/photo-1564834724105-918b73d1b9e0?w=400&h=400&fit=crop',
+    },
 ];
 
 const LatestFoodSection = () => {
     return (
-        <section className="latest-food-section">
-            <h2 className="section-title">Latest New Food</h2>
+        <section className="lnf-section">
+            <div className="lnf-container">
+                <h2 className="lnf-title">Latest New Food</h2>
+                <div className="lnf-grid">
+                    {latestFoods.map((food) => (
+                        <div className="lnf-item" key={food.id}>
+                            <div className="lnf-circle-wrap">
+                                {/* Decorative dots */}
+                                <span className="lnf-dot dot-1"></span>
+                                <span className="lnf-dot dot-2"></span>
+                                <span className="lnf-dot dot-3"></span>
+                                <span className="lnf-dot dot-4"></span>
+                                <span className="lnf-dot dot-5"></span>
+                                <span className="lnf-dot dot-6"></span>
+                                <span className="lnf-dot dot-7"></span>
 
-            <div className="food-grid">
-                {LATEST_FOODS.map((food, index) => (
-                    <FoodCard
-                        key={food.id}
-                        title={food.title}
-                        price={food.price}
-                        image={food.image}
-                        index={index}
-                    />
-                ))}
+                                {/* Background Peach Circle */}
+                                <div className="lnf-bg-circle"></div>
+
+                                {/* Food Image Container */}
+                                <div className="lnf-img-container">
+                                    <img src={food.image} alt={food.name} className="lnf-img" />
+                                </div>
+                            </div>
+
+                            {/* Label Row */}
+                            <div className="lnf-label-row">
+                                <span className="lnf-name">{food.name}</span>
+                                <span className="lnf-price">{food.price}</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </section>
     );
