@@ -1,5 +1,6 @@
 import React from 'react';
 import './Footer.css';
+import logoImg from '../assets/alibaba-logo.png.png';
 
 const Footer = () => {
     return (
@@ -9,7 +10,7 @@ const Footer = () => {
 
                     {/* Column 1: Newsletter */}
                     <div className="footer-col col-newsletter">
-                        <img src="/alibaba-logo.png" alt="ALIBABA FOOD Logo" className="footer-logo-img" style={{ height: '60px', objectFit: 'contain', marginBottom: '1rem' }} />
+                        <img src={logoImg} alt="ALIBABA FOOD Logo" className="footer-logo-img" style={{ height: '60px', objectFit: 'contain', marginBottom: '1rem' }} />
                         <p className="footer-desc">
                             Subscribe our newsletter and get discount 25%off
                         </p>

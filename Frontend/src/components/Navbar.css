@@ -1,10 +1,26 @@
 .navbar {
-    position: absolute;
+    position: fixed;
+    /* Changed from absolute to fixed */
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 100;
+    z-index: 1000;
+    /* Higher z-index to stay above everything */
     padding: 1.5rem 0;
+    transition: all 0.4s ease;
+    /* Smooth transition */
+    background-color: transparent;
+}
+
+/* New class added when scrolling */
+.navbar.navbar-scrolled {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 0.8rem 0;
+    /* Slimmer when scrolled */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    /* Soft shadow */
 }
 
 .navbar-container {
@@ -44,27 +60,35 @@
     .navbar-links {
         display: flex;
         gap: 2rem;
+        flex: 1;
+        /* Allow links container to grow */
+        justify-content: center;
+        /* Center the links */
     }
 }
 
 .navbar-links a {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-dark);
+    font-size: 0.95rem;
+    /* Slightly larger, crisp font */
+    font-weight: 500;
+    color: #1a231b;
     text-transform: uppercase;
     transition: color 0.3s;
+    letter-spacing: 0.5px;
 }
 
 .navbar-links a:hover,
 .navbar-links a.active {
     color: var(--primary-dark);
+    font-weight: 700;
 }
 
 /* Actions */
 .navbar-actions {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
+    /* Wider gap between search and icons */
 }
 
 .search-bar {
@@ -73,19 +97,29 @@
 
 @media (min-width: 1024px) {
     .search-bar {
-        display: block;
-        position: relative;
+        display: flex;
+        align-items: center;
+        background-color: #0e3e1f;
+        /* Dark green pill */
+        border-radius: 25px;
+        padding: 5px 15px;
+        height: 40px;
     }
 }
 
+.search-icon {
+    color: #ffffff;
+    margin-right: 8px;
+    opacity: 0.8;
+}
+
 .search-bar input {
-    background-color: var(--primary-dark);
+    background-color: transparent;
+    /* Input itself is transparent over pill */
     color: var(--white);
     border: none;
-    border-radius: 20px;
-    padding: 8px 15px;
-    font-size: 0.8rem;
-    width: 150px;
+    font-size: 0.9rem;
+    width: 120px;
     outline: none;
 }
 
@@ -96,7 +130,16 @@
 .icon-btn {
     background: none;
     border: none;
-    font-size: 1.2rem;
     cursor: pointer;
-    color: var(--text-dark);
+    color: #1a231b;
+    /* Sharp dark color for icons */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.icon-btn:hover {
+    transform: scale(1.1);
+    color: var(--primary-dark);
 }
