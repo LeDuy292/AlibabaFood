@@ -1,34 +1,61 @@
 import React from 'react';
 import './PartnersSection.css';
 
-// Using placeholder text logos to mimic the image
+import winmartLogo from '../assets/winmart.png';
+import bachHoaXanhLogo from '../assets/Logo-Bach-Hoa-Xanh-V.webp';
+import miQuangLogo from '../assets/Logo-my-quang.webp';
+import anhHungLogo from '../assets/logo-anh-hung.webp';
+import anhQuanLogo from '../assets/logo-anh-quan.webp';
+
+const partners = [
+    { name: 'Winmart', logo: winmartLogo },
+    { name: 'Bach Hoa Xanh', logo: bachHoaXanhLogo },
+    { name: 'Mi Quang Ba Mua', logo: miQuangLogo },
+    { name: 'Anh Hung Seafood', logo: anhHungLogo },
+    { name: 'Anh Quan', logo: anhQuanLogo },
+];
+
+// Duplicate for seamless infinite scroll
+const allPartners = [...partners, ...partners, ...partners];
+
 const PartnersSection = () => {
     return (
         <section className="partners-section">
-            <div className="partners-subtitle">
-                <span className="partners-icon">🌱</span>
-                <i>Partners & Clients</i>
+            {/* Badge */}
+            <div className="partners-badge">
+                <span>🌱</span> Partners & Clients
             </div>
-            <h2 className="partners-title">We work with the best pepole</h2>
 
-            <div className="partners-logos">
-                <div className="logo-placeholder" style={{ backgroundColor: '#f3f4f6', padding: '15px 30px', borderRadius: '8px' }}>
-                    <span className="logo-text" style={{ color: '#E21A22', fontSize: '1.2rem', fontWeight: 'bold' }}>Winmart</span>
-                </div>
-                <div className="logo-placeholder" style={{ backgroundColor: '#f3f4f6', padding: '15px 30px', borderRadius: '8px' }}>
-                    <span className="logo-text" style={{ color: '#008445', fontSize: '1.2rem', fontWeight: 'bold' }}>BÁCH HÓA XANH</span>
-                </div>
-                <div className="logo-placeholder" style={{ backgroundColor: '#f3f4f6', padding: '15px 30px', borderRadius: '8px' }}>
-                    <span className="logo-text" style={{ color: '#d91e18', fontSize: '1.2rem', fontWeight: 'bold' }}>MÌ QUẢNG BÀ MUA</span>
-                </div>
-                <div className="logo-placeholder" style={{ backgroundColor: '#f3f4f6', padding: '15px 30px', borderRadius: '8px' }}>
-                    <span className="logo-text" style={{ color: '#1e3a8a', fontSize: '1.2rem', fontWeight: 'bold' }}>HẢI SẢN NĂM ĐẢNH</span>
-                </div>
-                <div className="logo-placeholder" style={{ backgroundColor: '#f3f4f6', padding: '15px 30px', borderRadius: '8px' }}>
-                    <span className="logo-text" style={{ color: '#b91c1c', fontSize: '1.2rem', fontWeight: 'bold' }}>ĐẶC SẢN TRẦN</span>
-                </div>
-                <div className="logo-placeholder" style={{ backgroundColor: '#f3f4f6', padding: '15px 30px', borderRadius: '8px' }}>
-                    <span className="logo-text" style={{ color: '#047857', fontSize: '1.2rem', fontWeight: 'bold' }}>BẾP CUỐN ĐÀ NẴNG</span>
+            {/* Title */}
+            <h2 className="partners-title">
+                Our <span>Trusted</span> Partners
+            </h2>
+            <p className="partners-subtitle-text">
+                We are proud to work alongside the leading food brands
+            </p>
+
+            {/* Decorative divider */}
+            <div className="partners-divider">
+                <div className="partners-divider-dot"></div>
+                <div className="partners-divider-dot" style={{ width: '12px', height: '12px' }}></div>
+                <div className="partners-divider-dot"></div>
+            </div>
+
+            {/* Marquee track */}
+            <div className="partners-marquee-wrapper">
+                <div className="partners-marquee-track">
+                    {allPartners.map((partner, index) => (
+                        <div className="logo-item" key={`${partner.name}-${index}`}>
+                            <div className="logo-circle">
+                                <img
+                                    src={partner.logo}
+                                    alt={partner.name}
+                                    className="partner-logo-img"
+                                />
+                            </div>
+                            <span className="partner-name">{partner.name}</span>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>

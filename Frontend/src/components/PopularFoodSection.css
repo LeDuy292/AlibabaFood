@@ -101,3 +101,108 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
 }
+
+/* Pagination Styles */
+.food-pagination-wrapper {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    margin: 3.5rem auto 0;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+    /* Make it center horizontally by centering the wrapper itself */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.food-control-btn {
+    background: var(--white);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    /* Floating shadow */
+}
+
+.food-control-btn:hover {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(74, 139, 61, 0.4);
+    /* Premium hover shadow */
+}
+
+.food-control-btn:active {
+    transform: translateY(0) scale(0.95);
+}
+
+.food-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    /* Closer together for dots */
+}
+
+.page-dot {
+    width: 12px;
+    height: 12px;
+    border: none;
+    border-radius: 50%;
+    /* Perfect circle */
+    background-color: #d1d5db;
+    /* Gray dot */
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* Apple-like smooth spring */
+    padding: 0;
+}
+
+.page-dot:hover {
+    background-color: #9ca3af;
+    transform: scale(1.1);
+}
+
+.page-dot.active {
+    width: 35px;
+    /* Expands into a pill */
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    /* Green gradient */
+    box-shadow: 0 4px 15px rgba(74, 139, 61, 0.4);
+    transform: none;
+    /* Reset hover scale on active */
+    cursor: default;
+}
+
+/* Card Entry Animation for Pagination Transition */
+.popular-card {
+    animation: fadeSlideUp 0.5s ease backwards;
+}
+
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
