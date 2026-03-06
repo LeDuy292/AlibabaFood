@@ -1,0 +1,422 @@
+/* ================================================
+   NEWS HERO SECTION
+   ================================================ */
+
+/* === KEYFRAMES === */
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(60px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+
+    70% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes floatBadge {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes scaleCircle {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.6);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+}
+
+.news-hero-section {
+    background-color: #d2e4c8;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+/* === CURSOR GLOW === */
+.cursor-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 650px;
+    height: 650px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(144, 238, 144, 0.6) 15%, rgba(144, 238, 144, 0) 65%);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 3;
+    will-change: transform;
+    mix-blend-mode: screen;
+}
+
+/* === SPARKLE CONTAINER === */
+.sparkle-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+    overflow: hidden;
+}
+
+@keyframes sparkle-twinkle-fall {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    15% {
+        transform: scale(1.2) rotate(90deg);
+        opacity: 1;
+        filter: drop-shadow(0 0 10px currentColor);
+    }
+
+    50% {
+        transform: scale(1) rotate(180deg) translateY(40px);
+        opacity: 0.9;
+    }
+
+    100% {
+        transform: scale(0) translateY(120px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.sparkle {
+    position: absolute;
+    pointer-events: none;
+    background-color: currentColor;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    animation: sparkle-twinkle-fall 1.5s ease-out forwards;
+    filter: drop-shadow(0 0 8px currentColor);
+}
+
+
+/* Two-column flex row */
+.news-hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 60px 2rem;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+}
+
+@media (min-width: 992px) {
+    .news-hero-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 60px 4rem;
+        gap: 0;
+    }
+}
+
+/* ---- LEFT CONTENT ---- */
+.news-hero-content {
+    flex: 1;
+    max-width: 480px;
+    z-index: 20;
+}
+
+.news-hero-title {
+    color: #1a4225;
+    margin-bottom: 1.5rem;
+    line-height: 1.15;
+    /* Slide in from left */
+    animation: fadeInLeft 0.8s ease both;
+    animation-delay: 0.1s;
+}
+
+.news-hero-title .title-line-1,
+.news-hero-title .title-line-2 {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 800;
+    display: block;
+}
+
+/* Stagger each title line */
+.news-hero-title .title-line-1 {
+    animation-delay: 0.15s;
+}
+
+.news-hero-title .title-line-2 {
+    animation-delay: 0.3s;
+}
+
+.news-hero-subtitle {
+    font-size: 0.95rem;
+    color: #4a5d4e;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    max-width: 90%;
+    /* Fade in with delay */
+    animation: fadeInLeft 0.8s ease both;
+    animation-delay: 0.45s;
+}
+
+.btn-order-now {
+    padding: 14px 38px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    cursor: pointer;
+    border: none;
+    background-color: #52a045;
+    color: white;
+    transition: all 0.3s;
+    box-shadow: 0 6px 18px rgba(82, 160, 69, 0.4);
+    /* Pop in from below */
+    animation: fadeInUp 0.7s ease both;
+    animation-delay: 0.65s;
+}
+
+.btn-order-now:hover {
+    background-color: #3f8034;
+    transform: translateY(-2px);
+}
+
+/* ---- RIGHT: IMAGE CONTAINER ---- */
+.news-hero-image-container {
+    flex: 1;
+    position: relative;
+    /* Fixed size so children can be positioned relative to this block */
+    width: 560px;
+    height: 540px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-shrink: 0;
+    margin-left: 60px;
+    /* shift slightly to the right */
+}
+
+@media (max-width: 991px) {
+    .news-hero-image-container {
+        width: 100%;
+        max-width: 500px;
+        height: 480px;
+    }
+}
+
+/* Dark green circle */
+.green-circle {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 420px;
+    height: 420px;
+    background-color: #1e5c2a;
+    border-radius: 50%;
+    z-index: 1;
+    /* Scale in from center */
+    animation: scaleCircle 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: 0.3s;
+}
+
+@media (max-width: 991px) {
+    .green-circle {
+        width: 320px;
+        height: 320px;
+    }
+}
+
+/* Person image: horizontally centered with circle, overflows above it */
+.news-hero-main-img {
+    position: absolute;
+    bottom: 60px;
+    /* same bottom as circle */
+    left: 35%;
+    transform: translateX(-50%);
+    /* exactly same horizontal center */
+    z-index: 2;
+    width: auto;
+    height: 630px;
+    /* taller than circle (420px) so face/top pops out */
+    object-fit: contain;
+    object-position: bottom center;
+    display: block;
+    border-radius: 0;
+    /* no clipping – PNG transparency handles it */
+}
+
+@media (max-width: 991px) {
+    .green-circle {
+        width: 320px;
+        height: 320px;
+    }
+
+    .news-hero-main-img {
+        height: 400px;
+    }
+}
+
+/* "Hot spicy Food" speech-bubble badge */
+.promo-badge {
+    position: absolute;
+    top: 28%;
+    left: 0;
+    background-color: white;
+    padding: 10px 18px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #e62e2d;
+    z-index: 5;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    /* Float continuously up and down */
+    animation: popIn 0.6s ease both, floatBadge 3s ease-in-out 1s infinite;
+}
+
+/* Downward speech-bubble triangle */
+.promo-badge::after {
+    content: '';
+    position: absolute;
+    bottom: -9px;
+    right: 20px;
+    border-width: 10px 8px 0 8px;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+}
+
+.chili-icon {
+    font-size: 1.1rem;
+}
+
+/* ---- FLOATING CARDS ROW ---- */
+/* Two cards sit side-by-side at the bottom of the container */
+.floating-cards-row {
+    position: absolute;
+    bottom: 0;
+    left: 35;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 16px;
+    z-index: 6;
+    width: max-content;
+    /* Pop in from below */
+    animation: fadeInUp 0.8s ease both;
+    animation-delay: 0.9s;
+}
+
+.floating-card {
+    background: white;
+    border-radius: 16px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+    min-width: 190px;
+}
+
+.card-food-img {
+    width: 62px;
+    height: 62px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.card-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #222;
+}
+
+.card-stars {
+    font-size: 0.8rem;
+    display: flex;
+    gap: 1px;
+}
+
+.star-filled {
+    color: #f5c518;
+}
+
+.star-empty {
+    color: #ccc;
+}
+
+.card-price {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #333;
+}
+
+.card-price .currency {
+    color: #e8527a;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
