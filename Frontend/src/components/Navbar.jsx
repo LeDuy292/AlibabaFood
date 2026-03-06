@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 import logoImg from '../assets/alibaba-logo.png.png';
 
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
+    const location = useLocation();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -29,11 +31,11 @@ const Navbar = () => {
                 </div>
 
                 <ul className="navbar-links">
-                    <li><a href="#" className="active">HOME</a></li>
-                    <li><a href="#">MENU</a></li>
-                    <li><a href="#">NEWS</a></li>
-                    <li><a href="#">SUPPORT</a></li>
-                    <li><a href="#">ABOUT US</a></li>
+                    <li><Link to="/" className={location.pathname === '/' ? 'active' : ''}>HOME</Link></li>
+                    <li><Link to="/menu" className={location.pathname === '/menu' ? 'active' : ''}>MENU</Link></li>
+                    <li><Link to="/news" className={location.pathname === '/news' ? 'active' : ''}>NEWS</Link></li>
+                    <li><Link to="/support" className={location.pathname === '/support' ? 'active' : ''}>SUPPORT</Link></li>
+                    <li><Link to="/about" className={location.pathname === '/about' ? 'active' : ''}>ABOUT US</Link></li>
                 </ul>
 
                 <div className="navbar-actions">
