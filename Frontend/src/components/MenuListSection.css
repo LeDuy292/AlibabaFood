@@ -1,0 +1,209 @@
+.menu-list-section {
+    padding: 5rem 0 6rem;
+    background-color: #fff;
+}
+
+.menu-list-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.menu-list-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 0.75rem;
+}
+
+.menu-list-title span {
+    color: #69a656;
+}
+
+.menu-list-subtitle {
+    font-size: 1rem;
+    color: var(--text-gray);
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+/* Category Tabs */
+.category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+.category-tab {
+    padding: 10px 26px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid var(--primary-light);
+    background-color: transparent;
+    color: var(--primary-dark);
+    transition: all 0.25s ease;
+    font-family: inherit;
+}
+
+.category-tab:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.category-tab.active {
+    background-color: var(--primary-dark);
+    color: #fff;
+    border-color: var(--primary-dark);
+    box-shadow: 0 4px 12px rgba(19, 78, 21, 0.25);
+}
+
+/* Food Grid */
+.menu-items-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .menu-items-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .menu-items-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+}
+
+/* Food Card */
+.food-card {
+    background-color: var(--bg-footer);
+    border-radius: 24px;
+    position: relative;
+    overflow: visible;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    padding-top: 4rem;
+}
+
+.food-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(19, 78, 21, 0.12);
+}
+
+.food-tag {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background-color: #f59e0b;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.food-img-wrapper {
+    position: absolute;
+    top: -3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.food-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.18));
+    transition: transform 0.3s ease;
+}
+
+.food-card:hover .food-img-wrapper img {
+    transform: scale(1.08) translateY(-4px);
+}
+
+.food-card-body {
+    padding: 1rem 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.food-card-top {
+    text-align: center;
+}
+
+.food-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 0.2rem;
+}
+
+.food-category {
+    font-size: 0.78rem;
+    color: var(--text-gray);
+    font-weight: 500;
+}
+
+.food-card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.food-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.food-price-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.food-price {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    white-space: nowrap;
+}
+
+.add-to-cart-btn {
+    background-color: var(--primary-dark);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.25s, transform 0.2s;
+    flex-shrink: 0;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #69a656;
+    transform: scale(1.1);
+}

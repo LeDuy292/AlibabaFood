@@ -1,0 +1,193 @@
+.main-menu-hero-section {
+    min-height: 0vh;
+    background: url('https://69ab316afa9e210ee0efdb51.imgix.net/nge/Gemini_Generated_Image_m1ekh6m1ekh6m1ek.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* --- Added Magic Effects --- */
+.cursor-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(26, 92, 61, 0.4) 15%, transparent 65%);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 1;
+    will-change: transform;
+    mix-blend-mode: screen;
+}
+
+.sparkle-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+    overflow: hidden;
+}
+
+@keyframes sparkle-twinkle-fall {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    15% {
+        transform: scale(1.2) rotate(90deg);
+        opacity: 1;
+        filter: drop-shadow(0 0 8px currentColor);
+    }
+
+    100% {
+        transform: scale(0) translateY(100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.sparkle {
+    position: absolute;
+    pointer-events: none;
+    background-color: currentColor;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    animation: sparkle-twinkle-fall 1.5s ease-out forwards;
+}
+
+/* -------------------------- */
+
+.main-menu-hero-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    position: relative;
+    z-index: 1;
+}
+
+.main-menu-title-container {
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 10;
+}
+
+.main-menu-title {
+    font-size: 3.5rem;
+    font-family: 'Dancing Script', cursive;
+    font-weight: 800;
+    color: #000;
+    margin: 0;
+    margin-right: 120px;
+    /* Giảm margin để chữ sát vào lá hơn */
+    position: relative;
+    z-index: 10;
+}
+
+.main-menu-leaf-image {
+    width: 240px;
+    height: 300px;
+    object-fit: contain;
+    position: absolute;
+    top: -80px;
+    right: -180px;
+    /* Dịch chuyển lá sang trái thêm chút nữa để đè lên chữ */
+    transform: rotate(15deg);
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.95;
+}
+
+.search-bar-container {
+    display: flex;
+    gap: 0;
+    max-width: 700px;
+    width: 100%;
+    align-items: center;
+    background: white;
+    border-radius: 50px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    border: 1px solid #eee;
+    position: relative;
+    z-index: 10;
+    /* Đảm bảo search nổi lên trên lá */
+
+}
+
+.main-menu-search-input {
+    flex: 1;
+    padding: 1.2rem 1.8rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    background: transparent;
+    color: #333;
+    outline: none;
+}
+
+.main-menu-search-input::placeholder {
+    color: #999;
+}
+
+.main-menu-search-button {
+    padding: 1.2rem 2rem;
+    background: #1a5c3d;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    margin-right: 4px;
+}
+
+.main-menu-search-button:hover {
+    background: #144732;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+    .main-menu-hero-container {
+        padding: 4rem 1rem 2rem;
+    }
+
+    .main-menu-title {
+        font-size: 2.8rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .main-menu-leaf-image {
+        width: 60px;
+        height: 60px;
+        margin-left: 0;
+    }
+
+    .search-bar-container {
+        flex-direction: column;
+        max-width: 400px;
+    }
+
+    .main-menu-search-input,
+    .main-menu-search-button {
+        width: 100%;
+    }
+
+    .main-menu-search-button {
+        padding: 1rem 2rem;
+    }
+}
