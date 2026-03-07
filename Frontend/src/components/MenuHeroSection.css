@@ -1,0 +1,202 @@
+.menu-hero-section {
+    background-color: var(--bg-footer);
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 4rem;
+}
+
+.menu-hero-container {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 2rem;
+    position: relative;
+    z-index: 10;
+    padding-top: 9rem;
+}
+
+@media (min-width: 992px) {
+    .menu-hero-container {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 9rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        padding-bottom: 4rem;
+    }
+}
+
+/* Left Side Content */
+.menu-hero-content {
+    flex: 1;
+    max-width: 500px;
+    z-index: 20;
+    position: relative;
+}
+
+.menu-hero-title {
+    font-size: 3rem;
+    line-height: 1.1;
+    color: var(--primary-dark);
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+}
+
+@media (min-width: 768px) {
+    .menu-hero-title {
+        font-size: 4rem;
+    }
+}
+
+.menu-hero-desc {
+    font-size: 0.95rem;
+    color: var(--text-gray);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+    max-width: 450px;
+    font-weight: 500;
+}
+
+.btn-order-now {
+    background-color: #69a656;
+    /* Slightly lighter/muted green based on image */
+    color: var(--white);
+    padding: 14px 32px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 4px 15px rgba(105, 166, 86, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-order-now:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(19, 78, 21, 0.3);
+}
+
+.order-now-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0;
+}
+
+.dashed-arrow {
+    opacity: 50;
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+    margin-bottom: -1.5rem;
+}
+
+/* Right Side - Cards Grid */
+.menu-hero-cards-wrapper {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    margin-top: 6rem;
+    /* Extra space for overlapping images */
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media (min-width: 992px) {
+    .menu-hero-cards-wrapper {
+        margin-top: 0;
+    }
+}
+
+.cards-bg-lines {
+    position: absolute;
+    right: -2rem;
+    top: -3rem;
+    width: 250px;
+    height: 110%;
+    z-index: 0;
+    /* Simulate the vertical wavy/straight lines background */
+    background-image: repeating-linear-gradient(90deg,
+            transparent,
+            transparent 8px,
+            rgba(19, 78, 21, 0.1) 8px,
+            rgba(19, 78, 21, 0.1) 9px);
+    border-radius: 0 40px 40px 0;
+    opacity: 0.7;
+}
+
+.menu-hero-cards {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 500px;
+}
+
+@media (min-width: 768px) {
+    .menu-hero-cards {
+        gap: 2rem;
+    }
+}
+
+.menu-card {
+    /* Using rgba over background to match the color on image */
+    background-color: rgba(154, 196, 140, 0.35);
+    border-radius: 20px;
+    padding: 1rem 1rem 1.5rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s;
+}
+
+.menu-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Card image overlap */
+.menu-card-img-wrapper {
+    width: 155px;
+    height: 155px;
+    margin-top: -4.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.menu-card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.15));
+}
+
+.menu-card h3 {
+    font-size: 1.25rem;
+    color: var(--primary-dark);
+    margin-bottom: 0.5rem;
+    font-weight: 800;
+}
+
+.menu-card .see-more {
+    font-size: 0.85rem;
+    color: var(--primary-dark);
+    font-weight: 600;
+    text-decoration: none;
+    padding: 4px 12px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(19, 78, 21, 0.2);
+    transition: all 0.2s;
+}
+
+.menu-card .see-more:hover {
+    background-color: var(--white);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}

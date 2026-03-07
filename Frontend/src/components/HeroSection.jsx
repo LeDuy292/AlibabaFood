@@ -1,8 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import './HeroSection.css';
 
 const HeroSection = () => {
+    const navigate = useNavigate();
+    
     return (
         <section className="hero-section">
             <Navbar />
@@ -16,7 +19,7 @@ const HeroSection = () => {
                     <p className="hero-subtitle">JUST COME TO ORDER & FOODIED</p>
 
                     <div className="hero-buttons">
-                        <button className="btn-primary">ORDER NOW</button>
+                        <button className="btn-primary" onClick={() => navigate('/main-menu')}>ORDER NOW</button>
                         <button className="btn-secondary">EXPLORE MORE</button>
                     </div>
 

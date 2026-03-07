@@ -75,6 +75,8 @@
     cursor: pointer;
     border: none;
     transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .btn-primary {

@@ -1,36 +1,23 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import HeroSection from './components/HeroSection';
-import CategorySection from './components/CategorySection';
-import FeaturesSection from './components/FeaturesSection';
-import AboutSection from './components/AboutSection';
-import PopularFoodSection from './components/PopularFoodSection';
-import TestimonialSection from './components/TestimonialSection';
-import TeamSection from './components/TeamSection';
-import LatestFoodSection from './components/LatestFoodSection';
-import PartnersSection from './components/PartnersSection';
-import Footer from './components/Footer';
+import HomePage from './pages/HomePage';
+import MenuPage from './pages/MenuPage';
+import MainMenu from './pages/MainMenu';
+import FoodDetail from './pages/FoodDetail';
 
 function App() {
   return (
-    <div className="app-container">
-      <main>
-        {/* New sections based on the full-page design */}
-        <HeroSection />
-        <CategorySection />
-        <FeaturesSection />
-        <AboutSection />
-        <PopularFoodSection />
-        <TestimonialSection />
-        <TeamSection />
-
-        {/* Existing sections from the bottom of the design */}
-        <LatestFoodSection />
-        <PartnersSection />
-      </main>
-
-      <Footer />
-    </div>
+    <Router>
+      <div className="app-container">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/menu" element={<MenuPage />} />
+          <Route path="/main-menu" element={<MainMenu />} />
+          <Route path="/food-detail" element={<FoodDetail />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
