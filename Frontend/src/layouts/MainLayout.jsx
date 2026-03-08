@@ -1,25 +1,22 @@
-import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
-import { Outlet } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import React from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const MainLayout = () => {
-    const location = useLocation();
-    const isAiPage = location.pathname === '/ai-consultant';
+  const location = useLocation();
+  const isAiPage = location.pathname === "/ai-consultant";
 
-    return (
-        <div className="app-container">
-            <Navbar />
-            <main>
-                <Outlet />
-            </main>
+  return (
+    <div className="app-container">
+      <Navbar />
+      <main>
+        <Outlet />
+      </main>
 
-            {!isAiPage && <Footer />}
-
-            <Footer />
-        </div>
-    );
+      {!isAiPage && <Footer />}
+    </div>
+  );
 };
 
 export default MainLayout;
