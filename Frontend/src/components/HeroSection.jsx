@@ -1,3 +1,9 @@
+
+import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
+import Navbar from './Navbar';
+import './HeroSection.css';
+
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
@@ -93,6 +99,11 @@ const HeroSection = () => {
             <button className="btn-secondary">EXPLORE MORE</button>
           </div>
 
+                    <div className="hero-cta">
+                        <span className="cta-text">Join AlibabaFood as a Partner • </span>
+                        <Link to="/partner-register" className="cta-link">Click Here!</Link>
+                    </div>
+                </div>
           <div className="hero-cta">
             <span className="cta-text">Join AlibabaFood as a Partner • </span>
             <Link to="/supplier" className="cta-link">

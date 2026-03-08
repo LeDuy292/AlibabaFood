@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './MenuListSection.css';
-
+import { menuItems, categories } from '../constants/menuData';
 const categories = ['All', 'Fast Food', 'Food Combo', 'Cake', 'Dry Food'];
 
 const menuItems = [

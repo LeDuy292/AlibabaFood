@@ -1,3 +1,4 @@
+
 import React, { useState, useContext, createContext } from "react";
 import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
@@ -231,6 +232,7 @@ const AppRoutes = () => {
       </Route>
     </Routes>
   );
+
 };
 
 export default AppRoutes;
