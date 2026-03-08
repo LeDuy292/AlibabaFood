@@ -96,3 +96,7 @@ appsettings.Development.json
 
 .DS_Store
 Thumbs.db
+
+Backend/AlibabaFood.Api/appsettings.json
+appsettings.Development.json
+.env
