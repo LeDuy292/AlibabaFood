@@ -2,6 +2,8 @@ import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import "./HeroSection.css";
+import camImg from "../assets/cam.png";
+import laImg from "../assets/la.png";
 
 const HeroSection = () => {
   const glowRef = useRef(null);
@@ -80,6 +82,20 @@ const HeroSection = () => {
 
       <Navbar />
 
+      {/* Floating decoration layer */}
+      <div className="hero-decorations" aria-hidden="true">
+        {/* LEFT LEAVES */}
+        <img src={laImg} className="deco leaf-1" alt="" />
+        <img src={laImg} className="deco leaf-2" alt="" />
+        {/* SMALL CENTER LEAF */}
+        <img src={laImg} className="deco leaf-3" alt="" />
+        {/* BOTTOM-RIGHT LEAVES */}
+        <img src={laImg} className="deco leaf-4" alt="" />
+        <img src={laImg} className="deco leaf-5" alt="" />
+        {/* CAM — 1 ảnh duy nhất, nửa sau vòng tròn */}
+        <img src={camImg} className="deco lemon-1" alt="" />
+      </div>
+
       <div className="container hero-container">
         <div className="hero-content">
           <h1 className="hero-title">
@@ -108,11 +124,6 @@ const HeroSection = () => {
             alt="Delicious fresh salad bowl"
             className="hero-main-img"
           />
-          {/* Decorative floating elements */}
-          <div className="floating-lemon top-left"></div>
-          <div className="floating-lemon bottom-right"></div>
-          <div className="floating-leaf side-left"></div>
-          <div className="floating-leaf side-right"></div>
         </div>
       </div>
     </section>

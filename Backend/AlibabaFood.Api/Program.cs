@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AlibabaFood.Api.Data;
 using AlibabaFood.Api.Services;
+using AlibabaFood.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddHttpClient<IAIService, AIService>();
 builder.Services.AddScoped<IAIService, AIService>();
+builder.Services.AddHttpClient("PayOS");
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 // Add CORS
 builder.Services.AddCors(options =>
