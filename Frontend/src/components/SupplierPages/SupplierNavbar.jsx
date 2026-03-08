@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./SupplierNavbar.css";
+import logoImg from "../../assets/Artboard 4.png";
 
 const NAV_ITEMS = [
   { id: "home", icon: "🏠", label: "Home" },
@@ -44,7 +45,7 @@ const SupplierNavbar = ({
             handleNav("home");
           }}
         >
-          <img src="/alibaba-logo.png" alt="Alibaba Food" />
+          <img src={logoImg} alt="Alibaba Food" />
         </a>
 
         {/* Nav tabs */}
