@@ -1,0 +1,144 @@
+.menu-product-card {
+  background: white;
+  border-radius: 30px;
+  padding: 1.2rem;
+  position: relative;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 1px solid #f0f0f0;
+}
+
+.menu-product-card:hover {
+  transform: translateY(-8px);
+}
+
+.card-badge-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+}
+
+.quantity-badge, .discount-badge {
+  font-size: 0.65rem;
+  color: #ff4d4d;
+  font-weight: 600;
+  font-family: sans-serif;
+}
+
+.cart-shortcut-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #1a4d1a;
+  border: none;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 30px 0 30px;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.3s ease;
+}
+
+.cart-shortcut-btn:hover {
+  background: #143d14;
+}
+
+.product-image-container {
+  width: 100%;
+  aspect-ratio: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.product-image {
+  max-width: 85%;
+  max-height: 85%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 12px rgba(0,0,0,0.15));
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.product-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+}
+
+.product-rating {
+  display: flex;
+  gap: 1px;
+}
+
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 0.2rem;
+}
+
+.price-tag {
+  display: flex;
+  align-items: center;
+  color: #000;
+  font-weight: 800;
+}
+
+.currency {
+  font-size: 1.1rem;
+  margin-right: 2px;
+}
+
+.amount {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.add-to-cart-btn {
+  background: #1a4d1a;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.buy-now-btn {
+  background: #ff0000;
+  color: white;
+  border: none;
+  padding: 3px 12px;
+  border-radius: 12px;
+  font-size: 0.6rem;
+  font-weight: 800;
+  cursor: pointer;
+  text-transform: uppercase;
+  white-space: nowrap;
+}

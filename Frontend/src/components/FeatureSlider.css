@@ -1,0 +1,258 @@
+.feature-slider-section {
+    padding: 5rem 0;
+    background-color: #f6fbf4;
+    /* Very light green/white matching theme */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    /* Prevent horizontal scroll from 3D transforms */
+}
+
+.slider-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.slider-header h2 {
+    font-size: 2.5rem;
+    color: var(--primary-dark, #134e15);
+    margin-bottom: 0.5rem;
+}
+
+.slider-header p {
+    color: var(--text-gray, #4b5563);
+    font-size: 1.1rem;
+}
+
+/* 3D Container */
+.slider-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    height: 680px;
+    /* Force height so absolute cards don't collapse it */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1200px;
+    /* Depth of the 3D space */
+}
+
+/* Base Card Style */
+.slider-card {
+    position: absolute;
+    width: 440px;
+    /* Significantly wider */
+    height: 620px;
+    /* Significantly taller */
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* Smooth, slightly bouncy spring feel */
+    will-change: transform, opacity, width, height;
+}
+
+/* The background image of the card */
+.card-bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 10s linear;
+    /* Slow zoom over time or hover if wanted */
+}
+
+.slider-card:hover .card-bg-img {
+    transform: scale(1.05);
+    /* Slight zoom on hover for interactivity */
+}
+
+/* Top Left Icon Pill (as seen in design) */
+.card-top-icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: white;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Gradient bottom to make text readable */
+.card-gradient-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 40%, rgba(0, 0, 0, 0) 100%);
+    z-index: 5;
+}
+
+/* Text Content Container */
+.card-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px;
+    color: white;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.card-subtitle {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    transition: opacity 0.3s;
+}
+
+.card-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+.card-description {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    /* Hide description on side cards */
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transition: opacity 0.5s ease-in-out, height 0.5s ease-in-out;
+}
+
+.explore-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    font-size: 1rem;
+    color: white;
+    text-transform: none;
+    transition: gap 0.3s, color 0.3s;
+}
+
+.explore-btn:hover {
+    gap: 10px;
+    color: #bfe5b3;
+    /* Theme light green */
+}
+
+/* --- 3D Position Classes --- */
+
+/* The Focused Center Card */
+.active-card {
+    transform: translateX(0) scale(1) translateZ(0);
+    /* Brought to front */
+    z-index: 20;
+    opacity: 1;
+    cursor: default;
+    /* Not clickable if it's already active */
+}
+
+/* Show description only on the active card */
+.active-card .card-description {
+    opacity: 1;
+    height: auto;
+}
+
+/* The card on the left */
+.left-card {
+    /* Push left, scale down, push back into 3D space, slight angle */
+    transform: translateX(-45%) scale(0.9) translateZ(-150px) rotateY(10deg);
+    z-index: 10;
+    opacity: 0.7;
+    /* Dimmed */
+    cursor: pointer;
+    /* Clickable */
+}
+
+/* The card on the right */
+.right-card {
+    /* Push right, scale down, push back into 3D space, slight angle */
+    transform: translateX(45%) scale(0.9) translateZ(-150px) rotateY(-10deg);
+    z-index: 10;
+    opacity: 0.7;
+    /* Dimmed */
+    cursor: pointer;
+    /* Clickable */
+}
+
+/* Hover effects for inactive lateral cards */
+.left-card:hover,
+.right-card:hover {
+    opacity: 0.95;
+    /* Bring them slightly forward into focus on hover */
+    transform: translateX(calc(var(--dir, 1) * 45%)) scale(0.92) translateZ(-100px) rotateY(calc(var(--dir, -1) * 5deg));
+}
+
+.left-card:hover {
+    --dir: -1;
+}
+
+.right-card:hover {
+    --dir: 1;
+}
+
+.hidden-card {
+    transform: translateZ(-500px);
+    opacity: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .slider-card {
+        width: 300px;
+        height: 420px;
+    }
+
+    .left-card {
+        transform: translateX(-30%) scale(0.85) translateZ(-150px);
+    }
+
+    .right-card {
+        transform: translateX(30%) scale(0.85) translateZ(-150px);
+    }
+}
+
+@media (max-width: 480px) {
+    .slider-card {
+        width: 260px;
+        height: 380px;
+    }
+
+    .left-card {
+        transform: translateX(-20%) scale(0.8) translateZ(-150px);
+    }
+
+    .right-card {
+        transform: translateX(20%) scale(0.8) translateZ(-150px);
+    }
+}
