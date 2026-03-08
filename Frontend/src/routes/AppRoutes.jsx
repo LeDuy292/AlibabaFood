@@ -1,5 +1,6 @@
 import React, { useState, useContext, createContext } from "react";
-import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home";
 import MenuPage from "../pages/MenuPage";
@@ -220,6 +221,16 @@ const SupplierNotificationsPage = () => {
   );
 };
 
+// Guard: chưa đăng nhập thì redirect về /login
+const PrivateRoute = () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    toast.error("Đăng nhập để tiến hành thanh toán!");
+    return <Navigate to="/login" replace />;
+  }
+  return <Outlet />;
+};
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -236,7 +247,9 @@ const AppRoutes = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/blind-bag" element={<BlindBag />} />
       <Route path="/cart" element={<Cart />} />
-      <Route path="/checkout" element={<Checkout />} />
+      <Route element={<PrivateRoute />}>
+        <Route path="/checkout" element={<Checkout />} />
+      </Route>
       <Route path="/payment/success" element={<PaymentSuccess />} />
       <Route path="/payment/cancel" element={<PaymentCancel />} />
       <Route path="/supplier" element={<SupplierLayout />}>
