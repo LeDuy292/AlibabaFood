@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import {
   ShoppingCart,
   Trash2,
@@ -131,7 +132,14 @@ const Cart = () => {
             </div>
             <button
               className="btn-checkout"
-              onClick={() => navigate("/checkout")}
+              onClick={() => {
+                if (!localStorage.getItem("token")) {
+                  toast.error("Đăng nhập để tiến hành thanh toán!");
+                  navigate("/login");
+                  return;
+                }
+                navigate("/checkout");
+              }}
             >
               Tiến hành thanh toán
             </button>
