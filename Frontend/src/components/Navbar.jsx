@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Navbar.css';
@@ -12,7 +12,7 @@ const Navbar = () => {
     const dropdownRef = useRef(null);
     const location = useLocation();
     const navigate = useNavigate();
-=======
+
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
@@ -21,7 +21,6 @@ import logoImg from "../assets/Artboard 4.png";
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
->>>>>>> 560e066791183ce0a0526779341da1323af38d7d
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,7 +31,6 @@ const Navbar = () => {
       }
     };
 
-<<<<<<< HEAD
         const checkUser = () => {
             try {
                 const storedUser = localStorage.getItem('user');
@@ -177,6 +175,25 @@ const Navbar = () => {
         </nav>
     );
 =======
+=======
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import "./Navbar.css";
+import logoImg from "../assets/Artboard 4.png";
+
+const Navbar = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
     window.addEventListener("scroll", handleScroll);
     // Clean up the event listener on component unmount
     return () => window.removeEventListener("scroll", handleScroll);
@@ -297,7 +314,7 @@ const Navbar = () => {
       </div>
     </nav>
   );
->>>>>>> 560e066791183ce0a0526779341da1323af38d7d
+
 };
 
 export default Navbar;

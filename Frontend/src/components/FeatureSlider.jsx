@@ -16,6 +16,8 @@ const FeatureSlider = () => {
         }
     };
 
+
+const FeatureSlider = () => {
     // Array of feature objects
     const features = [
         {

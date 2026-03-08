@@ -1,14 +1,13 @@
-<<<<<<< HEAD
+
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import './HeroSection.css';
-=======
+
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import "./HeroSection.css";
->>>>>>> 560e066791183ce0a0526779341da1323af38d7d
 
 const HeroSection = () => {
   const glowRef = useRef(null);
@@ -100,13 +99,11 @@ const HeroSection = () => {
             <button className="btn-secondary">EXPLORE MORE</button>
           </div>
 
-<<<<<<< HEAD
                     <div className="hero-cta">
                         <span className="cta-text">Join AlibabaFood as a Partner • </span>
                         <Link to="/partner-register" className="cta-link">Click Here!</Link>
                     </div>
                 </div>
-=======
           <div className="hero-cta">
             <span className="cta-text">Join AlibabaFood as a Partner • </span>
             <Link to="/supplier" className="cta-link">
@@ -114,7 +111,6 @@ const HeroSection = () => {
             </Link>
           </div>
         </div>
->>>>>>> 560e066791183ce0a0526779341da1323af38d7d
 
         <div className="hero-image-container">
           <div className="hero-blob"></div>

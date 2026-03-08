@@ -2,9 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PromoSection.css';
 
-const PromoSection = () => {
-    const navigate = useNavigate();
+import './PromoSection.css';
 
+const PromoSection = () => {
     return (
         <>
             <section className="promo-section">
@@ -123,6 +123,8 @@ const PromoSection = () => {
                         >
                             🎲 Test Your Luck
                         </button>
+
+                        <button className="blind-bag-btn">🎲 Grab Your Blind Bag</button>
                     </div>
 
                     {/* Right: mystery bag graphic */}
