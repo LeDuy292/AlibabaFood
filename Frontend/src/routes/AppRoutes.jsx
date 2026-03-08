@@ -17,6 +17,10 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import BlindBag from "../pages/BlindBag";
 import AIConsultant from "../pages/AIConsultant";
+import Cart from "../pages/Cart";
+import Checkout from "../pages/Checkout";
+import PaymentSuccess from "../pages/PaymentSuccess";
+import PaymentCancel from "../pages/PaymentCancel";
 
 const INVENTORY_DEFAULT = [
   {
@@ -231,6 +235,10 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/blind-bag" element={<BlindBag />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/payment/success" element={<PaymentSuccess />} />
+      <Route path="/payment/cancel" element={<PaymentCancel />} />
       <Route path="/supplier" element={<SupplierLayout />}>
         <Route index element={<SupplierHomePage />} />
         <Route path="dashboard" element={<SupplierDashboardPage />} />

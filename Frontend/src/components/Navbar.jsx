@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import logoImg from "../assets/alibaba-logo.png.png";
 import toast from "react-hot-toast";
+import { useCart } from "../contexts/CartContext";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -11,6 +12,7 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const { totalItems } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -241,7 +243,11 @@ const Navbar = () => {
             )}
           </div>
 
-          <button className="icon-btn cart-btn">
+          <button
+            className="icon-btn cart-btn"
+            onClick={() => navigate("/cart")}
+            style={{ position: "relative" }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -257,6 +263,28 @@ const Navbar = () => {
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <path d="M16 10a4 4 0 0 1-8 0"></path>
             </svg>
+            {totalItems > 0 && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: "-6px",
+                  right: "-6px",
+                  background: "#e53e3e",
+                  color: "#fff",
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  width: "18px",
+                  height: "18px",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  lineHeight: 1,
+                }}
+              >
+                {totalItems > 9 ? "9+" : totalItems}
+              </span>
+            )}
           </button>
         </div>
       </div>

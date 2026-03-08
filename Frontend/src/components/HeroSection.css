@@ -1,335 +1,404 @@
 .hero-section {
-    background-color: #d8e8d1;
-    /* The specific light mint/sage background from reference */
-    min-height: 100vh;
-    position: relative;
-    overflow: hidden;
-    padding-top: 100px;
-    display: flex;
-    align-items: center;
+  background-color: #d8e8d1;
+  /* The specific light mint/sage background from reference */
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  padding-top: 100px;
+  display: flex;
+  align-items: center;
 }
 
 .hero-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem 2rem;
-    position: relative;
-    z-index: 10;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 2rem;
+  position: relative;
+  z-index: 10;
+  width: 100%;
 }
 
 /* Cursor Glow Effect */
 .cursor-glow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 650px;
-    height: 650px;
-    /* Updated gradient: Very bright white center that fades out, mimicking real magic light */
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(144, 238, 144, 0.6) 15%, rgba(144, 238, 144, 0) 65%);
-    border-radius: 50%;
-    pointer-events: none;
-    /* Let all clicks pass through it */
-    opacity: 0;
-    /* Hidden by default, fades in on hover */
-    transition: opacity 0.5s ease;
-    z-index: 1;
-    /* Keep it behind text/navbar but above background */
-    will-change: transform;
-    /* Hint browser for continuous smooth animation */
-    mix-blend-mode: screen;
-    /* Magic glow effect acting like true light */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 650px;
+  height: 650px;
+  /* Updated gradient: Very bright white center that fades out, mimicking real magic light */
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(144, 238, 144, 0.6) 15%,
+    rgba(144, 238, 144, 0) 65%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  /* Let all clicks pass through it */
+  opacity: 0;
+  /* Hidden by default, fades in on hover */
+  transition: opacity 0.5s ease;
+  z-index: 1;
+  /* Keep it behind text/navbar but above background */
+  will-change: transform;
+  /* Hint browser for continuous smooth animation */
+  mix-blend-mode: screen;
+  /* Magic glow effect acting like true light */
 }
 
 /* Sparkle/Glitter Structure */
 .sparkle-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 50;
-    /* Bring sparkles over the text and images but under Navbar (1000) */
-    overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
+  /* Bring sparkles over the text and images but under Navbar (1000) */
+  overflow: hidden;
 }
 
 @keyframes sparkle-twinkle-fall {
-    0% {
-        transform: scale(0) rotate(0deg);
-        opacity: 0;
-    }
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
 
-    15% {
-        transform: scale(1.2) rotate(90deg);
-        opacity: 1;
-        filter: drop-shadow(0 0 10px currentColor);
-    }
+  15% {
+    transform: scale(1.2) rotate(90deg);
+    opacity: 1;
+    filter: drop-shadow(0 0 10px currentColor);
+  }
 
-    50% {
-        transform: scale(1) rotate(180deg) translateY(40px);
-        opacity: 0.9;
-        filter: drop-shadow(0 0 5px currentColor);
-    }
+  50% {
+    transform: scale(1) rotate(180deg) translateY(40px);
+    opacity: 0.9;
+    filter: drop-shadow(0 0 5px currentColor);
+  }
 
-    100% {
-        transform: scale(0) translateY(120px) rotate(360deg);
-        opacity: 0;
-    }
+  100% {
+    transform: scale(0) translateY(120px) rotate(360deg);
+    opacity: 0;
+  }
 }
 
 .sparkle {
-    position: absolute;
-    pointer-events: none;
-    background-color: currentColor;
-    /* Color defined in JS dynamically */
-    /* Uses a clip-path to perfectly form a 5-point star! "Kim Tuyến" */
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-    animation: sparkle-twinkle-fall 1.5s ease-out forwards;
-    filter: drop-shadow(0 0 8px currentColor);
-    /* Stronger glow around each particle */
+  position: absolute;
+  pointer-events: none;
+  background-color: currentColor;
+  /* Color defined in JS dynamically */
+  /* Uses a clip-path to perfectly form a 5-point star! "Kim Tuyến" */
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+  animation: sparkle-twinkle-fall 1.5s ease-out forwards;
+  filter: drop-shadow(0 0 8px currentColor);
+  /* Stronger glow around each particle */
 }
 
 @media (min-width: 992px) {
-    .hero-container {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 4rem 4rem;
-    }
+  .hero-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4rem 4rem;
+  }
 }
 
 .hero-content {
-    flex: 1;
-    max-width: 600px;
-    z-index: 20;
-    padding-left: 2rem;
-    /* Give it some breathing room from left */
+  flex: 1;
+  max-width: 600px;
+  z-index: 20;
+  padding-left: 2rem;
+  /* Give it some breathing room from left */
 }
 
 /* Typography Overhaul */
 .hero-title {
-    font-family: inherit;
-    color: #114120;
-    /* Deep forest green */
-    margin-bottom: 2rem;
-    line-height: 1.1;
-    display: flex;
-    flex-direction: column;
+  font-family: inherit;
+  color: #114120;
+  /* Deep forest green */
+  margin-bottom: 2rem;
+  line-height: 1.1;
+  display: flex;
+  flex-direction: column;
 }
 
 .title-line-1 {
-    font-size: 5rem;
-    font-weight: 300;
-    /* Very clean, thin font */
+  font-size: 5rem;
+  font-weight: 300;
+  /* Very clean, thin font */
 }
 
 .title-line-2 {
-    font-size: 5rem;
-    font-weight: 400;
-    /* Slightly thicker optionally, or keep thin */
-    padding-left: 5rem;
-    /* The characteristic indentation step */
+  font-size: 5rem;
+  font-weight: 400;
+  /* Slightly thicker optionally, or keep thin */
+  padding-left: 5rem;
+  /* The characteristic indentation step */
 }
 
 @media (max-width: 768px) {
+  .title-line-1,
+  .title-line-2 {
+    font-size: 3.5rem;
+  }
 
-    .title-line-1,
-    .title-line-2 {
-        font-size: 3.5rem;
-    }
-
-    .title-line-2 {
-        padding-left: 2rem;
-    }
+  .title-line-2 {
+    padding-left: 2rem;
+  }
 }
 
 .hero-subtitle {
-    font-size: 1.1rem;
-    font-weight: 500;
-    letter-spacing: 1px;
-    color: #2b5936;
-    margin-bottom: 2.5rem;
-    text-transform: uppercase;
-    font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: #2b5936;
+  margin-bottom: 2.5rem;
+  text-transform: uppercase;
+  font-family: "Inter", sans-serif;
 }
 
 /* Pill Buttons */
 .hero-buttons {
-    display: flex;
-    gap: 1.5rem;
-    margin-bottom: 3rem;
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
 }
 
 .btn-primary,
 .btn-secondary {
-    padding: 12px 30px;
-    border-radius: 40px;
-    /* Perfect pill shape */
-    font-weight: 600;
-    font-size: 0.95rem;
-    cursor: pointer;
-    border: none;
-    transition: all 0.3s;
-    background-color: #bfe5b3;
-    /* Light yellowish green from reference */
-    color: #114120;
+  padding: 12px 30px;
+  border-radius: 40px;
+  /* Perfect pill shape */
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s;
+  background-color: #bfe5b3;
+  /* Light yellowish green from reference */
+  color: #114120;
 }
 
 .btn-primary:hover,
 .btn-secondary:hover {
-    background-color: #114120;
-    color: var(--white);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(17, 65, 32, 0.2);
+  background-color: #114120;
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(17, 65, 32, 0.2);
 }
 
 .hero-cta {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: #1a231b;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1a231b;
 }
 
 .cta-link {
-    color: #e62e2d;
-    /* Red click here */
-    font-weight: 700;
-    transition: opacity 0.3s;
+  color: #e62e2d;
+  /* Red click here */
+  font-weight: 700;
+  transition: opacity 0.3s;
 }
 
 .cta-link:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 /* Image Container */
 .hero-image-container {
-    flex: 1;
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-    aspect-ratio: 1;
-    margin-top: 3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  flex: 1;
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 1;
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (min-width: 992px) {
-    .hero-image-container {
-        margin-top: 0;
-        margin-right: -2rem;
-        /* Push slightly right to fill space */
-    }
+  .hero-image-container {
+    margin-top: 0;
+    margin-right: -2rem;
+    /* Push slightly right to fill space */
+  }
 }
 
 /* Big White Border Circle */
 .hero-main-img {
-    width: 90%;
-    height: 90%;
-    border-radius: 50%;
-    object-fit: cover;
-    z-index: 2;
-    background-color: white;
-    border: 30px solid white;
-    /* The thick white rim */
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-    /* Soft shadow around rim */
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 2;
+  background-color: white;
+  border: 30px solid white;
+  /* The thick white rim */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  /* Soft shadow around rim */
 }
 
 /* Removing old blob to use border instead */
 .hero-blob {
-    display: none;
+  display: none;
 }
 
-
-/* --- Floating Lemons and Leaves (Matching Reference Positions) --- */
+/* --- Floating Decoration Images --- */
 
 @keyframes float-slow {
-
-    0%,
-    100% {
-        transform: translateY(0) rotate(0deg);
-    }
-
-    50% {
-        transform: translateY(-15px) rotate(8deg);
-    }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
 }
 
-.floating-lemon {
-    position: absolute;
-    width: 90px;
-    height: 90px;
-    background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/yellow-apricorn.png');
-    /* Placeholder, we'll style it CSS-only for now like the real lemon slices, or use emoji/shape if image fails */
-    border-radius: 50%;
-    z-index: 3;
-    animation: float-slow 7s ease-in-out infinite;
-    /* CSS generated lemon slice look */
-    background: radial-gradient(circle at center, transparent 70%, #fff 71%, #fff 80%, #fde047 81%),
-        conic-gradient(#fde047 0 25%, #fff 25% 26%, #fde047 26% 50%, #fff 50% 51%, #fde047 51% 75%, #fff 75% 76%, #fde047 76% 100%);
-    box-shadow: inset 0 0 0 5px #fff, 0 5px 15px rgba(253, 224, 71, 0.4);
-    border: 3px solid #fde047;
+.hero-decorations {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
 }
 
-.floating-lemon.top-left {
-    top: 5%;
-    left: 10%;
-    width: 70px;
-    height: 70px;
-    animation-delay: 0s;
+.deco {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  mix-blend-mode: multiply;
+  animation: float-slow 7s ease-in-out infinite;
 }
 
-/* Use a second lemon on top left like in image */
-.floating-lemon.bottom-right {
-    top: -5%;
-    left: 30%;
-    width: 60px;
-    height: 60px;
-    animation-delay: 2s;
+/* ===========================================
+   LEAVES  (la.png — dark green oval leaf)
+   =========================================== */
+
+/* leaf-1: top-left, large, partly off-screen */
+.leaf-1 {
+  width: 160px;
+  top: 5%;
+  left: -5%;
+  transform: rotate(25deg);
+  animation-duration: 10s;
+  animation-delay: 0s;
 }
 
-/* Reusing class names but positioning as per new image (middle left) */
-.floating-leaf {
-    position: absolute;
-    width: 60px;
-    height: 90px;
-    background-color: #38782a;
-    border-radius: 0 100px 0 100px;
-    opacity: 0.9;
-    z-index: 0;
-    animation: float-slow 9s ease-in-out infinite;
-    box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(56, 120, 42, 0.3);
+/* leaf-2: middle-left, below title, partly off-screen */
+.leaf-2 {
+  width: 150px;
+  top: 52%;
+  left: -5%;
+  transform: rotate(18deg);
+  animation-duration: 12s;
+  animation-delay: 1.8s;
 }
 
-.floating-leaf.side-left {
-    top: -15%;
-    left: 45%;
-    transform: rotate(70deg);
-    width: 40px;
-    height: 60px;
-    animation-delay: 1s;
+/* leaf-3: tiny dark leaf — between lemon group and food circle, near centre */
+.leaf-3 {
+  width: 44px;
+  top: 18%;
+  left: 58%;
+  transform: rotate(-60deg);
+  animation-duration: 8s;
+  animation-delay: 0.6s;
 }
 
-.floating-leaf.side-right {
-    bottom: 5%;
-    right: 5%;
-    transform: rotate(-20deg);
-    width: 80px;
-    height: 120px;
-    animation-delay: 4s;
-    background-color: #4a8b3d;
+/* leaf-4: large — bottom-right, partially under food circle */
+.leaf-4 {
+  width: 160px;
+  bottom: 4%;
+  right: 2%;
+  transform: rotate(-30deg);
+  animation-duration: 9s;
+  animation-delay: 2.2s;
 }
 
-/* Extra decorative leaves matching image */
-.extra-leaf-1 {
-    position: absolute;
+/* leaf-5: medium — bottom-right, second leaf overlapping leaf-4 */
+.leaf-5 {
+  width: 130px;
+  bottom: 12%;
+  right: 10%;
+  transform: rotate(35deg);
+  animation-duration: 11s;
+  animation-delay: 3.5s;
+}
+
+/* ===========================================
+   LEMONS  (cam.png — scattered lemon slices)
+   Strategy: place same image 3× at different
+   sizes+positions so they look like individual
+   slices scattered in a diagonal arc.
+   =========================================== */
+
+/* lemon-1: Ảnh cam duy nhất — căn giữa vòng tròn, nửa bị che sau vòng tròn */
+.lemon-1 {
+  width: 600px;
+  top: 18%;
+  left: 44%;
+  transform: rotate(-8deg);
+  animation-duration: 8s;
+  animation-delay: 1s;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 1200px) {
+  .lemon-1 {
+    width: 450px;
+    left: 48%;
+  }
+}
+
+@media (max-width: 992px) {
+  .leaf-1 {
     width: 120px;
-    height: 180px;
-    background-image: url('https://images.unsplash.com/photo-1622484210452-972172159c3e?w=800&auto=format&fit=crop&q=80&transparent=true');
-    background-size: cover;
-    top: -20%;
-    left: -20%;
-    filter: drop-shadow(5px 10px 15px rgba(0, 0, 0, 0.2));
+  }
+  .leaf-2 {
+    width: 110px;
+  }
+  .leaf-4 {
+    width: 110px;
+  }
+  .leaf-5 {
+    width: 90px;
+  }
+  .lemon-1 {
+    width: 360px;
+    left: 44%;
+    top: 10%;
+  }
+}
+
+@media (max-width: 768px) {
+  .leaf-2,
+  .leaf-3,
+  .leaf-5 {
+    display: none;
+  }
+  .leaf-1 {
+    width: 90px;
+  }
+  .leaf-4 {
+    width: 90px;
+  }
+  .lemon-1 {
+    width: 240px;
+    left: 38%;
+    top: 8%;
+  }
 }

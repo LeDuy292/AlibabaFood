@@ -1,228 +1,234 @@
 /* ============ LATEST NEW FOOD SECTION ============ */
 .lnf-section {
-    padding: 3rem 2rem 5rem;
-    background: #ffffff;
+  padding: 3rem 2rem 5rem;
+  background: #ffffff;
 }
 
 .lnf-container {
-    max-width: 1000px;
-    margin: 0 auto;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 /* Title */
 .lnf-title {
-    text-align: center;
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: #000;
-    margin-bottom: 4rem;
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 4rem;
 }
 
 /* Grid */
 .lnf-grid {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 /* Each item */
 .lnf-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 220px;
 }
 
 /* Circle + dots wrapper */
 .lnf-circle-wrap {
-    position: relative;
-    width: 220px;
-    height: 220px;
+  position: relative;
+  width: 220px;
+  height: 220px;
 }
 
 /* Big peach background circle */
 .lnf-bg-circle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: #faebd7;
-    /* Light Peach */
-    z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: #faebd7;
+  /* Light Peach */
+  z-index: 1;
 }
 
 /* Food image positioned over peach background */
 .lnf-img-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 200px;
-    height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 3;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
 }
 
 .lnf-img {
-    width: 170px;
-    /* Slightly smaller to reveal peach rim */
-    height: 170px;
-    object-fit: cover;
-    border-radius: 50%;
-    /* Soft shadow to separate from background */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease;
+  width: 170px;
+  /* Slightly smaller to reveal peach rim */
+  height: 170px;
+  object-fit: cover;
+  border-radius: 50%;
+  /* Soft shadow to separate from background */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
 }
 
 .lnf-circle-wrap:hover .lnf-img {
-    transform: scale(1.05);
-    /* Zoom on hover */
+  transform: scale(1.05);
+  /* Zoom on hover */
 }
 
 /* ---- Decorative dots (7 dots in an arc) ---- */
 /* Colors transition from light olive to dark forest green */
 /* Sizes transition from tiny on the left to large on the top right */
 .lnf-dot {
-    position: absolute;
-    border-radius: 50%;
-    z-index: 2;
+  position: absolute;
+  border-radius: 50%;
+  z-index: 2;
 }
 
 /* Arc calculated perfectly around top-left of the peach circle */
 .dot-1 {
-    width: 4px;
-    height: 4px;
-    top: 110px;
-    left: 0px;
-    background: #b2cba7;
+  width: 4px;
+  height: 4px;
+  top: 110px;
+  left: 0px;
+  background: #b2cba7;
 }
 
 .dot-2 {
-    width: 6px;
-    height: 6px;
-    top: 86px;
-    left: 3px;
-    background: #9ab491;
+  width: 6px;
+  height: 6px;
+  top: 86px;
+  left: 3px;
+  background: #9ab491;
 }
 
 .dot-3 {
-    width: 8px;
-    height: 8px;
-    top: 62px;
-    left: 12px;
-    background: #809c7b;
+  width: 8px;
+  height: 8px;
+  top: 62px;
+  left: 12px;
+  background: #809c7b;
 }
 
 .dot-4 {
-    width: 10px;
-    height: 10px;
-    top: 40px;
-    left: 26px;
-    background: #62835d;
+  width: 10px;
+  height: 10px;
+  top: 40px;
+  left: 26px;
+  background: #62835d;
 }
 
 .dot-5 {
-    width: 12px;
-    height: 12px;
-    top: 22px;
-    left: 45px;
-    background: #466c40;
+  width: 12px;
+  height: 12px;
+  top: 22px;
+  left: 45px;
+  background: #466c40;
 }
 
 .dot-6 {
-    width: 14px;
-    height: 14px;
-    top: 10px;
-    left: 68px;
-    background: #2b5526;
+  width: 14px;
+  height: 14px;
+  top: 10px;
+  left: 68px;
+  background: #2b5526;
 }
 
 .dot-7 {
-    width: 16px;
-    height: 16px;
-    top: 3px;
-    left: 95px;
-    background: #0f3d0c;
+  width: 16px;
+  height: 16px;
+  top: 3px;
+  left: 95px;
+  background: #0f3d0c;
 }
-
 
 /* ---- Label row below circle ---- */
 .lnf-label-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 90%;
-    background: #cddbca;
-    /* Light green container */
-    border-radius: 50px;
-    padding: 3px 3px 3px 18px;
-    /* Extra padding on right for the dark green pill */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  background: #cddbca;
+  /* Light green container */
+  border-radius: 50px;
+  padding: 3px 3px 3px 18px;
+  /* Extra padding on right for the dark green pill */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .lnf-name {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #1b3818;
-    /* Dark green text inside light area */
-    white-space: nowrap;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1b3818;
+  /* Dark green text inside light area */
+  white-space: nowrap;
 }
 
 .lnf-price {
-    background: #0f3d0c;
-    /* Very dark green price pill */
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 0.95rem;
-    padding: 8px 24px;
-    border-radius: 50px;
+  background: #0f3d0c;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 8px 24px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  user-select: none;
+}
+
+.lnf-price:hover {
+  background: #1b5e17;
+  transform: scale(1.07);
+  box-shadow: 0 4px 12px rgba(15, 61, 12, 0.35);
 }
 
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
-    .lnf-grid {
-        gap: 1.5rem;
-    }
+  .lnf-item {
+    width: 180px;
+  }
 
-    .lnf-item {
-        width: 180px;
-    }
+  .lnf-circle-wrap {
+    width: 180px;
+    height: 180px;
+  }
 
-    .lnf-circle-wrap {
-        width: 180px;
-        height: 180px;
-    }
+  .lnf-bg-circle,
+  .lnf-img-container {
+    width: 165px;
+    height: 165px;
+  }
 
-    .lnf-bg-circle,
-    .lnf-img-container {
-        width: 165px;
-        height: 165px;
-    }
+  .lnf-img {
+    width: 140px;
+    height: 140px;
+  }
 
-    .lnf-img {
-        width: 140px;
-        height: 140px;
-    }
-
-    /* Hide dots on smaller screens to avoid bad positioning, or adjust manually */
-    .lnf-dot {
-        display: none;
-    }
+  /* Hide dots on smaller screens to avoid bad positioning, or adjust manually */
+  .lnf-dot {
+    display: none;
+  }
 }
 
 @media (max-width: 480px) {
-    .lnf-grid {
-        gap: 1rem;
-    }
+  .lnf-grid {
+    gap: 1rem;
+  }
 
-    .lnf-item {
-        width: 150px;
-    }
+  .lnf-item {
+    width: 150px;
+  }
 }

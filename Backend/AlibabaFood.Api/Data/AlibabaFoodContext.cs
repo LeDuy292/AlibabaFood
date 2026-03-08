@@ -15,6 +15,10 @@ namespace AlibabaFood.Api.Data
         public DbSet<UserSession> UserSessions { get; set; }
         public DbSet<LoginHistory> LoginHistories { get; set; }
 
+        // Orders
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -89,6 +93,42 @@ namespace AlibabaFood.Api.Data
 
                 // Index for user login history
                 entity.HasIndex(e => new { e.UserId, e.LoginTime });
+            });
+
+            // Configure Order entity
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.HasKey(e => e.OrderId);
+                entity.Property(e => e.Status).IsRequired().HasMaxLength(50).HasDefaultValue("PENDING");
+                entity.Property(e => e.Description).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.BuyerName).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.BuyerEmail).HasMaxLength(255);
+                entity.Property(e => e.BuyerPhone).HasMaxLength(20);
+                entity.Property(e => e.BuyerAddress).HasMaxLength(500);
+                entity.Property(e => e.PaymentLinkId).HasMaxLength(500);
+                entity.Property(e => e.CheckoutUrl).HasMaxLength(1000);
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("GETDATE()");
+
+                entity.HasIndex(e => e.OrderCode).IsUnique();
+
+                entity.HasOne(o => o.User)
+                      .WithMany()
+                      .HasForeignKey(o => o.UserId)
+                      .IsRequired(false)
+                      .OnDelete(DeleteBehavior.SetNull);
+            });
+
+            // Configure OrderItem entity
+            modelBuilder.Entity<OrderItem>(entity =>
+            {
+                entity.HasKey(e => e.OrderItemId);
+                entity.Property(e => e.ItemName).IsRequired().HasMaxLength(255);
+
+                entity.HasOne(oi => oi.Order)
+                      .WithMany(o => o.OrderItems)
+                      .HasForeignKey(oi => oi.OrderId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             // Seed initial data
