@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import './HeroSection.css';
 
@@ -94,7 +95,7 @@ const HeroSection = () => {
 
                     <div className="hero-cta">
                         <span className="cta-text">Join AlibabaFood as a Partner • </span>
-                        <a href="#" className="cta-link">Click Here!</a>
+                        <Link to="/partner-register" className="cta-link">Click Here!</Link>
                     </div>
                 </div>
 

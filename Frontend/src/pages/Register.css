@@ -1,0 +1,25 @@
+/* Inherit core glassmorphism classes from Login */
+@import './Login.css';
+
+/* Register specific overrides */
+.register-glass-card {
+    max-width: 480px;
+    /* Slightly wider to fit the two-column inputs comfortably */
+}
+
+.form-row-glass {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+.form-row-glass .half-width {
+    flex: 1;
+}
+
+@media (max-width: 500px) {
+    .form-row-glass {
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+}

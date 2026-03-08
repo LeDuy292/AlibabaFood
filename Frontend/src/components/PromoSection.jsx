@@ -1,7 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './PromoSection.css';
 
 const PromoSection = () => {
+    const navigate = useNavigate();
+
     return (
         <>
             <section className="promo-section">
@@ -114,7 +117,12 @@ const PromoSection = () => {
                             Every order comes with a mystery gift — it could be a free dessert,
                             a discount voucher, or an exclusive item. Add to cart and find out!
                         </p>
-                        <button className="blind-bag-btn">🎲 Grab Your Blind Bag</button>
+                        <button
+                            className="blind-bag-btn"
+                            onClick={() => navigate('/blind-bag')}
+                        >
+                            🎲 Test Your Luck
+                        </button>
                     </div>
 
                     {/* Right: mystery bag graphic */}
