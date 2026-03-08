@@ -1,4 +1,3 @@
-
 import React, { useState, useContext, createContext } from "react";
 import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
@@ -13,6 +12,11 @@ import SupplierPost from "../components/SupplierPages/SupplierPost";
 import SupplierOrders from "../components/SupplierPages/SupplierOrders";
 import SupplierInventory from "../components/SupplierPages/SupplierInventory";
 import SupplierNotifications from "../components/SupplierPages/SupplierNotifications";
+import PartnerRegistration from "../pages/PartnerRegistration";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
+import BlindBag from "../pages/BlindBag";
+import AIConsultant from "../pages/AIConsultant";
 
 const INVENTORY_DEFAULT = [
   {
@@ -221,7 +225,12 @@ const AppRoutes = () => {
         <Route path="main-menu" element={<MainMenu />} />
         <Route path="food-detail" element={<FoodDetail />} />
         <Route path="news" element={<News />} />
+        <Route path="ai-consultant" element={<AIConsultant />} />
       </Route>
+      <Route path="/partner-register" element={<PartnerRegistration />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/blind-bag" element={<BlindBag />} />
       <Route path="/supplier" element={<SupplierLayout />}>
         <Route index element={<SupplierHomePage />} />
         <Route path="dashboard" element={<SupplierDashboardPage />} />
@@ -232,7 +241,6 @@ const AppRoutes = () => {
       </Route>
     </Routes>
   );
-
 };
 
 export default AppRoutes;
