@@ -8,4 +8,39 @@ main {
   flex: 1;
 }
 
+/* Floating supplier switch pill */
+.view-switch-pill {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  background: linear-gradient(135deg, #134e15, #2d7a2e);
+  color: #c8ddac;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(19, 78, 21, 0.35);
+  transition: all 0.3s ease;
+  letter-spacing: 0.02em;
+  animation: pillBounce 3s ease-in-out infinite;
+}
+
+.view-switch-pill:hover {
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 14px 40px rgba(19, 78, 21, 0.45);
+}
+
+@keyframes pillBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
 /* Base styles are in index.css */
