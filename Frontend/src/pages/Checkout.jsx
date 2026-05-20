@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, CreditCard } from "lucide-react";
 import toast from "react-hot-toast";
@@ -23,6 +23,20 @@ const Checkout = () => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const storedLocation = localStorage.getItem("userLocation");
+    if (storedLocation) {
+      try {
+        const { address } = JSON.parse(storedLocation);
+        if (address) {
+          setForm((prev) => ({ ...prev, buyerAddress: address }));
+        }
+      } catch (error) {
+        console.error("Error parsing userLocation", error);
+      }
+    }
+  }, []);
 
   // Redirect if cart is empty
   if (cartItems.length === 0) {

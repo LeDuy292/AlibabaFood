@@ -9,12 +9,12 @@ import Navbar from '../components/Navbar';
 import logoImg from '../assets/alibaba-logo.png.png';
 
 const PRIZES = [
-    { id: 1, name: 'Fried Chicken Combo', image: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ba?auto=format&fit=crop&q=80&w=200', color: '#f59e0b' },
-    { id: 2, name: '50% Off Voucher', image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&q=80&w=200', color: '#ec4899' },
-    { id: 3, name: 'Free Shipping', image: 'https://images.unsplash.com/photo-1528736235302-52922df5c122?auto=format&fit=crop&q=80&w=200', color: '#3b82f6' },
-    { id: 4, name: 'Seafood Pizza', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=200', color: '#ef4444' },
-    { id: 5, name: 'Large Milk Tea', image: 'https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&q=80&w=200', color: '#8b5cf6' },
-    { id: 6, name: 'Free Side Dish', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=200', color: '#10b981' },
+    { id: 1, name: 'Combo Gà Rán', image: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ba?auto=format&fit=crop&q=80&w=200', color: '#f59e0b' },
+    { id: 2, name: 'Voucher Giảm 50%', image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&q=80&w=200', color: '#ec4899' },
+    { id: 3, name: 'Miễn Phí Giao Hàng', image: 'https://images.unsplash.com/photo-1528736235302-52922df5c122?auto=format&fit=crop&q=80&w=200', color: '#3b82f6' },
+    { id: 4, name: 'Pizza Hải Sản', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=200', color: '#ef4444' },
+    { id: 5, name: 'Trà Sữa Lớn', image: 'https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&q=80&w=200', color: '#8b5cf6' },
+    { id: 6, name: 'Món Phụ Miễn Phí', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=200', color: '#10b981' },
 ];
 
 const TOTAL_BAGS = PRIZES.length;
@@ -257,9 +257,9 @@ const BlindBag = () => {
             {/* Premium UI Overlay */}
             <div className={`game-controls modern-glass-panel ${(isSpinning || hasLanded) ? 'hidden' : ''}`}>
                 <div className="glass-inner">
-                    <div className="badge-exclusive">🎁 MYSTERY REWARD</div>
-                    <h1 className="game-title">EXCLUSIVE <br /><span>CULINARY BLIND BAG</span></h1>
-                    <p className="game-subtitle">Each bag contains a perfect surprise. Discover the gift crafted just for you!</p>
+                    <div className="badge-exclusive">🎁 PHẦN THƯỞNG BÍ ẨN</div>
+                    <h1 className="game-title">ĐỘC QUYỀN <br /><span>HỘP QUÀ BÍ ẨN ẨM THỰC</span></h1>
+                    <p className="game-subtitle">Mỗi chiếc hộp chứa đựng một điều bất ngờ tuyệt vời. Hãy khám phá món quà dành riêng cho bạn!</p>
 
                     <div className="action-area">
                         <button
@@ -268,7 +268,7 @@ const BlindBag = () => {
                             disabled={isSpinning}
                         >
                             <span className="btn-content">
-                                {isSpinning ? 'SPINNING...' : 'START SPIN (19,000VND)'}
+                                {isSpinning ? 'ĐANG QUAY...' : 'BẮT ĐẦU QUAY (19.000đ)'}
                                 {!isSpinning && <span className="btn-icon">✨</span>}
                             </span>
                             <div className="btn-glow-aura"></div>
@@ -282,8 +282,8 @@ const BlindBag = () => {
                 <div className="result-modal-backdrop modern-backdrop">
                     <div className="result-modal modern-modal">
                         <div className="confetti modern-confetti">✨</div>
-                        <h2 className="gradient-text">Congratulations!</h2>
-                        <p>Luck has smiled upon you, you received:</p>
+                        <h2 className="gradient-text">Chúc Mừng Bạn!</h2>
+                        <p>Vận may đã mỉm cười với bạn, phần quà nhận được là:</p>
                         <div className="result-prize-display">
                             <img src={PRIZES[winningIndex].image} alt={PRIZES[winningIndex].name} className="result-prize-image" style={{ borderColor: PRIZES[winningIndex].color, boxShadow: `0 15px 35px ${PRIZES[winningIndex].color}55` }} />
                         </div>
@@ -291,8 +291,8 @@ const BlindBag = () => {
                             {PRIZES[winningIndex].name}
                         </div>
                         <div className="modal-actions">
-                            <button className="btn-claim modern-btn" onClick={() => navigate('/menu')}>Use Now</button>
-                            <button className="btn-play-again modern-outline-btn" onClick={handleReset}>Play Again</button>
+                            <button className="btn-claim modern-btn" onClick={() => navigate('/menu')}>Sử Dụng Ngay</button>
+                            <button className="btn-play-again modern-outline-btn" onClick={handleReset}>Chơi Lại</button>
                         </div>
                     </div>
                 </div>

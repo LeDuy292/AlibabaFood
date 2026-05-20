@@ -132,14 +132,14 @@ const AIConsultant = () => {
                     <div className="ai-chat-box">
                         <header className="ai-chat-header">
                             <div className="header-info">
-                                <h2>Alibaba Virtual Assistant</h2>
+                                <h2>Trợ lý Ảo Alibaba</h2>
                                 <div className="status-indicator">
                                     <span className="dot"></span>
                                     <span>Đang trực tuyến</span>
                                 </div>
                             </div>
                             <div className="header-actions">
-                                <button className="icon-btn" title="Clear Chat" onClick={() => setMessages([messages[0]])}>
+                                <button className="icon-btn" title="Xóa cuộc trò chuyện" onClick={() => setMessages([messages[0]])}>
                                     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none">
                                         <path d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
                                     </svg>
@@ -171,14 +171,14 @@ const AIConsultant = () => {
                                                             transition={{ delay: 0.1 * idx }}
                                                         >
                                                             <div className="rec-food-image">
-                                                                <img src={food.imageUrl || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400'} alt={food.name} />
+                                                                 <img src={food.imageUrl || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400'} alt={food.name} />
                                                             </div>
                                                             <div className="rec-food-info">
                                                                 <h4>{food.name}</h4>
                                                                 <p>{food.description}</p>
                                                                 <div className="rec-meta">
                                                                     <span className="rec-price">{food.priceRange}</span>
-                                                                    <span className="rec-match">{food.matchScore}% Match</span>
+                                                                    <span className="rec-match">Phù hợp {food.matchScore}%</span>
                                                                 </div>
                                                                 <a
                                                                     href={food.orderLink || '/menu'}

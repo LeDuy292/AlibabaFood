@@ -4,45 +4,45 @@ import './RecentNewsSection.css';
 const allNewsItems = [
     {
         id: 1,
-        title: 'Dip. Bite. Repeat.',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo, sed proin amet a vestibulum enim volutpat lacus. Volutpat arcu sit sed tortor etiam volutpat ipsum.',
+        title: 'Nhúng. Cắn. Thưởng Thức.',
+        description: 'Khám phá cách thưởng thức các món lẩu và đồ nướng nóng hổi trọn vị cùng các loại nước sốt chấm thần thánh tự làm của AlibabaFood.',
         image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=400',
-        badge: 'NEW FOOD',
+        badge: 'MÓN MỚI',
     },
     {
         id: 2,
-        title: 'Dip. Bite. Repeat.',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo, sed proin amet a vestibulum enim volutpat lacus. Volutpat arcu sit sed tortor etiam volutpat ipsum.',
+        title: 'Hương Vị Đậm Đà Khó Quên',
+        description: 'Công thức bí truyền tạo nên nước dùng lẩu thơm ngon từ các đầu bếp chuyên nghiệp, giữ nguyên hương vị tự nhiên của nguyên liệu sạch.',
         image: 'https://images.unsplash.com/photo-1619860860774-1e2e17343432?auto=format&fit=crop&q=80&w=400',
-        badge: 'NEW FOOD',
+        badge: 'BÁN CHẠY',
     },
     {
         id: 3,
-        title: 'Dip. Bite. Repeat.',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo, sed proin amet a vestibulum enim volutpat lacus. Volutpat arcu sit sed tortor etiam volutpat ipsum.',
+        title: 'Tinh Hoa Ẩm Thực Việt',
+        description: 'Hành trình tìm kiếm và tuyển chọn nguyên liệu tươi ngon từ khắp các nông trại hữu cơ Việt Nam để mang đến bữa ăn chất lượng nhất.',
         image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=400',
-        badge: 'NEW FOOD',
+        badge: 'MÓN MỚI',
     },
     {
         id: 4,
-        title: 'Fresh & Healthy Bowl.',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo, sed proin amet a vestibulum enim volutpat lacus. Volutpat arcu sit sed tortor etiam volutpat ipsum.',
+        title: 'Bát Salad Tươi & Khỏe Mạnh',
+        description: 'Sự kết hợp hoàn hảo giữa rau xanh organic, hạt dinh dưỡng và sốt mè rang giúp bạn thanh lọc cơ thể và tràn đầy năng lượng mỗi ngày.',
         image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=400',
-        badge: 'NEW FOOD',
+        badge: 'Ý TƯỞNG',
     },
     {
         id: 5,
-        title: 'Spicy Noodle Special.',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo, sed proin amet a vestibulum enim volutpat lacus. Volutpat arcu sit sed tortor etiam volutpat ipsum.',
+        title: 'Mì Cay Hải Sản Đặc Biệt',
+        description: 'Khám phá cấp độ mì cay thách thức giới hạn của các tín đồ ăn cay cùng mực, tôm và nấm tươi rói ngập tràn trong tô nước súp cay nồng.',
         image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&q=80&w=400',
         badge: 'HOT',
     },
     {
         id: 6,
-        title: 'Summer Salad Sensation.',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo, sed proin amet a vestibulum enim volutpat lacus. Volutpat arcu sit sed tortor etiam volutpat ipsum.',
+        title: 'Đại Tiệc Salad Mùa Hè',
+        description: 'Làn gió mát lành từ các loại trái cây nhiệt đới tươi mát kết hợp với sốt sữa chua dịu nhẹ thanh mát tốt cho sức khỏe làn da.',
         image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&q=80&w=400',
-        badge: 'NEW FOOD',
+        badge: 'MÓN MỚI',
     },
 ];
 
@@ -59,7 +59,7 @@ const RecentNewsSection = () => {
         <section className="recent-news-section">
             <div className="container">
                 {/* Cursive title */}
-                <h2 className="rn-section-title text-center">Recent News &amp; Updates</h2>
+                <h2 className="rn-section-title text-center">Tin Tức &amp; Cập Nhật Mới Nhất</h2>
 
                 {/* Two-column layout */}
                 <div className="rn-grid">

@@ -39,16 +39,16 @@ const PartnerRegistration = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!formData.agreeTerms) {
-            alert('Please agree to our Terms of Service.');
+            alert('Vui lòng đồng ý với Điều khoản dịch vụ của chúng tôi.');
             return;
         }
         if (!formData.certificateFile) {
-            alert('Please upload your Food Safety Certificate.');
+            alert('Vui lòng tải lên Chứng nhận Vệ sinh An toàn Thực phẩm của bạn.');
             return;
         }
         console.log('Partner Registration Data:', formData);
         // Simulate successful registration redirect to a "thank you" or back to home
-        alert('Registration Successful! Our team will contact you shortly.');
+        alert('Đăng ký thành công! Đội ngũ của chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.');
         navigate('/');
     };
 
@@ -67,8 +67,8 @@ const PartnerRegistration = () => {
                 </div>
 
                 <div className="auth-glass-header">
-                    <h2>Partner With Us</h2>
-                    <p>Grow your business with AlibabaFood's delivery network.</p>
+                    <h2>Hợp Tác Cùng Chúng Tôi</h2>
+                    <p>Phát triển kinh doanh của bạn cùng mạng lưới giao hàng của AlibabaFood.</p>
                 </div>
 
                 <form className="auth-glass-form partner-form-grid" onSubmit={handleSubmit}>
@@ -79,7 +79,7 @@ const PartnerRegistration = () => {
                             name="businessName"
                             value={formData.businessName}
                             onChange={handleChange}
-                            placeholder="Business / Restaurant Name"
+                            placeholder="Tên doanh nghiệp / Nhà hàng"
                             required
                         />
                     </div>
@@ -91,7 +91,7 @@ const PartnerRegistration = () => {
                                 name="contactPerson"
                                 value={formData.contactPerson}
                                 onChange={handleChange}
-                                placeholder="Contact Person Name"
+                                placeholder="Tên người liên hệ"
                                 required
                             />
                         </div>
@@ -101,7 +101,7 @@ const PartnerRegistration = () => {
                                 name="phone"
                                 value={formData.phone}
                                 onChange={handleChange}
-                                placeholder="Phone Number"
+                                placeholder="Số điện thoại"
                                 required
                             />
                         </div>
@@ -113,7 +113,7 @@ const PartnerRegistration = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="Business Email Address"
+                            placeholder="Địa chỉ Email doanh nghiệp"
                             required
                         />
                     </div>
@@ -124,7 +124,7 @@ const PartnerRegistration = () => {
                             name="address"
                             value={formData.address}
                             onChange={handleChange}
-                            placeholder="Full Business Address"
+                            placeholder="Địa chỉ kinh doanh đầy đủ"
                             required
                         />
                     </div>
@@ -137,15 +137,15 @@ const PartnerRegistration = () => {
                             className="glass-select"
                             required
                         >
-                            <option value="restaurant">Restaurant / Eatery</option>
-                            <option value="cafe">Cafe / Bakery</option>
-                            <option value="grocery">Grocery Store</option>
-                            <option value="other">Other</option>
+                            <option value="restaurant">Nhà hàng / Quán ăn</option>
+                            <option value="cafe">Quán Cà phê / Tiệm bánh</option>
+                            <option value="grocery">Cửa hàng tạp hóa</option>
+                            <option value="other">Khác</option>
                         </select>
                     </div>
 
                     <div className="form-group-glass full-width-field file-upload-glass">
-                        <label className="upload-label">Food Safety Certificate (*)</label>
+                        <label className="upload-label">Chứng nhận Vệ sinh An toàn Thực phẩm (*)</label>
                         <div className="file-input-wrapper">
                             <input
                                 type="file"
@@ -157,7 +157,7 @@ const PartnerRegistration = () => {
                                 required
                             />
                             <div className="file-dummy">
-                                {formData.certificateFile ? formData.certificateFile.name : 'Choose file (JPG, PNG, PDF)...'}
+                                {formData.certificateFile ? formData.certificateFile.name : 'Chọn tệp (JPG, PNG, PDF)...'}
                             </div>
                         </div>
                     </div>
@@ -172,12 +172,12 @@ const PartnerRegistration = () => {
                                 required
                             />
                             <span className="checkmark"></span>
-                            I agree to AlibabaFood's <Link to="/terms" className="forgot-password-glass">Terms of Service</Link>
+                            Tôi đồng ý với <Link to="/terms" className="forgot-password-glass">Điều khoản dịch vụ</Link> của AlibabaFood
                         </label>
                     </div>
 
                     <button type="submit" className="glass-submit-btn partner-submit-btn">
-                        Submit Application
+                        Gửi Hồ Sơ
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="btn-arrow">
                             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                             <polyline points="22 4 12 14.01 9 11.01"></polyline>
@@ -186,7 +186,7 @@ const PartnerRegistration = () => {
                 </form>
 
                 <p className="auth-footer-glass">
-                    Already a partner? <Link to="/login">Login to Dashboard</Link>
+                    Đã là đối tác? <Link to="/login">Đăng nhập Trang quản lý</Link>
                 </p>
             </div>
         </div>

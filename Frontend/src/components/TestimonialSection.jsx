@@ -5,23 +5,23 @@ const TestimonialSection = () => {
     const testimonials = [
         {
             id: 1,
-            name: "My Ly",
+            name: "Mỹ Ly",
             rating: "⭐⭐⭐⭐⭐",
-            text: `"Best food tracking and delivery app I've used. The interface is clean, and the recommendations are always spot on for my diet!"`,
+            text: `"Ứng dụng đặt đồ ăn và theo dõi tốt nhất mà tôi từng sử dụng. Giao diện sạch sẽ, các gợi ý món ăn luôn hoàn hảo cho chế độ ăn của tôi!"`,
             avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop"
         },
         {
             id: 2,
-            name: "John D.",
+            name: "Dũng Trần",
             rating: "⭐⭐⭐⭐⭐",
-            text: `"The new Blind Box feature is fantastic! It makes ordering lunch so much fun and saves me the hassle of deciding what to eat."`,
+            text: `"Tính năng Hộp Quà Bí Ẩn mới thật tuyệt vời! Nó giúp việc đặt bữa trưa trở nên thú vị hơn và giúp tôi không phải đau đầu suy nghĩ nên ăn gì."`,
             avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=50&h=50&fit=crop"
         },
         {
             id: 3,
-            name: "Sarah K.",
+            name: "Khánh Linh",
             rating: "⭐⭐⭐⭐",
-            text: `"Delivery is incredibly fast as promised. Food is always hot. The smart menu really learns what you like over time."`,
+            text: `"Giao hàng cực kỳ nhanh chóng đúng như cam kết. Đồ ăn luôn nóng hổi. Thực đơn thông minh thực sự học được sở thích của bạn theo thời gian."`,
             avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=50&h=50&fit=crop"
         }
     ];
@@ -41,7 +41,7 @@ const TestimonialSection = () => {
     return (
         <section className="testimonial-section container">
             <h2 className="testimonial-title">
-                Customers <span className="highlight">Say</span>
+                Khách Hàng <span className="highlight">Nói Gì</span>
             </h2>
 
             <div className="testimonial-grid">

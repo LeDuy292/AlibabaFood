@@ -23,15 +23,15 @@ const PartnersSection = () => {
         <section className="partners-section">
             {/* Badge */}
             <div className="partners-badge">
-                <span>🌱</span> Partners & Clients
+                <span>🌱</span> Đối Tác & Khách Hàng
             </div>
 
             {/* Title */}
             <h2 className="partners-title">
-                Our <span>Trusted</span> Partners
+                Đối Tác <span>Tin Cậy</span> Của Chúng Tôi
             </h2>
             <p className="partners-subtitle-text">
-                We are proud to work alongside the leading food brands
+                Chúng tôi tự hào khi được đồng hành cùng các thương hiệu ẩm thực hàng đầu
             </p>
 
             {/* Decorative divider */}

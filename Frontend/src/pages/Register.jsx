@@ -93,8 +93,8 @@ const Register = () => {
                 </div>
 
                 <div className="auth-glass-header">
-                    <h2>Create Account</h2>
-                    <p>Join the best food delivery service today</p>
+                    <h2>Đăng Ký Tài Khoản</h2>
+                    <p>Tham gia dịch vụ giao đồ ăn tốt nhất hôm nay</p>
                 </div>
 
                 <form className="auth-glass-form" onSubmit={handleSubmit}>
@@ -104,7 +104,7 @@ const Register = () => {
                             name="fullName"
                             value={formData.fullName}
                             onChange={handleChange}
-                            placeholder="Full Name"
+                            placeholder="Họ và tên"
                             required
                             disabled={loading}
                         />
@@ -116,7 +116,7 @@ const Register = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="Email Address"
+                            placeholder="Địa chỉ Email"
                             required
                             disabled={loading}
                         />
@@ -129,7 +129,7 @@ const Register = () => {
                                 name="password"
                                 value={formData.password}
                                 onChange={handleChange}
-                                placeholder="Password"
+                                placeholder="Mật khẩu"
                                 required
                                 disabled={loading}
                             />
@@ -140,7 +140,7 @@ const Register = () => {
                                 name="confirmPassword"
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
-                                placeholder="Confirm"
+                                placeholder="Xác nhận"
                                 required
                                 disabled={loading}
                             />
@@ -148,7 +148,7 @@ const Register = () => {
                     </div>
 
                     <button type="submit" className="glass-submit-btn" style={{ marginTop: '0.5rem' }} disabled={loading}>
-                        {loading ? 'Signing Up...' : 'Sign Up'}
+                        {loading ? 'Đang đăng ký...' : 'Đăng ký'}
                         {!loading && (
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="btn-arrow">
                                 <path d="M16 21v-2a4 4 0 0 0-4-4H5c-1.1 0-2 .9-2 2v2"></path>
@@ -161,7 +161,7 @@ const Register = () => {
                 </form>
 
                 <p className="auth-footer-glass">
-                    Already have an account? <Link to="/login">Sign in here</Link>
+                    Đã có tài khoản? <Link to="/login">Đăng nhập tại đây</Link>
                 </p>
             </div>
         </div>

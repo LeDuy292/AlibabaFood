@@ -127,6 +127,20 @@ const CartIcon = () => (
   </svg>
 );
 
+const categoryLabels = {
+  "All": "Tất cả",
+  "Fast Food": "Đồ Ăn Nhanh",
+  "Food Combo": "Combo Đồ Ăn",
+  "Cake": "Bánh Ngọt",
+  "Dry Food": "Đồ Khô"
+};
+
+const tagLabels = {
+  "Best Seller": "Best Seller",
+  "Hot": "Bán Chạy",
+  "New": "Mới"
+};
+
 const MenuListSection = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const { addToCart } = useCart();
@@ -152,10 +166,10 @@ const MenuListSection = () => {
       <div className="container">
         <div className="menu-list-header">
           <h2 className="menu-list-title">
-            Explore Our <span>Delicious</span> Menu
+            Khám Phá Thực Đơn <span>Thơm Ngon</span> Của Chúng Tôi
           </h2>
           <p className="menu-list-subtitle">
-            Freshly prepared with quality ingredients — something for everyone.
+            Được chuẩn bị tươi mới mỗi ngày với nguyên liệu chất lượng cao — hương vị phù hợp với tất cả mọi người.
           </p>
         </div>
 
@@ -167,7 +181,7 @@ const MenuListSection = () => {
               className={`category-tab ${activeCategory === cat ? "active" : ""}`}
               onClick={() => setActiveCategory(cat)}
             >
-              {cat}
+              {categoryLabels[cat] || cat}
             </button>
           ))}
         </div>
@@ -176,14 +190,14 @@ const MenuListSection = () => {
         <div className="menu-items-grid">
           {filtered.map((item) => (
             <div className="food-card" key={item.id}>
-              {item.tag && <span className="food-tag">{item.tag}</span>}
+              {item.tag && <span className="food-tag">{tagLabels[item.tag] || item.tag}</span>}
               <div className="food-img-wrapper">
                 <img src={item.img} alt={item.name} />
               </div>
               <div className="food-card-body">
                 <div className="food-card-top">
                   <h3 className="food-name">{item.name}</h3>
-                  <span className="food-category">{item.category}</span>
+                  <span className="food-category">{categoryLabels[item.category] || item.category}</span>
                 </div>
                 <div className="food-card-bottom">
                   <div className="food-rating">

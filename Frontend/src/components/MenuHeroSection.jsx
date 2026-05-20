@@ -75,8 +75,8 @@ const MenuHeroSection = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2, duration: 0.6 }}
                     >
-                        Your Menu,<br />
-                        Made Simple
+                        Thực Đơn Của Bạn,<br />
+                        Được Tối Giản
                     </motion.h1>
                     <motion.p
                         className="menu-hero-desc"
@@ -84,17 +84,17 @@ const MenuHeroSection = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4, duration: 0.6 }}
                     >
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo, sed proin amet a vestibulum enim volutpat lacus. Volutpat arcu sit sed tortor etiam volutpat ipsum.
+                        Đầy đủ các món ăn ngon lành, chất lượng cao cùng hàng loạt ưu đãi cực kỳ hấp dẫn dành riêng cho bạn mỗi ngày.
                     </motion.p>
-
+ 
                     <motion.div
                         className="order-now-container"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.6, duration: 0.5 }}
                     >
-                        <button className="btn-order-now" onClick={() => navigate('/main-menu')}>Order Now</button>
-
+                        <button className="btn-order-now" onClick={() => navigate('/main-menu')}>Đặt Hàng Ngay</button>
+ 
                         <div className="dashed-arrow">
                             <svg width="300" height="180" viewBox="0 0 300 180" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -114,7 +114,7 @@ const MenuHeroSection = () => {
                         </div>
                     </motion.div>
                 </motion.div>
-
+ 
                 {/* Right Side Cards Grid */}
                 <motion.div
                     className="menu-hero-cards-wrapper"
@@ -123,13 +123,13 @@ const MenuHeroSection = () => {
                     transition={{ delay: 0.4, duration: 1, ease: "easeOut" }}
                 >
                     <div className="cards-bg-lines"></div>
-
+ 
                     <div className="menu-hero-cards">
                         {[
-                            { img: "Fast%20Food/ecd240ce7c550720ab20af0840548a832e0f9a28%20(1).png", title: "Fast Food", delay: 0.6 },
-                            { img: "combo/385e2de92960bf175397022922e830ec3e1d9301.png", title: "Food Combo", delay: 0.8 },
-                            { img: "cake/8a777b72ca2f7832b951d3dd04ad5fcbba7a1a18.png", title: "Cake", delay: 1.0 },
-                            { img: "dry/046c4ac087f0b30ff11a791e5991d04d0b5fd557.png", title: "Dry food", delay: 1.2 }
+                            { img: "Fast%20Food/ecd240ce7c550720ab20af0840548a832e0f9a28%20(1).png", title: "Đồ Ăn Nhanh", delay: 0.6 },
+                            { img: "combo/385e2de92960bf175397022922e830ec3e1d9301.png", title: "Combo Đồ Ăn", delay: 0.8 },
+                            { img: "cake/8a777b72ca2f7832b951d3dd04ad5fcbba7a1a18.png", title: "Bánh Ngọt", delay: 1.0 },
+                            { img: "dry/046c4ac087f0b30ff11a791e5991d04d0b5fd557.png", title: "Đồ Khô", delay: 1.2 }
                         ].map((card, index) => (
                             <motion.div
                                 key={index}
@@ -143,7 +143,7 @@ const MenuHeroSection = () => {
                                     <img src={`https://69ab316afa9e210ee0efdb51.imgix.net/${card.img}`} alt={card.title} />
                                 </div>
                                 <h3>{card.title}</h3>
-                                <a href="#" className="see-more">See more</a>
+                                <a href="#" className="see-more">Xem thêm</a>
                             </motion.div>
                         ))}
                     </div>

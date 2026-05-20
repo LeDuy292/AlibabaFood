@@ -27,8 +27,8 @@ const INVENTORY_DEFAULT = [
   {
     id: 1,
     emoji: "🍗",
-    name: "Crispy Chicken Rice",
-    category: "Rice",
+    name: "Cơm Gà Giòn",
+    category: "Cơm",
     qty: 12,
     price: "55,000₫",
     expireH: 3,
@@ -37,7 +37,7 @@ const INVENTORY_DEFAULT = [
   {
     id: 2,
     emoji: "🥗",
-    name: "Caesar Salad Bowl",
+    name: "Salad Caesar",
     category: "Salad",
     qty: 4,
     price: "55,000₫",
@@ -47,8 +47,8 @@ const INVENTORY_DEFAULT = [
   {
     id: 3,
     emoji: "🧃",
-    name: "Bubble Milk Tea",
-    category: "Drinks",
+    name: "Trà Sữa Trân Châu",
+    category: "Đồ Uống",
     qty: 20,
     price: "30,000₫",
     expireH: 8,
@@ -57,8 +57,8 @@ const INVENTORY_DEFAULT = [
   {
     id: 4,
     emoji: "🍜",
-    name: "Signature Pho",
-    category: "Noodles",
+    name: "Phở Đặc Biệt",
+    category: "Mì",
     qty: 2,
     price: "65,000₫",
     expireH: 1.5,
@@ -67,8 +67,8 @@ const INVENTORY_DEFAULT = [
   {
     id: 5,
     emoji: "🥐",
-    name: "BBQ Banh Mi",
-    category: "Sandwich",
+    name: "Bánh Mì BBQ",
+    category: "Bánh Mì",
     qty: 9,
     price: "27,000₫",
     expireH: 4,
@@ -77,7 +77,7 @@ const INVENTORY_DEFAULT = [
   {
     id: 6,
     emoji: "🍣",
-    name: "Salmon Sushi Box",
+    name: "Hộp Sushi Cá Hồi",
     category: "Sushi",
     qty: 0,
     price: "85,000₫",
@@ -87,8 +87,8 @@ const INVENTORY_DEFAULT = [
   {
     id: 7,
     emoji: "☕",
-    name: "Hanoi Egg Coffee",
-    category: "Drinks",
+    name: "Cà Phê Trứng Hà Nội",
+    category: "Đồ Uống",
     qty: 7,
     price: "38,000₫",
     expireH: 6,
@@ -97,8 +97,8 @@ const INVENTORY_DEFAULT = [
   {
     id: 8,
     emoji: "🍩",
-    name: "Matcha Cream Donut",
-    category: "Dessert",
+    name: "Bánh Donut Kem Matcha",
+    category: "Tráng Miệng",
     qty: 3,
     price: "22,000₫",
     expireH: 9,
@@ -107,7 +107,7 @@ const INVENTORY_DEFAULT = [
   {
     id: 9,
     emoji: "🍱",
-    name: "Seafood Bento Box",
+    name: "Hộp Cơm Bento Hải Sản",
     category: "Bento",
     qty: 6,
     price: "72,000₫",
@@ -117,8 +117,8 @@ const INVENTORY_DEFAULT = [
   {
     id: 10,
     emoji: "🥩",
-    name: "Broken Rice with Pork",
-    category: "Rice",
+    name: "Cơm Tấm Sườn",
+    category: "Cơm",
     qty: 1,
     price: "48,000₫",
     expireH: 1,

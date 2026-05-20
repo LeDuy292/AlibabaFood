@@ -20,7 +20,7 @@ const PopularFoodSection = () => {
   const popularFoods = [
     {
       id: 1,
-      title: "Fresh Breakfast",
+      title: "Bữa Sáng Tươi Ngon",
       price: 5,
       rating: "⭐⭐⭐⭐⭐",
       image:
@@ -29,7 +29,7 @@ const PopularFoodSection = () => {
     },
     {
       id: 2,
-      title: "Egg & Avocado",
+      title: "Bơ & Trứng",
       price: 7,
       rating: "⭐⭐⭐⭐⭐",
       image:
@@ -38,7 +38,7 @@ const PopularFoodSection = () => {
     },
     {
       id: 3,
-      title: "Pancakes Heaven",
+      title: "Bánh Kếp Thiên Đường",
       price: 6,
       rating: "⭐⭐⭐⭐⭐",
       image:
@@ -47,7 +47,7 @@ const PopularFoodSection = () => {
     },
     {
       id: 4,
-      title: "Classic Toast",
+      title: "Bánh Mì Nướng Cổ Điển",
       price: 4,
       rating: "⭐⭐⭐⭐",
       image:
@@ -56,7 +56,7 @@ const PopularFoodSection = () => {
     },
     {
       id: 5,
-      title: "Vegan Salad",
+      title: "Salad Thuần Chay",
       price: 8,
       rating: "⭐⭐⭐⭐⭐",
       image:
@@ -65,7 +65,7 @@ const PopularFoodSection = () => {
     },
     {
       id: 6,
-      title: "Berry Waffles",
+      title: "Bánh Waffle Quả Mọng",
       price: 9,
       rating: "⭐⭐⭐⭐⭐",
       image:
@@ -97,7 +97,7 @@ const PopularFoodSection = () => {
 
   return (
     <section className="popular-food-section container">
-      <h2 className="testimonial-title">Most Popular Food</h2>
+      <h2 className="testimonial-title">Món Ăn Phổ Biến Nhất</h2>
 
       <div className="popular-food-grid">
         {currentItems.map((food) => (

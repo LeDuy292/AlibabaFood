@@ -69,8 +69,8 @@ const Login = () => {
                 </div>
 
                 <div className="auth-glass-header">
-                    <h2>Welcome Back</h2>
-                    <p>Login to your account to continue ordering</p>
+                    <h2>Chào mừng trở lại</h2>
+                    <p>Đăng nhập tài khoản của bạn để tiếp tục đặt hàng</p>
                 </div>
 
                 <form className="auth-glass-form" onSubmit={handleSubmit}>
@@ -81,7 +81,7 @@ const Login = () => {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="Email Address"
+                            placeholder="Địa chỉ Email"
                             required
                             disabled={loading}
                         />
@@ -94,7 +94,7 @@ const Login = () => {
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            placeholder="Password"
+                            placeholder="Mật khẩu"
                             required
                             disabled={loading}
                         />
@@ -104,13 +104,13 @@ const Login = () => {
                         <label className="checkbox-glass">
                             <input type="checkbox" />
                             <span className="checkmark"></span>
-                            Remember me
+                            Ghi nhớ đăng nhập
                         </label>
-                        <Link to="#" className="forgot-password-glass">Forgot Password?</Link>
+                        <Link to="#" className="forgot-password-glass">Quên mật khẩu?</Link>
                     </div>
 
                     <button type="submit" className="glass-submit-btn" disabled={loading}>
-                        {loading ? 'Signing In...' : 'Sign In'}
+                        {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
                         {!loading && (
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="btn-arrow">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -121,7 +121,7 @@ const Login = () => {
                 </form>
 
                 <div className="auth-divider-glass">
-                    <span>or sign in with</span>
+                    <span>hoặc đăng nhập bằng</span>
                 </div>
 
                 <div className="social-login-glass">
@@ -137,7 +137,7 @@ const Login = () => {
                 </div>
 
                 <p className="auth-footer-glass">
-                    New to AlibabaFood? <Link to="/register">Create an account</Link>
+                    Chưa có tài khoản? <Link to="/register">Đăng ký ngay</Link>
                 </p>
             </div>
         </div>

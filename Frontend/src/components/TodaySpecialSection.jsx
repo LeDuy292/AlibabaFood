@@ -4,24 +4,24 @@ import './TodaySpecialSection.css';
 const specialItems = [
     {
         id: 1,
-        title: 'Vegetarian salad',
+        title: 'Salad chay',
         image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=400',
         rating: 5,
-        price: 5,
+        price: '45,000đ',
     },
     {
         id: 2,
-        title: 'Vegetarian salad',
-        image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=400',
+        title: 'Cơm Cuộn Kimbap',
+        image: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=500&q=80',
         rating: 5,
-        price: 5,
+        price: '55,000đ',
     },
     {
         id: 3,
-        title: 'Vegetarian salad',
-        image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=400',
+        title: 'Mì Cay Hàn Quốc',
+        image: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&q=80&w=400',
         rating: 5,
-        price: 5,
+        price: '65,000đ',
     }
 ];
 
@@ -29,7 +29,7 @@ const TodaySpecialSection = () => {
     return (
         <section className="today-special-section">
             <div className="container">
-                <h2 className="section-title text-center">Today Spacial</h2>
+                <h2 className="section-title text-center">Món Đặc Biệt Hôm Nay</h2>
 
                 <div className="special-grid">
                     {specialItems.map((item) => (
@@ -38,13 +38,13 @@ const TodaySpecialSection = () => {
                             {/* Top-left: quantity & discount */}
                             <div className="card-header">
                                 <div className="card-meta">
-                                    <div className="card-qty">Quantity: 32</div>
-                                    <div className="card-discount">Discount: 10%</div>
+                                    <div className="card-qty">Số lượng: 32</div>
+                                    <div className="card-discount">Giảm giá: 10%</div>
                                 </div>
                             </div>
 
                             {/* Top-right: bell icon (absolutely positioned) */}
-                            <div className="favorite-btn" title="Notify me">
+                            <div className="favorite-btn" title="Thông báo cho tôi">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" strokeWidth="2"
                                     strokeLinecap="round" strokeLinejoin="round">
@@ -63,7 +63,7 @@ const TodaySpecialSection = () => {
                                 {/* Row 1: Name + Add to Cart */}
                                 <div className="card-name-row">
                                     <span className="card-title">{item.title}</span>
-                                    <button className="add-to-cart-btn">Add to Cart</button>
+                                    <button className="add-to-cart-btn">Thêm vào giỏ</button>
                                 </div>
 
                                 {/* Row 2: Stars + Price + Buy Now */}
@@ -75,8 +75,8 @@ const TodaySpecialSection = () => {
                                             </span>
                                         ))}
                                     </div>
-                                    <span className="card-price">${item.price}</span>
-                                    <button className="buy-now-btn">Buy Now</button>
+                                    <span className="card-price">{item.price}</span>
+                                    <button className="buy-now-btn">Mua ngay</button>
                                 </div>
                             </div>
 

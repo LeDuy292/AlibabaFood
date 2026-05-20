@@ -33,21 +33,21 @@ const MenuProductCard = ({ product }) => {
   return (
     <div className="menu-product-card">
       <div className="card-badge-container">
-        <span className="quantity-badge">Quantity: {quantity}</span>
-        <span className="discount-badge">Discount: {discount}</span>
+        <span className="quantity-badge">Số lượng: {quantity}</span>
+        <span className="discount-badge">Giảm giá: {discount}</span>
       </div>
-
+ 
       <button className="cart-shortcut-btn" onClick={handleAddToCart}>
         <ShoppingCart size={20} color="white" />
       </button>
-
+ 
       <div className="product-image-container">
         <img src={image} alt={name} className="product-image" />
       </div>
-
+ 
       <div className="product-info">
         <h3 className="product-name">{name}</h3>
-
+ 
         <div className="product-rating">
           {[...Array(5)].map((_, i) => (
             <Star
@@ -58,7 +58,7 @@ const MenuProductCard = ({ product }) => {
             />
           ))}
         </div>
-
+ 
         <div className="product-footer">
           <div className="price-tag">
             <span className="currency">$</span>
@@ -66,10 +66,10 @@ const MenuProductCard = ({ product }) => {
           </div>
           <div className="action-buttons">
             <button className="add-to-cart-btn" onClick={handleAddToCart}>
-              Add to Cart
+              Thêm vào giỏ
             </button>
             <button className="buy-now-btn" onClick={handleBuyNow}>
-              Buy Now
+              Mua ngay
             </button>
           </div>
         </div>
