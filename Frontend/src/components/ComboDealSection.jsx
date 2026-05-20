@@ -83,7 +83,7 @@ const SmileIcon = () => (
   </svg>
 );
 
-const ComboDealSection = ({ userLocation }) => {
+const ComboDealSection = ({ userLocation, onChangeLocation }) => {
   const [startIdx, setStartIdx] = useState(0);
   const { addToCart } = useCart();
   const navigate = useNavigate();
@@ -118,9 +118,8 @@ const ComboDealSection = ({ userLocation }) => {
     <section className="combo-deal-section">
       <div className="container">
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "20px" }}>
-          <div className="combo-label-pill" style={{ margin: "0 auto 10px auto" }}>Combo Deal</div>
-          <p style={{ color: "#666" }}>Giao đến: <strong>{userLocation.address || 'Vị trí hiện tại'}</strong></p>
+        <div style={{ textAlign: "left", marginBottom: "20px" }}>
+          <div className="combo-label-pill" style={{ margin: "0 0 10px 0" }}>Combo Deal</div>
         </div>
 
         {/* Cards */}

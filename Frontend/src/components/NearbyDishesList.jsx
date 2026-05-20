@@ -57,7 +57,7 @@ const StarRating = ({ count }) => (
   </div>
 );
 
-const NearbyDishesList = ({ userLocation }) => {
+const NearbyDishesList = ({ userLocation, onChangeLocation }) => {
   const [startIdx, setStartIdx] = useState(0);
   const { addToCart } = useCart();
   const navigate = useNavigate();
@@ -144,7 +144,6 @@ const NearbyDishesList = ({ userLocation }) => {
  
         <div style={{ textAlign: "center", marginBottom: "20px" }}>
           <h2 className="hot-deal-title" style={{ marginBottom: "10px" }}>📍 Món Ăn Gần Bạn Nhất</h2>
-          <p style={{ color: "#666" }}>Giao đến: <strong>{userLocation.address || 'Vị trí hiện tại'}</strong></p>
         </div>
  
         <div className="hot-deal-grid">

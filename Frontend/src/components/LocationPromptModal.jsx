@@ -1,13 +1,49 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './LocationPromptModal.css';
 import toast from 'react-hot-toast';
 
-const GOONG_API_KEY = 'abqo51xlSgpEudtvkDK4tT5zQ5J3Njsu6M9VYE12';
+const GOONG_API_KEY = import.meta.env.VITE_GOONG_API_KEY;
 
-const LocationPromptModal = ({ onLocationSet }) => {
+const LocationPromptModal = ({ onLocationSet, isOpen, onClose }) => {
   const [addressInput, setAddressInput] = useState('');
   const [isLocating, setIsLocating] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const ignoreNextAutocompleteRef = useRef(false);
+
+  useEffect(() => {
+    if (ignoreNextAutocompleteRef.current) {
+      ignoreNextAutocompleteRef.current = false;
+      return;
+    }
+
+    if (!addressInput.trim() || addressInput.length < 2) {
+      setSuggestions([]);
+      return;
+    }
+
+    const delayDebounceFn = setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        const response = await fetch(
+          `https://rsapi.goong.io/Place/Autocomplete?api_key=${GOONG_API_KEY}&input=${encodeURIComponent(addressInput)}`
+        );
+        const data = await response.json();
+        if (data && data.predictions) {
+          setSuggestions(data.predictions);
+        } else {
+          setSuggestions([]);
+        }
+      } catch (error) {
+        console.error("Goong Autocomplete error", error);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [addressInput]);
 
   useEffect(() => {
     // Check if location already exists
@@ -22,6 +58,13 @@ const LocationPromptModal = ({ onLocationSet }) => {
     }
   }, []); // Run only on mount to prevent infinite loop
 
+  // Synchronize internal visibility state with isOpen prop if passed
+  useEffect(() => {
+    if (isOpen !== undefined) {
+      setIsVisible(isOpen);
+    }
+  }, [isOpen]);
+
   const handleSaveLocation = (lat, lng, address) => {
     const locationData = { lat, lng, address };
     localStorage.setItem('userLocation', JSON.stringify(locationData));
@@ -29,6 +72,16 @@ const LocationPromptModal = ({ onLocationSet }) => {
     setIsVisible(false);
     if (onLocationSet) {
       onLocationSet(locationData);
+    }
+    if (onClose) {
+      onClose();
+    }
+  };
+
+  const handleClose = () => {
+    setIsVisible(false);
+    if (onClose) {
+      onClose();
     }
   };
 
@@ -96,11 +149,52 @@ const LocationPromptModal = ({ onLocationSet }) => {
     }
   };
 
+  const handleSelectSuggestion = async (suggestion) => {
+    setIsLocating(true);
+    setSuggestions([]);
+    ignoreNextAutocompleteRef.current = true;
+    setAddressInput(suggestion.description);
+    
+    try {
+      const response = await fetch(
+        `https://rsapi.goong.io/Place/Detail?api_key=${GOONG_API_KEY}&place_id=${suggestion.place_id}`
+      );
+      const data = await response.json();
+      
+      if (data && data.result) {
+        const { lat, lng } = data.result.geometry.location;
+        const formattedAddress = data.result.formatted_address || suggestion.description;
+        handleSaveLocation(lat, lng, formattedAddress);
+      } else {
+        toast.error("Không thể lấy chi tiết vị trí. Vui lòng thử chọn địa chỉ khác hoặc nhập thủ công.");
+      }
+    } catch (error) {
+      console.error("Place Detail error", error);
+      toast.error("Lỗi khi tìm thông tin chi tiết địa chỉ.");
+    } finally {
+      setIsLocating(false);
+    }
+  };
+
+  const handleOverlayClick = () => {
+    if (localStorage.getItem('userLocation')) {
+      handleClose();
+    }
+  };
+
   if (!isVisible) return null;
 
   return (
-    <div className="location-modal-overlay">
-      <div className="location-modal-content">
+    <div className="location-modal-overlay" onClick={handleOverlayClick}>
+      <div className="location-modal-content" onClick={(e) => e.stopPropagation()}>
+        {localStorage.getItem('userLocation') && (
+          <button className="location-modal-close-btn" onClick={handleClose} aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        )}
         <div className="location-modal-header">
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fca311" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -127,13 +221,39 @@ const LocationPromptModal = ({ onLocationSet }) => {
           </div>
 
           <form onSubmit={handleManualAddress} className="address-form">
-            <input 
-              type="text" 
-              placeholder="Nhập địa chỉ của bạn (VD: 123 Lê Lợi, Quận 1)" 
-              value={addressInput}
-              onChange={(e) => setAddressInput(e.target.value)}
-              disabled={isLocating}
-            />
+            <div className="autocomplete-wrapper">
+              <input 
+                type="text" 
+                placeholder="Nhập địa chỉ của bạn (VD: 123 Lê Lợi, Quận 1)" 
+                value={addressInput}
+                onChange={(e) => setAddressInput(e.target.value)}
+                onBlur={() => setTimeout(() => setSuggestions([]), 250)}
+                disabled={isLocating}
+                className="address-input"
+              />
+              {isSearching && (
+                <div className="autocomplete-loader">
+                  <div className="spinner"></div>
+                </div>
+              )}
+              {suggestions.length > 0 && (
+                <ul className="suggestions-dropdown">
+                  {suggestions.map((item) => (
+                    <li 
+                      key={item.place_id} 
+                      onClick={() => handleSelectSuggestion(item)}
+                      className="suggestion-item"
+                    >
+                      <svg className="suggestion-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                      </svg>
+                      <span className="suggestion-text">{item.description}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
             <button type="submit" className="submit-address-btn" disabled={isLocating}>
               Xác nhận
             </button>

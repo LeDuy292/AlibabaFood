@@ -231,8 +231,6 @@ const PromoSection = () => {
             >
               🎲 Thử Vận May
             </button>
-
-            <button className="blind-bag-btn">🎲 Nhận Blind Bag Của Bạn</button>
           </div>
 
           {/* Right: mystery bag graphic */}

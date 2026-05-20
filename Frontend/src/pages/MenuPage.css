@@ -1,0 +1,116 @@
+.menu-page {
+  padding-bottom: 60px;
+}
+
+.menu-address-bar-wrapper {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.menu-address-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(252, 163, 17, 0.25);
+  padding: 12px 24px;
+  border-radius: 50px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(252, 163, 17, 0.05);
+  width: 100%;
+  max-width: 800px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-address-bar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(252, 163, 17, 0.12);
+  border-color: rgba(252, 163, 17, 0.45);
+}
+
+.menu-address-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.address-pin-icon {
+  font-size: 1.25rem;
+  animation: pulsePin 2.2s infinite ease-in-out;
+}
+
+@keyframes pulsePin {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(252, 163, 17, 0));
+  }
+  50% {
+    transform: scale(1.2) translateY(-2px);
+    filter: drop-shadow(0 4px 6px rgba(252, 163, 17, 0.4));
+  }
+}
+
+.address-label {
+  font-weight: 700;
+  color: #14213d;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.address-value {
+  color: #4b5563;
+  font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.change-address-btn {
+  background: linear-gradient(135deg, #fca311 0%, #e5930f 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 15px rgba(252, 163, 17, 0.25);
+  white-space: nowrap;
+}
+
+.change-address-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(252, 163, 17, 0.4);
+  background: linear-gradient(135deg, #e5930f 0%, #cc820c 100%);
+}
+
+.change-address-btn:active {
+  transform: scale(0.98);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .menu-address-bar {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 18px;
+    padding: 16px;
+    gap: 12px;
+  }
+  
+  .change-address-btn {
+    justify-content: center;
+    width: 100%;
+  }
+}

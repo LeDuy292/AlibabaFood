@@ -82,7 +82,7 @@ const filterLabels = {
   "Expiring Soon": "Deal Sốc Cận Giờ"
 };
 
-const HotDealSection = ({ userLocation }) => {
+const HotDealSection = ({ userLocation, onChangeLocation }) => {
   const [activeFilter, setActiveFilter] = useState("Near-Expiry Deals");
   const [startIdx, setStartIdx] = useState(0);
   const { addToCart } = useCart();
@@ -130,7 +130,6 @@ const HotDealSection = ({ userLocation }) => {
         {/* Title */}
         <div style={{ textAlign: "center", marginBottom: "20px" }}>
           <h2 className="hot-deal-title" style={{ marginBottom: "10px" }}>ƯU ĐÃI CỰC KHỦNG</h2>
-          <p style={{ color: "#666" }}>Giao đến: <strong>{userLocation.address || 'Vị trí hiện tại'}</strong></p>
         </div>
 
         {/* Filter Tabs */}
