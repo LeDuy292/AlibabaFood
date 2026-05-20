@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import goongjs from '@goongmaps/goong-js';
 import '@goongmaps/goong-js/dist/goong-js.css';
-
-const GOONG_API_KEY = 'abqo51xlSgpEudtvkDK4tT5zQ5J3Njsu6M9VYE12';
-const GOONG_MAPTILES_KEY = 'Qg66jtx7Ut0hutEyfjUlP3xZAMRhMKow2M8gcIGL';
+const GOONG_API_KEY = import.meta.env.VITE_GOONG_API_KEY;
+const GOONG_MAPTILES_KEY = import.meta.env.VITE_GOONG_MAPTILES_KEY;
 
 const mockDishes = [
   { id: 1, name: 'Cơm gà xối mỡ (cận date 2h)', store: 'Quán Cơm A', price: '25.000đ', lat: 0, lng: 0 },
