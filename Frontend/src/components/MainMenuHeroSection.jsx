@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import './MainMenuHeroSection.css';
+import leafImg from '../assets/laSearch.png';
 
 const MainMenuHeroSection = () => {
     const glowRef = useRef(null);
@@ -62,7 +63,7 @@ const MainMenuHeroSection = () => {
                 <div className="main-menu-title-container">
                     <h1 className="main-menu-title">
                         From Our Menu
-                        <img src="https://69ab316afa9e210ee0efdb51.imgix.net/leaf/706894ca65e5d90ff4fdb8eece18e01aa3beadf2.png" alt="Decorative Leaf" className="main-menu-leaf-image" />
+                        <img src={leafImg} alt="Decorative Leaf" className="main-menu-leaf-image" />
                     </h1>
                 </div>
                 <div className="search-bar-container">

@@ -1,31 +1,36 @@
 import React, { useState } from 'react';
 import './MenuCategoriesSection.css';
+import fastFoodImg from '../assets/FastFood.png';
+import foodComboImg from '../assets/FoodCombo.png';
+import cakeImg from '../assets/Cake.png';
+import dryFoodImg from '../assets/DryFood.png';
+import readyToEatImg from '../assets/ReadytoEat.png';
 
 const categories = [
     {
         id: 1,
         name: 'Fast Food',
-        img: 'https://69ab316afa9e210ee0efdb51.imgix.net/Fast%20Food/ecd240ce7c550720ab20af0840548a832e0f9a28%20(1).png',
+        img: fastFoodImg,
     },
     {
         id: 2,
         name: 'Food Combo',
-        img: 'https://69ab316afa9e210ee0efdb51.imgix.net/combo/385e2de92960bf175397022922e830ec3e1d9301.png',
+        img: foodComboImg,
     },
     {
         id: 3,
         name: 'Cake',
-        img: 'https://69ab316afa9e210ee0efdb51.imgix.net/cake/8a777b72ca2f7832b951d3dd04ad5fcbba7a1a18.png',
+        img: cakeImg,
     },
     {
         id: 4,
         name: 'Dry food',
-        img: 'https://69ab316afa9e210ee0efdb51.imgix.net/dry/046c4ac087f0b30ff11a791e5991d04d0b5fd557.png',
+        img: dryFoodImg,
     },
     {
         id: 5,
         name: 'Ready To Eat',
-        img: 'https://69ab316afa9e210ee0efdb51.imgix.net/ready/75a82cb68ac4a721e8233d3516bacb9a698bcc2a.png',
+        img: readyToEatImg,
     },
 ];
 
