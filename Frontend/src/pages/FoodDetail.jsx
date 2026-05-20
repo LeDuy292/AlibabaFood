@@ -26,7 +26,7 @@ const FoodDetail = () => {
   };
 
   const buildCartItem = () => ({
-    name: "Com Tam",
+    name: "Cơm Tấm",
     price: 55000, // VND
     quantity,
     image:
@@ -53,42 +53,40 @@ const FoodDetail = () => {
       <div className="food-detail-main-container">
         <div className="container">
           <button className="back-button" onClick={handleBack}>
-            <ArrowLeft size={20} /> Back
+            <ArrowLeft size={20} /> Quay lại
           </button>
 
           <div className="food-detail-card">
             <div className="food-detail-image-section">
               <img
                 src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80"
-                alt="Com Tam"
+                alt="Cơm Tấm"
                 className="main-food-image"
               />
             </div>
 
             <div className="food-detail-info-section">
-              <h1 className="food-name">Com Tam</h1>
+              <h1 className="food-name">Cơm Tấm</h1>
 
               <div className="rating-row">
                 <Star size={18} fill="#FFD700" stroke="#FFD700" />
-                <span className="rating-score">4.5 - 20 Reviewers</span>
+                <span className="rating-score">4.5 - 20 Đánh giá</span>
               </div>
 
               <p className="food-description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Commodo, sed proin amet a vestibulum enim volutpat lacus.
-                Volutpat arcu sit sed tortor etiam volutpat ipsum.
+                Cơm tấm là món ăn đặc sản vô cùng nổi tiếng của Việt Nam, được chế biến từ những hạt gạo vỡ thơm dẻo cùng sườn nướng đậm đà, chả trứng và bì heo dai giòn chuẩn vị.
               </p>
               <p className="food-highlight">
-                Broken Rice with Pork Chop, Shredded Pork & Egg Meatloaf
+                Cơm tấm sườn nướng, bì và chả trứng thơm ngon đặc biệt
               </p>
 
               <div className="price-quantity-row">
                 <div className="price-col">
-                  <span className="price-label">Price</span>
-                  <h2 className="price-value">$2</h2>
+                  <span className="price-label">Giá bán</span>
+                  <h2 className="price-value">55.000đ</h2>
                 </div>
                 <div className="quantity-col">
-                  <span className="quantity-label">Quantity</span>
+                  <span className="quantity-label">Số lượng</span>
                   <div className="quantity-controls">
                     <button
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
@@ -105,22 +103,22 @@ const FoodDetail = () => {
 
               <div className="options-row">
                 <div className="add-ons-col">
-                  <h3 className="section-title">Add Ons</h3>
+                  <h3 className="section-title">Món Ăn Kèm</h3>
                   <div className="add-on-list">
                     {[
-                      "Extra Grilled Pork Chop",
-                      "Shredded Pork Skin",
-                      "Steamed Egg Meatloaf",
-                      "Fried Egg",
+                      { en: "Extra Grilled Pork Chop", vi: "Thêm Sườn Nướng" },
+                      { en: "Shredded Pork Skin", vi: "Thêm Bì" },
+                      { en: "Steamed Egg Meatloaf", vi: "Thêm Chả Trứng" },
+                      { en: "Fried Egg", vi: "Thêm Trứng Ốp La" },
                     ].map((addon, idx) => (
                       <div key={idx} className="add-on-item">
                         <div className="add-on-img-placeholder"></div>
-                        <span className="add-on-name">{addon}</span>
+                        <span className="add-on-name">{addon.vi}</span>
                         <input
                           type="checkbox"
                           className="add-on-checkbox"
-                          checked={selectedAddOns[addon] || false}
-                          onChange={() => handleAddOnChange(addon)}
+                          checked={selectedAddOns[addon.en] || false}
+                          onChange={() => handleAddOnChange(addon.en)}
                         />
                       </div>
                     ))}
@@ -128,10 +126,10 @@ const FoodDetail = () => {
                 </div>
 
                 <div className="notes-col">
-                  <h3 className="section-title">Notes</h3>
+                  <h3 className="section-title">Ghi Chú</h3>
                   <textarea
                     className="notes-textarea"
-                    placeholder="Enter your note"
+                    placeholder="Nhập ghi chú của bạn"
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                   ></textarea>
@@ -140,13 +138,13 @@ const FoodDetail = () => {
                       className="add-to-cart-outline-btn"
                       onClick={handleAddToCart}
                     >
-                      Add to Cart
+                      Thêm vào giỏ
                     </button>
                     <button
                       className="order-now-solid-btn"
                       onClick={handleOrderNow}
                     >
-                      ORDER NOW
+                      MUA NGAY
                     </button>
                   </div>
                 </div>

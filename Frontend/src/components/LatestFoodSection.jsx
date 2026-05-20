@@ -54,7 +54,7 @@ const LatestFoodSection = () => {
   return (
     <section className="lnf-section">
       <div className="lnf-container">
-        <h2 className="lnf-title">Latest New Food</h2>
+        <h2 className="lnf-title">Món Ăn Mới Nhất</h2>
         <div className="lnf-grid">
           {latestFoods.map((food) => (
             <div className="lnf-item" key={food.id}>

@@ -6,7 +6,7 @@ import { useCart } from "../contexts/CartContext";
 
 const promoItems = [
   {
-    name: "Nodels",
+    name: "Mì sợi",
     price: 35000,
     image:
       "https://images.unsplash.com/photo-1552611052-33e04de081de?auto=format&fit=crop&q=80&w=400",
@@ -18,7 +18,7 @@ const promoItems = [
       "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&q=80&w=400",
   },
   {
-    name: "35% Offer Pizza",
+    name: "Pizza giảm giá 35%",
     price: 50000,
     image:
       "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=400",
@@ -45,9 +45,9 @@ const PromoSection = () => {
         <div className="container promo-container">
           <div className="promo-header">
             <h2>
-              Get a <span className="highlight-text">Voucher</span> and
+              Nhận ngay <span className="highlight-text">Voucher</span> và
               <br />
-              enjoy your favorite meal!
+              thưởng thức món ăn yêu thích!
             </h2>
           </div>
 
@@ -55,11 +55,11 @@ const PromoSection = () => {
             {/* Left Promo - Testy Burger */}
             <div className="promo-card testy-burger">
               <div className="promo-content">
-                <span className="promo-subtitle">FRIDAY SPECIAL</span>
-                <h3 className="promo-title">TESTY BURGER</h3>
+                <span className="promo-subtitle">ĐẶC BIỆT THỨ SÁU</span>
+                <h3 className="promo-title">BURGER THƠM NGON</h3>
                 <div className="discount-badge">
                   <span className="discount-value">60%</span>
-                  <span className="discount-lbl">OFF</span>
+                  <span className="discount-lbl">GIẢM</span>
                 </div>
               </div>
               <img
@@ -74,14 +74,14 @@ const PromoSection = () => {
               {/* Nodels Promo */}
               <div className="promo-card nodels-promo">
                 <div className="promo-content">
-                  <span className="promo-subtitle">TODAY SPECIAL</span>
-                  <h3 className="promo-title">Nodels</h3>
-                  <p className="promo-discount">60% OFF</p>
+                  <span className="promo-subtitle">ĐẶC BIỆT HÔM NAY</span>
+                  <h3 className="promo-title">Mì sợi</h3>
+                  <p className="promo-discount">Giảm 60%</p>
                   <button
                     className="add-to-cart-btn-small"
                     onClick={() => handleAddToCart(promoItems[0])}
                   >
-                    Add To Cart
+                    Thêm vào giỏ
                   </button>
                 </div>
                 <img
@@ -94,13 +94,13 @@ const PromoSection = () => {
               {/* Burger Promo Right */}
               <div className="promo-card burger-promo">
                 <div className="promo-content">
-                  <span className="promo-subtitle">MIGHTON</span>
+                  <span className="promo-subtitle">MÓN NGON MỖI NGÀY</span>
                   <h3 className="promo-title">BURGER</h3>
                   <button
                     className="add-to-cart-btn-small"
                     onClick={() => handleAddToCart(promoItems[1])}
                   >
-                    Add To Cart
+                    Thêm vào giỏ
                   </button>
                 </div>
                 <img
@@ -114,14 +114,14 @@ const PromoSection = () => {
             {/* Bottom Promo - 35% Offer */}
             <div className="promo-card limited-offer">
               <div className="promo-content">
-                <span className="promo-subtitle">FOR LIMITED TIME ONLY</span>
-                <h3 className="promo-title">35% Offer</h3>
+                <span className="promo-subtitle">CHỈ TRONG THỜI GIAN CÓ HẠN</span>
+                <h3 className="promo-title">Ưu đãi 35%</h3>
               </div>
               <button
                 className="add-to-cart-btn-small"
                 onClick={() => handleAddToCart(promoItems[2])}
               >
-                Add To Cart
+                Thêm vào giỏ
               </button>
               <img
                 src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=400"
@@ -151,8 +151,8 @@ const PromoSection = () => {
                 </svg>
               </div>
               <div className="feature-text">
-                <h4>Discount Voucher</h4>
-                <p>Lorem ipsum dolor sit amet consectetur.</p>
+                <h4>Phiếu Giảm Giá</h4>
+                <p>Trải nghiệm ẩm thực tiện lợi và tiết kiệm nhất.</p>
               </div>
             </div>
 
@@ -175,8 +175,8 @@ const PromoSection = () => {
                 </svg>
               </div>
               <div className="feature-text">
-                <h4>Fresh Healthy Food</h4>
-                <p>Lorem ipsum dolor sit amet consectetur.</p>
+                <h4>Thực Phẩm Tươi Sạch</h4>
+                <p>Nguồn nguyên liệu tươi xanh và an toàn cho sức khỏe.</p>
               </div>
             </div>
 
@@ -203,8 +203,8 @@ const PromoSection = () => {
                 </svg>
               </div>
               <div className="feature-text">
-                <h4>Fast Serve On Table</h4>
-                <p>Lorem ipsum dolor sit amet consectetur.</p>
+                <h4>Phục Vụ Nhanh Tại Bàn</h4>
+                <p>Đội ngũ nhân viên phục vụ tận tình, chu đáo và nhanh chóng.</p>
               </div>
             </div>
           </div>
@@ -216,25 +216,23 @@ const PromoSection = () => {
         <div className="container blind-bag-container">
           {/* Left: text */}
           <div className="blind-bag-text">
-            <p className="blind-bag-tag">🎁 Limited Surprise</p>
+            <p className="blind-bag-tag">🎁 Quà Surprise Giới Hạn</p>
             <h2 className="blind-bag-title">
-              Get a <span className="blind-bag-highlight">blind bag</span> and
+              Nhận ngay <span className="blind-bag-highlight">Blind Bag</span> và
               <br />
-              discover your surprise item!
+              khám phá phần quà bất ngờ!
             </h2>
             <p className="blind-bag-desc">
-              Every order comes with a mystery gift — it could be a free
-              dessert, a discount voucher, or an exclusive item. Add to cart and
-              find out!
+              Mỗi đơn hàng đi kèm một món quà bí ẩn - có thể là món tráng miệng miễn phí, voucher giảm giá hoặc một món độc quyền. Hãy thêm vào giỏ và khám phá ngay!
             </p>
             <button
               className="blind-bag-btn"
               onClick={() => navigate("/blind-bag")}
             >
-              🎲 Test Your Luck
+              🎲 Thử Vận May
             </button>
 
-            <button className="blind-bag-btn">🎲 Grab Your Blind Bag</button>
+            <button className="blind-bag-btn">🎲 Nhận Blind Bag Của Bạn</button>
           </div>
 
           {/* Right: mystery bag graphic */}

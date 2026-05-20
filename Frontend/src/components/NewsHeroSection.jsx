@@ -72,14 +72,14 @@ const NewsHeroSection = () => {
                 {/* Left: Text content */}
                 <div className="news-hero-content">
                     <h1 className="news-hero-title">
-                        <div className="title-line-1">Your Food,</div>
-                        <div className="title-line-2">Starts Here</div>
+                        <div className="title-line-1">Ẩm Thực Sạch,</div>
+                        <div className="title-line-2">Bắt Đầu Tại Đây</div>
                     </h1>
                     <p className="news-hero-subtitle">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Commodo, sed proin amet a vestibulum enim volutpat lacus. Volutpat arcu sit sed tortor etiam volutpat ipsum.
+                        Chào mừng bạn đến với chuyên mục Tin Tức của AlibabaFood! Nơi cập nhật liên tục các xu hướng ẩm thực thời thượng, câu chuyện ẩm thực thú vị, các mẹo ăn uống lành mạnh và thông tin ưu đãi hấp dẫn dành riêng cho bạn.
                     </p>
                     <div className="news-hero-buttons">
-                        <button className="btn-order-now">Order Now</button>
+                        <button className="btn-order-now">Khám Phá Menu</button>
                     </div>
                 </div>
 
@@ -90,7 +90,7 @@ const NewsHeroSection = () => {
 
                     {/* "Hot spicy Food" speech bubble badge */}
                     <div className="promo-badge">
-                        Hot spicy Food <span className="chili-icon">🌶️</span>
+                        Món Ngon Nóng Hổi <span className="chili-icon">🌶️</span>
                     </div>
 
                     {/* Main cutout person image (overflows above the circle) */}
@@ -105,11 +105,11 @@ const NewsHeroSection = () => {
                         <div className="floating-card">
                             <img
                                 src="https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&q=80&w=200"
-                                alt="Spicy Noodles"
+                                alt="Mì Cay Hải Sản"
                                 className="card-food-img"
                             />
                             <div className="card-info">
-                                <span className="card-title">Spicy noodles</span>
+                                <span className="card-title">Mì Cay Hải Sản</span>
                                 <div className="card-stars">
                                     <span className="star-filled">⭐</span>
                                     <span className="star-filled">⭐</span>
@@ -117,18 +117,18 @@ const NewsHeroSection = () => {
                                     <span className="star-empty">☆</span>
                                     <span className="star-empty">☆</span>
                                 </div>
-                                <span className="card-price"><span className="currency">$</span>18.00</span>
+                                <span className="card-price">55,000đ</span>
                             </div>
                         </div>
 
                         <div className="floating-card">
                             <img
                                 src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=200"
-                                alt="Vegetarian Salad"
+                                alt="Salad Trộn Rau Củ"
                                 className="card-food-img"
                             />
                             <div className="card-info">
-                                <span className="card-title">Vegetarian salad</span>
+                                <span className="card-title">Salad Trộn Rau Củ</span>
                                 <div className="card-stars">
                                     <span className="star-filled">⭐</span>
                                     <span className="star-filled">⭐</span>
@@ -136,7 +136,7 @@ const NewsHeroSection = () => {
                                     <span className="star-filled">⭐</span>
                                     <span className="star-empty">☆</span>
                                 </div>
-                                <span className="card-price"><span className="currency">$</span>23.00</span>
+                                <span className="card-price">45,000đ</span>
                             </div>
                         </div>
                     </div>

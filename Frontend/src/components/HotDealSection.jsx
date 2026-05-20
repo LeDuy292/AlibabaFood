@@ -16,7 +16,7 @@ const filters = [
 const deals = [
   {
     id: 1,
-    name: "Breakfast food",
+    name: "Bữa Sáng Dinh Dưỡng",
     price: "55,000đ",
     rating: 5,
     img: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80",
@@ -24,7 +24,7 @@ const deals = [
   },
   {
     id: 2,
-    name: "Bibimbap Special",
+    name: "Cơm Trộn Bibimbap Đặc Biệt",
     price: "75,000đ",
     rating: 5,
     img: "https://images.unsplash.com/photo-1590301157890-4810ed352733?auto=format&fit=crop&w=600&q=80",
@@ -32,7 +32,7 @@ const deals = [
   },
   {
     id: 3,
-    name: "Korean Bulgogi",
+    name: "Thịt Nướng Bulgogi Hàn Quốc",
     price: "89,000đ",
     rating: 4,
     img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80",
@@ -40,7 +40,7 @@ const deals = [
   },
   {
     id: 4,
-    name: "Grilled Salmon",
+    name: "Cá Hồi Nướng Sốt Teriyaki",
     price: "120,000đ",
     rating: 5,
     img: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=600&q=80",
@@ -48,7 +48,7 @@ const deals = [
   },
   {
     id: 5,
-    name: "Pasta Carbonara",
+    name: "Mì Ý Sốt Kem Carbonara",
     price: "65,000đ",
     rating: 4,
     img: "https://images.unsplash.com/photo-1612874742237-6526221588e3?auto=format&fit=crop&w=600&q=80",
@@ -75,7 +75,14 @@ const StarRating = ({ count }) => (
   </div>
 );
 
-const HotDealSection = () => {
+const filterLabels = {
+  "Near-Expiry Deals": "Ưu Đãi Giờ Vàng",
+  "Best Seller": "Best Seller",
+  "Best Price": "Giá Tốt Nhất",
+  "Expiring Soon": "Deal Sốc Cận Giờ"
+};
+
+const HotDealSection = ({ userLocation }) => {
   const [activeFilter, setActiveFilter] = useState("Near-Expiry Deals");
   const [startIdx, setStartIdx] = useState(0);
   const { addToCart } = useCart();
@@ -115,11 +122,16 @@ const HotDealSection = () => {
   const canPrev = startIdx > 0;
   const canNext = startIdx < filtered.length - CARDS_PER_VIEW;
 
+  if (!userLocation) return null;
+
   return (
     <section className="hot-deal-section">
       <div className="container">
         {/* Title */}
-        <h2 className="hot-deal-title">HOT Deal Food</h2>
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>
+          <h2 className="hot-deal-title" style={{ marginBottom: "10px" }}>ƯU ĐÃI CỰC KHỦNG</h2>
+          <p style={{ color: "#666" }}>Giao đến: <strong>{userLocation.address || 'Vị trí hiện tại'}</strong></p>
+        </div>
 
         {/* Filter Tabs */}
         <div className="hot-deal-filters">
@@ -132,7 +144,7 @@ const HotDealSection = () => {
                 setStartIdx(0);
               }}
             >
-              {f}
+              {filterLabels[f] || f}
             </button>
           ))}
         </div>
@@ -152,7 +164,7 @@ const HotDealSection = () => {
                       className="add-cart-btn"
                       onClick={() => handleAddToCart(deal)}
                     >
-                      Add to Cart
+                      Thêm vào giỏ
                     </button>
                   </div>
                   <div className="deal-card-bottom">
@@ -163,7 +175,7 @@ const HotDealSection = () => {
                         className="buy-now-btn"
                         onClick={() => handleBuyNow(deal)}
                       >
-                        Buy Now
+                        Mua ngay
                       </button>
                     </div>
                   </div>
@@ -171,7 +183,7 @@ const HotDealSection = () => {
               </div>
             ))
           ) : (
-            <p className="no-items">No items in this category.</p>
+            <p className="no-items">Không có sản phẩm nào trong danh mục này.</p>
           )}
         </div>
 

@@ -83,7 +83,7 @@ const SmileIcon = () => (
   </svg>
 );
 
-const ComboDealSection = () => {
+const ComboDealSection = ({ userLocation }) => {
   const [startIdx, setStartIdx] = useState(0);
   const { addToCart } = useCart();
   const navigate = useNavigate();
@@ -112,11 +112,16 @@ const ComboDealSection = () => {
   const canPrev = startIdx > 0;
   const canNext = startIdx < combos.length - CARDS_PER_VIEW;
 
+  if (!userLocation) return null;
+
   return (
     <section className="combo-deal-section">
       <div className="container">
-        {/* Pill label */}
-        <div className="combo-label-pill">Combo Deal</div>
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: "20px" }}>
+          <div className="combo-label-pill" style={{ margin: "0 auto 10px auto" }}>Combo Deal</div>
+          <p style={{ color: "#666" }}>Giao đến: <strong>{userLocation.address || 'Vị trí hiện tại'}</strong></p>
+        </div>
 
         {/* Cards */}
         <div className="combo-grid">
@@ -140,7 +145,7 @@ const ComboDealSection = () => {
                     className="combo-add-cart-btn"
                     onClick={() => handleAddToCart(item)}
                   >
-                    Add to Cart
+                    Thêm vào giỏ
                   </button>
                 </div>
                 <div className="combo-card-bottom">
@@ -151,7 +156,7 @@ const ComboDealSection = () => {
                       className="combo-buy-now-btn"
                       onClick={() => handleBuyNow(item)}
                     >
-                      Buy Now
+                      Mua ngay
                     </button>
                   </div>
                 </div>

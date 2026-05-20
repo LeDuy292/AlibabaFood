@@ -5,10 +5,14 @@ import "./FeatureSlider.css";
 const FeatureSlider = () => {
   const navigate = useNavigate();
 
-  const handleExploreClick = (e, title) => {
+  const handleExploreClick = (e, id) => {
     e.preventDefault();
-    if (title === "Mystery Blind Box") {
+    if (id === 0) {
       navigate("/blind-bag");
+    } else if (id === 1) {
+      navigate("/ai-consultant");
+    } else {
+      navigate("/main-menu");
     }
   };
 
@@ -16,30 +20,30 @@ const FeatureSlider = () => {
   const features = [
     {
       id: 0,
-      title: "Mystery Blind Box",
-      subtitle: "Test Your Luck",
+      title: "Hộp Quà Bí Ẩn",
+      subtitle: "Thử Vận May Của Bạn",
       description:
-        "Get a surprise meal every day at a super bargain price. You won't know what it is until it arrives, but it's guaranteed to be delicious!",
+        "Nhận một món ăn bất ngờ mỗi ngày với mức giá cực kỳ ưu đãi. Bạn sẽ không biết đó là món gì cho đến khi nhận hàng, nhưng chúng tôi đảm bảo nó cực kỳ ngon!",
       image:
         "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80&w=800",
       icon: "🎁",
     },
     {
       id: 1,
-      title: "Smart AI Menu",
-      subtitle: "Intelligent Ordering",
+      title: "Thực Đơn AI Thông Minh",
+      subtitle: "Đặt Món Thông Minh",
       description:
-        "Personalized daily meal recommendations powered by AI, analyzing your unique eating habits and taste preferences.",
+        "Gợi ý món ăn hàng ngày được cá nhân hóa bởi trí tuệ nhân tạo, phân tích thói quen ăn uống và khẩu vị độc đáo của bạn.",
       image:
         "https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?auto=format&fit=crop&q=80&w=800", // Tech/Robotic or highly smart looking food
       icon: "🤖",
     },
     {
       id: 2,
-      title: "Lightning Delivery",
-      subtitle: "Flash Speed",
+      title: "Giao Hàng Thần Tốc",
+      subtitle: "Tốc Độ Ánh Sáng",
       description:
-        "Hot food delivered right to your door in under 30 minutes, no matter the time of day or weather conditions.",
+        "Đồ ăn nóng hổi được giao tận cửa nhà bạn chỉ dưới 30 phút, bất kể mọi khung giờ trong ngày hay mọi điều kiện thời tiết.",
       image:
         "https://images.unsplash.com/photo-1526367790999-0150786686a2?auto=format&fit=crop&q=80&w=800", // Fast delivery or glowing box
       icon: "⚡",
@@ -72,8 +76,8 @@ const FeatureSlider = () => {
   return (
     <section className="feature-slider-section">
       <div className="slider-header">
-        <h2>Premium Experience</h2>
-        <p>Discover the outstanding features exclusive to AlibabaFood</p>
+        <h2>Trải Nghiệm Cao Cấp</h2>
+        <p>Khám phá những tính năng vượt trội độc quyền tại AlibabaFood</p>
       </div>
 
       <div className="slider-container">
@@ -101,9 +105,9 @@ const FeatureSlider = () => {
               <a
                 href="#"
                 className="explore-btn"
-                onClick={(e) => handleExploreClick(e, feature.title)}
+                onClick={(e) => handleExploreClick(e, feature.id)}
               >
-                Explore
+                Khám phá
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"

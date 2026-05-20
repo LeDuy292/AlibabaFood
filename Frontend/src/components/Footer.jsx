@@ -12,10 +12,10 @@ const Footer = () => {
                     <div className="footer-col col-newsletter">
                         <img src={logoImg} alt="ALIBABA FOOD Logo" className="footer-logo-img" style={{ height: '60px', objectFit: 'contain', marginBottom: '1rem' }} />
                         <p className="footer-desc">
-                            Subscribe our newsletter and get discount 25%off
+                            Đăng ký nhận tin tức để nhận ưu đãi giảm 25%
                         </p>
                         <div className="newsletter-form">
-                            <input type="email" placeholder="Enter Your Email" />
+                            <input type="email" placeholder="Nhập email của bạn" />
                             <button type="button"><i className="send-icon">&#10148;</i></button> {/* Arrow icon placeholder */}
                         </div>
                         <div className="social-links">
@@ -45,30 +45,30 @@ const Footer = () => {
                             </a>
                         </div>
                     </div>
-
+ 
                     {/* Column 2: Contact us */}
                     <div className="footer-col col-contact">
-                        <h3 className="footer-title">Contact us</h3>
+                        <h3 className="footer-title">Liên hệ</h3>
                         <ul className="contact-list">
                             <li><i className="icon location-icon"></i> Kolkata India, 3rd Floor, Office 45</li>
                             <li><i className="icon phone-icon"></i> 00985 - 98859986</li>
                             <li><i className="icon email-icon"></i> M.AlyaQout@4house.Co</li>
-                            <li><i className="icon clock-icon"></i> Sun - Sat / 10:00 AM - 8:00 PM</li>
+                            <li><i className="icon clock-icon"></i> T2 - CN / 10:00 AM - 8:00 PM</li>
                         </ul>
                     </div>
-
+ 
                     {/* Column 3: Links */}
                     <div className="footer-col col-links">
-                        <h3 className="footer-title">Links</h3>
+                        <h3 className="footer-title">Liên kết</h3>
                         <ul className="links-list">
-                            <li><a href="#">About us</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Our Menu</a></li>
-                            <li><a href="#">Team</a></li>
-                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Giới thiệu</a></li>
+                            <li><a href="#">Liên hệ</a></li>
+                            <li><a href="#">Thực đơn</a></li>
+                            <li><a href="#">Đội ngũ</a></li>
+                            <li><a href="#">Hỏi đáp</a></li>
                         </ul>
                     </div>
-
+ 
                     {/* Column 4: Instagram/Photo Grid */}
                     <div className="footer-col col-gallery">
                         <div className="gallery-grid">
@@ -81,20 +81,20 @@ const Footer = () => {
                         </div>
                     </div>
                 </div>
-
+ 
                 {/* Decorative elements - absolute positioned using CSS */}
                 <div className="leaf-decor left"></div>
                 <div className="broccoli-decor right"></div>
             </div>
-
+ 
             {/* Bottom Bar */}
             <div className="footer-bottom">
                 <div className="container bottom-bar-flex">
-                    <p className="copyright">Copyright &copy; 2024 Shawon3 Themes. All rights reserved</p>
+                    <p className="copyright">Copyright &copy; 2024 Shawon3 Themes. Bảo lưu mọi quyền.</p>
                     <div className="bottom-links">
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Term of Use</a>
-                        <a href="#">Partner</a>
+                        <a href="#">Chính sách bảo mật</a>
+                        <a href="#">Điều khoản sử dụng</a>
+                        <a href="#">Đối tác</a>
                     </div>
                 </div>
             </div>

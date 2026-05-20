@@ -109,7 +109,7 @@ const Navbar = () => {
         <ul className="navbar-links">
           <li>
             <Link to="/" className={location.pathname === "/" ? "active" : ""}>
-              HOME
+              TRANG CHỦ
             </Link>
           </li>
           <li>
@@ -125,7 +125,7 @@ const Navbar = () => {
               to="/news"
               className={location.pathname === "/news" ? "active" : ""}
             >
-              NEWS
+              TIN TỨC
             </Link>
           </li>
           <li>
@@ -133,7 +133,7 @@ const Navbar = () => {
               to="/ai-consultant"
               className={location.pathname === "/ai-consultant" ? "active" : ""}
             >
-              FOOD CONSULTANT
+              TƯ VẤN MÓN ĂN
             </Link>
           </li>
           <li>
@@ -141,7 +141,7 @@ const Navbar = () => {
               to="/about"
               className={location.pathname === "/about" ? "active" : ""}
             >
-              ABOUT US
+              GIỚI THIỆU
             </Link>
           </li>
         </ul>
@@ -163,7 +163,7 @@ const Navbar = () => {
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <input type="text" placeholder="Search" />
+            <input type="text" placeholder="Tìm kiếm" />
           </div>
 
           <div className="user-profile-container" ref={dropdownRef}>

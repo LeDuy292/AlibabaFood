@@ -102,17 +102,17 @@ const HeroSection = () => {
             <div className="title-line-1">Eat Smart</div>
             <div className="title-line-2">Save More</div>
           </h1>
-          <p className="hero-subtitle">JUST COME TO ORDER & FOODIED</p>
+          <p className="hero-subtitle">ĐẶT MÓN VÀ THƯỞNG THỨC NGAY</p>
 
           <div className="hero-buttons">
-            <button className="btn-primary">ORDER NOW</button>
-            <button className="btn-secondary">EXPLORE MORE</button>
+            <button className="btn-primary">ĐẶT HÀNG NGAY</button>
+            <button className="btn-secondary">KHÁM PHÁ THÊM</button>
           </div>
 
           <div className="hero-cta">
-            <span className="cta-text">Join AlibabaFood as a Partner • </span>
+            <span className="cta-text">Trở thành Đối tác của AlibabaFood • </span>
             <Link to="/partner-register" className="cta-link">
-              Click Here!
+              Đăng Ký Tại Đây!
             </Link>
           </div>
         </div>
