@@ -1,10 +1,11 @@
 import React from 'react';
+import mapImg from '../assets/Map.png';
 
 const HowItWorksSection = () => {
     return (
         <section className="how-it-works-section">
             <div className="container">
-                <img src="https://69ab316afa9e210ee0efdb51.imgix.net/map/Group%201000002258.png" alt="Map" />
+                <img src={mapImg} alt="Map" />
             </div>
         </section>
     );

@@ -2,6 +2,10 @@ import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import './MenuHeroSection.css';
+import fastFoodImg from '../assets/FastFood.png';
+import foodComboImg from '../assets/FoodCombo.png';
+import cakeImg from '../assets/Cake.png';
+import dryFoodImg from '../assets/DryFood.png';
 
 const MenuHeroSection = () => {
     const navigate = useNavigate();
@@ -126,10 +130,10 @@ const MenuHeroSection = () => {
  
                     <div className="menu-hero-cards">
                         {[
-                            { img: "Fast%20Food/ecd240ce7c550720ab20af0840548a832e0f9a28%20(1).png", title: "Đồ Ăn Nhanh", delay: 0.6 },
-                            { img: "combo/385e2de92960bf175397022922e830ec3e1d9301.png", title: "Combo Đồ Ăn", delay: 0.8 },
-                            { img: "cake/8a777b72ca2f7832b951d3dd04ad5fcbba7a1a18.png", title: "Bánh Ngọt", delay: 1.0 },
-                            { img: "dry/046c4ac087f0b30ff11a791e5991d04d0b5fd557.png", title: "Đồ Khô", delay: 1.2 }
+                            { img: fastFoodImg, title: "Đồ Ăn Nhanh", delay: 0.6 },
+                            { img: foodComboImg, title: "Combo Đồ Ăn", delay: 0.8 },
+                            { img: cakeImg, title: "Bánh Ngọt", delay: 1.0 },
+                            { img: dryFoodImg, title: "Đồ Khô", delay: 1.2 }
                         ].map((card, index) => (
                             <motion.div
                                 key={index}
@@ -140,7 +144,7 @@ const MenuHeroSection = () => {
                                 whileHover={{ y: -10, transition: { duration: 0.3 } }}
                             >
                                 <div className="menu-card-img-wrapper">
-                                    <img src={`https://69ab316afa9e210ee0efdb51.imgix.net/${card.img}`} alt={card.title} />
+                                    <img src={card.img} alt={card.title} />
                                 </div>
                                 <h3>{card.title}</h3>
                                 <a href="#" className="see-more">Xem thêm</a>

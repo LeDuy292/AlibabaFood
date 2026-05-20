@@ -4,6 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import '../components/HotDealSection.css'; // Re-use the styles
 import './NearbyDishesList.css';
+import chickenRiceImg from '../assets/FoodCombo.png';
+import banhMiImg from '../assets/FastFood.png';
+import milkTeaImg from '../assets/Cake.png';
+import saladImg from '../assets/DryFood.png';
 
 const parseVND = (str) => parseInt(String(str).replace(/[^0-9]/g, "")) || 0;
 
@@ -13,28 +17,28 @@ const mockNearbyProducts = [
     name: "Cơm gà xối mỡ (cận date 2h)",
     price: "25,000đ",
     rating: 5,
-    img: "https://69ab316afa9e210ee0efdb51.imgix.net/combo/385e2de92960bf175397022922e830ec3e1d9301.png"
+    img: chickenRiceImg
   },
   {
     id: 102,
     name: "Bánh mì thịt nướng (cận 4h)",
     price: "15,000đ",
     rating: 4,
-    img: "https://69ab316afa9e210ee0efdb51.imgix.net/combo/7288f57270d47346fb655f0ba4b8edc4e7fbff3a.png"
+    img: banhMiImg
   },
   {
     id: 103,
     name: "Trà sữa trân châu (cận 1h)",
     price: "20,000đ",
     rating: 4,
-    img: "https://69ab316afa9e210ee0efdb51.imgix.net/combo/171f11ed73ce02b9e403d52cc6114e9a8f27cfc5.png"
+    img: milkTeaImg
   },
   {
     id: 104,
     name: "Salad gà quay (cận 3h)",
     price: "30,000đ",
     rating: 5,
-    img: "https://69ab316afa9e210ee0efdb51.imgix.net/combo/1e8ba846430bde1bdebfb7cfdb261e479a29e472.png"
+    img: saladImg
   }
 ];
 
