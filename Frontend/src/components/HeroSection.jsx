@@ -1,14 +1,27 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import "./HeroSection.css";
 import camImg from "../assets/cam.png";
 import laImg from "../assets/la.png";
+import slide1 from "../assets/hero-slider-1.jpg";
+import slide2 from "../assets/hero-slider-2.jpg";
+import slide3 from "../assets/hero-slider-3.jpg";
 
 const HeroSection = () => {
   const glowRef = useRef(null);
   const sparkleContainerRef = useRef(null);
   const lastSparkleTime = useRef(0);
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const slides = [slide1, slide2, slide3];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -110,7 +123,9 @@ const HeroSection = () => {
           </div>
 
           <div className="hero-cta">
-            <span className="cta-text">Trở thành Đối tác của AlibabaFood • </span>
+            <span className="cta-text">
+              Trở thành Đối tác của AlibabaFood •{" "}
+            </span>
             <Link to="/partner-register" className="cta-link">
               Đăng Ký Tại Đây!
             </Link>
@@ -118,12 +133,16 @@ const HeroSection = () => {
         </div>
 
         <div className="hero-image-container">
-          <div className="hero-blob"></div>
-          <img
-            src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&q=80&w=800"
-            alt="Delicious fresh salad bowl"
-            className="hero-main-img"
-          />
+          <div className="hero-slider">
+            {slides.map((slide, index) => (
+              <img
+                key={index}
+                src={slide}
+                alt={`Alibaba Food Offer ${index + 1}`}
+                className={`hero-slider-img ${index === currentSlide ? "active" : ""}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

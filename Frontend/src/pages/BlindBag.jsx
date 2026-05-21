@@ -1,304 +1,410 @@
-import React, { useState, useRef, Suspense } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Html, Environment, ContactShadows, SpotLight, Sparkles, Float } from '@react-three/drei';
-import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
-import * as THREE from 'three';
-import './BlindBag.css';
-import Navbar from '../components/Navbar';
-import logoImg from '../assets/alibaba-logo.png.png';
+import React, { useState, useRef, useEffect, Suspense } from "react";
+import { useNavigate } from "react-router-dom";
+import { Canvas, useFrame } from "@react-three/fiber";
+import {
+  Html,
+  Environment,
+  ContactShadows,
+  SpotLight,
+  Float,
+  Sparkles,
+  Image,
+} from "@react-three/drei";
+import {
+  EffectComposer,
+  Bloom,
+  DepthOfField,
+  Noise,
+} from "@react-three/postprocessing";
+import * as THREE from "three";
+import Navbar from "../components/Navbar";
+import "./BlindBag.css";
 
 const PRIZES = [
-    { id: 1, name: 'Combo Gà Rán', image: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ba?auto=format&fit=crop&q=80&w=200', color: '#f59e0b' },
-    { id: 2, name: 'Voucher Giảm 50%', image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&q=80&w=200', color: '#ec4899' },
-    { id: 3, name: 'Miễn Phí Giao Hàng', image: 'https://images.unsplash.com/photo-1528736235302-52922df5c122?auto=format&fit=crop&q=80&w=200', color: '#3b82f6' },
-    { id: 4, name: 'Pizza Hải Sản', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=200', color: '#ef4444' },
-    { id: 5, name: 'Trà Sữa Lớn', image: 'https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&q=80&w=200', color: '#8b5cf6' },
-    { id: 6, name: 'Món Phụ Miễn Phí', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=200', color: '#10b981' },
+  {
+    id: 1,
+    name: "Wagyu Burger Đặc Biệt",
+    discount: "Free Đồ Uống",
+    rarity: "Legendary",
+    color: "#FFD166",
+    glow: "#FFD166",
+    image:
+      "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=600",
+    expire: "HSD: 24h",
+    desc: "Thưởng thức bò Wagyu thượng hạng.",
+    weight: 5, // Tỷ lệ 5%
+  },
+  {
+    id: 2,
+    name: "Sushi Omakase",
+    discount: "Giảm 50%",
+    rarity: "Epic",
+    color: "#7B61FF",
+    glow: "#a28bff",
+    image:
+      "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&q=80&w=600",
+    expire: "HSD: 48h",
+    desc: "Set Sushi nguyên liệu tươi mới mỗi ngày.",
+    weight: 10, // Tỷ lệ 10%
+  },
+  {
+    id: 3,
+    name: "Pizza Hải Sản",
+    discount: "Giảm 30K",
+    rarity: "Rare",
+    color: "#00C6FF",
+    glow: "#5ce1e6",
+    image:
+      "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=600",
+    expire: "HSD: 24h",
+    desc: "Hải sản nướng đá lò cuộn phô mai.",
+    weight: 15, // Tỷ lệ 15%
+  },
+  {
+    id: 4,
+    name: "Gà Rán Xì Dầu",
+    discount: "Freeship",
+    rarity: "Uncommon",
+    color: "#00C6FF",
+    glow: "#5ce1e6",
+    image:
+      "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ba?auto=format&fit=crop&q=80&w=600",
+    expire: "HSD: 12h",
+    desc: "Gà rán giòn rụm đậm vị Hàn Quốc.",
+    weight: 50, // Tỷ lệ 50%
+  },
+  {
+    id: 5,
+    name: "Trà Sữa Trân Châu",
+    discount: "Đồng Giá 1K",
+    rarity: "Mythic",
+    color: "#FF007F",
+    glow: "#ff4d94",
+    image:
+      "https://images.unsplash.com/photo-1556881286-fc6915169721?auto=format&fit=crop&q=80&w=600",
+    expire: "HSD: Trong 3 ngày",
+    desc: "Ly trà sữa size L, trân châu hoàng kim.",
+    weight: 1, // Tỷ lệ 1%
+  },
+  {
+    id: 6,
+    name: "Mì Ý Tôm Hùm",
+    discount: "Giảm 20%",
+    rarity: "Common",
+    color: "#00FA9A",
+    glow: "#4ade80",
+    image:
+      "https://images.unsplash.com/photo-1589302168068-964664d93cb0?auto=format&fit=crop&q=80&w=600",
+    expire: "HSD: 24h",
+    desc: "Tinh hoa ẩm thực nước Ý tinh tế.",
+    weight: 19, // Tỷ lệ 19%
+  },
 ];
 
-const TOTAL_BAGS = PRIZES.length;
-const RADIUS = 4.8; // Slightly wider for cinematic view
+const CameraController = ({ phase }) => {
+  useFrame((state) => {
+    // Smooth camera movement based on phase
+    const targetZ = phase === "idle" ? 12 : phase === "reveal" ? 9 : 8;
+    const targetY = phase === "idle" ? 2 : phase === "slot" ? 4 : 2;
 
-const Bag3D = ({ position, rotation, prize, isWinner, hasLanded }) => {
-    const bagRef = useRef();
-
-    useFrame((state) => {
-        if (isWinner && hasLanded) {
-            // Winning bag prominently floats up and faces the camera, scaling up to highlight it
-            bagRef.current.position.y = THREE.MathUtils.lerp(bagRef.current.position.y, position[1] + 2.5 + Math.sin(state.clock.elapsedTime * 3) * 0.15, 0.05);
-            // Move bag outwards a bit for better visibility
-            bagRef.current.position.x = THREE.MathUtils.lerp(bagRef.current.position.x, position[0] * 1.5, 0.05);
-            bagRef.current.position.z = THREE.MathUtils.lerp(bagRef.current.position.z, position[2] * 1.5, 0.05);
-
-            // Add a slight pitch forward to show off the prize
-            bagRef.current.rotation.x = THREE.MathUtils.lerp(bagRef.current.rotation.x, 0.15, 0.05);
-
-            // Scale up the winning bag
-            const targetScale = 1.6;
-            bagRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.05);
-        } else if (hasLanded && !isWinner) {
-            // Hide other bags once landed to put all focus on the winner
-            const targetScale = 0;
-            bagRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.08);
-        } else {
-            // Reset to normal
-            bagRef.current.position.x = THREE.MathUtils.lerp(bagRef.current.position.x, position[0], 0.1);
-            bagRef.current.position.y = THREE.MathUtils.lerp(bagRef.current.position.y, position[1], 0.1);
-            bagRef.current.position.z = THREE.MathUtils.lerp(bagRef.current.position.z, position[2], 0.1);
-            bagRef.current.rotation.x = THREE.MathUtils.lerp(bagRef.current.rotation.x, 0, 0.1);
-
-            const targetScale = 1;
-            bagRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
-        }
-    });
-
-    const bodyColor = isWinner && hasLanded ? '#c4956a' : '#ba8c63';
-    // When winning, make the bag slightly more reflective
-    const roughness = isWinner && hasLanded ? 0.7 : 0.9;
-
-    return (
-        <group ref={bagRef} position={position} rotation={rotation}>
-            {/* Bag Main Body */}
-            <mesh castShadow receiveShadow position={[0, 1.2, 0]}>
-                <boxGeometry args={[1.8, 2.4, 1.2]} />
-                <meshStandardMaterial color={bodyColor} roughness={roughness} metalness={0.1} />
-
-                {/* HTML overlay attached flawlessly to the front face */}
-                <Html transform position={[0, -0.1, 0.61]} distanceFactor={3.5} center zIndexRange={[100, 0]}>
-                    <div className="bag-html-content">
-                        {isWinner && hasLanded ? (
-                            <div className="reveal-content-3d">
-                                <img src={prize.image} alt={prize.name} className="prize-image-3d" />
-                                <span className="prize-name-3d">{prize.name}</span>
-                            </div>
-                        ) : (
-                            <div className="mystery-content-3d">
-                                <img src={logoImg} alt="Alibaba Food" className="bag-logo-3d" />
-                                <span className="mystery-mark-3d">?</span>
-                            </div>
-                        )}
-                    </div>
-                </Html>
-            </mesh>
-            {/* Bag Top Fold */}
-            <mesh castShadow receiveShadow position={[0, 2.45, 0]}>
-                <boxGeometry args={[1.8, 0.1, 0.4]} />
-                <meshStandardMaterial color="#a47650" roughness={1} />
-            </mesh>
-        </group>
-    );
+    state.camera.position.lerp(new THREE.Vector3(0, targetY, targetZ), 0.05);
+    state.camera.lookAt(0, 1, 0);
+  });
+  return null;
 };
 
-const Carousel3D = ({ hasStarted, hasLanded, targetRot, winningIndex }) => {
-    const groupRef = useRef();
-    const currentRot = useRef(0);
+const MysteryBox = ({ phase }) => {
+  const boxRef = useRef();
 
-    useFrame((state, delta) => {
-        if (!hasStarted) {
-            // Idle sway before interaction
-            groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.4) * 0.15;
-            groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.1 - 0.5;
-        } else {
-            // Cinematic Spin dampening
-            currentRot.current = THREE.MathUtils.damp(currentRot.current, targetRot, 1.2, delta);
-            groupRef.current.rotation.y = currentRot.current;
-        }
+  useFrame((state, delta) => {
+    if (!boxRef.current) return;
 
-        // Tilt the carousel slightly up when hidden for a more dramatic angle
-        const targetPitch = hasStarted ? 0.05 : 0.2;
-        const targetY = hasStarted ? -1 : -2.5;
-        groupRef.current.rotation.x = THREE.MathUtils.damp(groupRef.current.rotation.x, targetPitch, 1.5, delta);
-        if (hasStarted) {
-            groupRef.current.position.y = THREE.MathUtils.damp(groupRef.current.position.y, targetY, 1.5, delta);
-        }
-    });
+    if (phase === "idle") {
+      boxRef.current.rotation.y += delta * 0.5;
+      boxRef.current.position.y = Math.sin(state.clock.elapsedTime) * 0.2;
+      boxRef.current.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
+    } else if (phase === "shaking") {
+      // Túi mù bắt đầu xoay ngẫu nhiên trên các trục và rung lắc mạnh dần
+      boxRef.current.rotation.x += delta * (5 + (state.clock.elapsedTime % 2));
+      boxRef.current.rotation.y += delta * 15;
+      boxRef.current.rotation.z += delta * (3 + (state.clock.elapsedTime % 3));
 
-    return (
-        <group ref={groupRef} position={[0, -0.5, 0]}>
-            {/* Elegant Cyber/Magical Podium below the bags */}
-            <mesh receiveShadow position={[0, -0.1, 0]}>
-                <cylinderGeometry args={[5.8, 6.2, 0.4, 64]} />
-                <meshStandardMaterial color="#03150b" metalness={0.9} roughness={0.1} />
-            </mesh>
-            {/* Glowing Rings on Podium */}
-            <mesh position={[0, 0.11, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-                <torusGeometry args={[5.2, 0.04, 16, 100]} />
-                <meshBasicMaterial color="#34d399" toneMapped={false} />
-            </mesh>
-            <mesh position={[0, -0.3, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-                <torusGeometry args={[6.1, 0.08, 16, 100]} />
-                <meshBasicMaterial color="#10b981" toneMapped={false} />
-            </mesh>
+      boxRef.current.position.x = Math.sin(state.clock.elapsedTime * 40) * 0.15;
+      boxRef.current.position.y = Math.cos(state.clock.elapsedTime * 45) * 0.15;
+      // Phình to căng ra trước khi nổ
+      boxRef.current.scale.lerp(new THREE.Vector3(1.3, 1.3, 1.3), 0.05);
+    } else if (phase === "reveal") {
+      // Hiệu ứng tàng hình / thu nhỏ cho túi mù lúc nổ
+      boxRef.current.scale.lerp(new THREE.Vector3(0, 0, 0), 0.2);
+    }
+  });
 
-            {PRIZES.map((prize, i) => {
-                const angle = (i / TOTAL_BAGS) * Math.PI * 2;
-                const x = Math.sin(angle) * RADIUS;
-                const z = Math.cos(angle) * RADIUS;
-                return (
-                    <Bag3D
-                        key={prize.id}
-                        position={[x, 0, z]}
-                        rotation={[0, angle, 0]}
-                        prize={prize}
-                        isWinner={i === winningIndex}
-                        hasLanded={hasLanded}
-                    />
-                );
-            })}
-        </group>
-    );
+  return (
+    <group ref={boxRef}>
+      <mesh castShadow receiveShadow position={[0, 0, 0]}>
+        <boxGeometry args={[2.5, 2.5, 2.5]} />
+        <meshStandardMaterial color="#0F1020" roughness={0.3} metalness={0.8} />
+
+        {/* Glowing decals on box */}
+        <mesh position={[0, 0, 1.26]}>
+          <planeGeometry args={[1.5, 1.5]} />
+          <meshBasicMaterial color="#FF7A00" transparent opacity={0.8} />
+          <Html transform position={[0, 0, 0.01]} center>
+            <div className="bb-myst-mark">?</div>
+          </Html>
+        </mesh>
+        <mesh position={[0, 0, -1.26]} rotation={[0, Math.PI, 0]}>
+          <planeGeometry args={[1.5, 1.5]} />
+          <meshBasicMaterial color="#7B61FF" transparent opacity={0.8} />
+          <Html transform position={[0, 0, 0.01]} center>
+            <div className="bb-myst-mark">?</div>
+          </Html>
+        </mesh>
+      </mesh>
+    </group>
+  );
+};
+
+// 3D representation of the prize that pops out
+const PrizeModel = ({ phase, winner }) => {
+  const groupRef = useRef();
+
+  useFrame((state, delta) => {
+    if (!groupRef.current) return;
+
+    if (phase === "reveal") {
+      groupRef.current.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
+      groupRef.current.rotation.y += delta * 1;
+      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.2;
+    } else {
+      groupRef.current.scale.lerp(new THREE.Vector3(0, 0, 0), 0.2);
+    }
+  });
+
+  return (
+    <group ref={groupRef} position={[0, 1, 0]} scale={[0, 0, 0]}>
+      <mesh castShadow>
+        <boxGeometry args={[3, 4, 0.2]} />
+        <meshStandardMaterial
+          color={winner.color}
+          roughness={0.2}
+          metalness={0.8}
+        />
+        <Html
+          transform
+          zIndexRange={[100, 0]}
+          distanceFactor={8}
+          position={[0, 0, 0.11]}
+        >
+          <div
+            className="slot-item-view hero-scaled"
+            style={{ boxShadow: `0 0 30px ${winner.glow}` }}
+          >
+            <img src={winner.image} alt={winner.name} />
+            <h4 style={{ color: winner.color }}>{winner.name}</h4>
+          </div>
+        </Html>
+      </mesh>
+    </group>
+  );
 };
 
 const BlindBag = () => {
-    const [hasStarted, setHasStarted] = useState(false);
-    const [isSpinning, setIsSpinning] = useState(false);
-    const [hasLanded, setHasLanded] = useState(false);
-    const [winningIndex, setWinningIndex] = useState(null);
-    const [showResult, setShowResult] = useState(false);
-    const [targetRot, setTargetRot] = useState(0);
+  const [phase, setPhase] = useState("idle");
+  const [winningIndex, setWinningIndex] = useState(0);
+  const [flash, setFlash] = useState(false);
+  const [isOpening, setIsOpening] = useState(false);
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const openBag = () => {
+    // Ngăn chặn bấm liên tục
+    if (phase !== "idle" || isOpening) return;
+    setIsOpening(true);
 
-    const openBlindBag = () => {
-        if (isSpinning || hasLanded) return;
+    // Thuật toán quay số (RNG) dựa trên tỷ lệ rớt đồ (Weight)
+    const totalWeight = PRIZES.reduce((acc, prize) => acc + prize.weight, 0);
+    let randomVal = Math.random() * totalWeight;
+    let selectedIndex = 0;
 
-        setHasStarted(true);
-        setIsSpinning(true);
-        setHasLanded(false);
-        setShowResult(false);
+    for (let i = 0; i < PRIZES.length; i++) {
+      if (randomVal < PRIZES[i].weight) {
+        selectedIndex = i;
+        break;
+      }
+      randomVal -= PRIZES[i].weight;
+    }
+    setWinningIndex(selectedIndex);
 
-        const randomIndex = Math.floor(Math.random() * TOTAL_BAGS);
-        setWinningIndex(randomIndex);
+    // Bắt đầu hoạt ảnh rung lắc
+    setPhase("shaking");
 
-        // Calculate rotation ensuring it spins many times for intense suspense from its CURRENT position
-        const theta = (randomIndex / TOTAL_BAGS) * Math.PI * 2;
-        const extraSpins = 14 * Math.PI * 2;
+    // Khởi động bộ đếm thời gian
+    setTimeout(() => {
+      setFlash(true);
+      setPhase("reveal"); // Túi mù nổ, hiện UI và pháo giấy
 
-        // Ensure new target rotation always spins forward (subtracting angle goes clockwise)
-        const currentRotNormalized = targetRot % (Math.PI * 2);
-        setTargetRot(targetRot - extraSpins - (currentRotNormalized + theta));
+      // Cập nhật dữ liệu & Hậu kiểm (Mock API Call)
+      console.log(
+        `[API MOCK] Ghi nhận user trúng giải: ${PRIZES[selectedIndex].name} (Weight: ${PRIZES[selectedIndex].weight})`,
+      );
 
-        // Extended dramatic timeout for intense suspense
-        setTimeout(() => {
-            setHasLanded(true);
-            setIsSpinning(false);
+      setTimeout(() => setFlash(false), 500);
+      setIsOpening(false);
+    }, 4000); // Đợi 4 giây hồi hộp
+  };
 
-            setTimeout(() => {
-                setShowResult(true);
-            }, 1200); // Slight pause after landing before modal pops up
-        }, 11500);
-    };
+  const handlePlayAgain = () => {
+    setPhase("idle");
+  };
 
-    const handleReset = () => {
-        setHasStarted(false);
-        setHasLanded(false);
-        setShowResult(false);
-        setWinningIndex(null);
-        // Do not reset targetRot to 0, otherwise it aggressively rewinds
-        // Keep the wheel at its last spun position so the next spin is smooth
-    };
+  const winner = PRIZES[winningIndex];
 
-    return (
-        <div className="blind-bag-page">
-            <Navbar />
+  return (
+    <div className="bb-futuristic-page">
+      <Navbar />
 
-            {/* True 3D Canvas via React Three Fiber */}
-            <div className="canvas-wrapper">
-                <Canvas shadows camera={{ position: [0, 6, 18], fov: 42 }}>
-                    <color attach="background" args={['#020a06']} />
-                    <fog attach="fog" args={['#020a06', 15, 35]} />
+      {/* White Flash overlay */}
+      <div className={`cam-flash ${flash ? "active" : ""}`}></div>
 
-                    {/* Brighter Atmospheric Lighting */}
-                    <ambientLight intensity={1.2} />
-                    <directionalLight position={[10, 20, 10]} intensity={1.5} castShadow shadow-mapSize={[2048, 2048]} />
-                    <directionalLight position={[-10, 5, -10]} intensity={0.8} color="#34d399" />
-                    {/* Fill light from the center to brighten the box front faces */}
-                    <pointLight position={[0, 4, 0]} intensity={2.5} color="#a7f3d0" distance={20} />
+      <div className="bb-f-canvas-container">
+        <Canvas shadows gl={{ antialias: false }}>
+          <color attach="background" args={["#0F1020"]} />
+          <CameraController phase={phase} />
 
-                    {/* Cinematic Spotlight on winner */}
-                    {(isSpinning || hasLanded) && (
-                        <SpotLight
-                            position={[0, 22, 2]}
-                            angle={0.25}
-                            penumbra={1}
-                            intensity={hasLanded ? 15 : (isSpinning ? 2 : 0)}
-                            color="#34d399"
-                            castShadow
-                            distance={50}
-                        />
-                    )}
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[5, 10, 5]} intensity={2} castShadow />
+          <SpotLight
+            position={[0, 10, 0]}
+            angle={0.5}
+            penumbra={1}
+            intensity={phase === "reveal" ? 6 : 2}
+            color={phase === "reveal" ? winner.color : "#7B61FF"}
+            castShadow
+          />
 
-                    {/* Ambient Magical Particles */}
-                    <Sparkles count={250} scale={25} size={3} speed={0.5} opacity={0.6} color="#a7f3d0" />
+          {/* Atmospheric particles or Confetti */}
+          <Sparkles
+            count={phase === "reveal" ? 1500 : 400}
+            scale={phase === "reveal" ? 50 : 20}
+            size={phase === "reveal" ? 15 : 3}
+            speed={phase === "reveal" ? 8 : 0.5}
+            color={
+              phase === "reveal"
+                ? winner.color
+                : phase === "shaking"
+                  ? "#ff3333"
+                  : "#FFD166"
+            }
+          />
 
-                    <Suspense fallback={null}>
-                        <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.2}>
-                            <Carousel3D
-                                hasStarted={hasStarted}
-                                hasLanded={hasLanded}
-                                targetRot={targetRot}
-                                winningIndex={winningIndex}
-                            />
-                        </Float>
-                        <Environment preset="city" />
-                    </Suspense>
+          <Suspense fallback={null}>
+            <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+              <MysteryBox phase={phase} />
+            </Float>
+            <PrizeModel phase={phase} winner={winner} />
+            <Environment preset="city" />
+          </Suspense>
 
-                    <ContactShadows position={[0, -2.5, 0]} opacity={0.8} scale={35} blur={2.5} far={5} color="#000000" />
+          <ContactShadows
+            position={[0, -2, 0]}
+            opacity={0.5}
+            scale={40}
+            blur={2}
+            color="#000"
+          />
 
-                    {/* Post Processing for Premium Look */}
-                    <EffectComposer disableNormalPass>
-                        <Bloom luminanceThreshold={0.4} mipmapBlur intensity={1.5} radius={0.8} />
-                        <Vignette eskil={false} offset={0.05} darkness={1.2} />
-                    </EffectComposer>
-                </Canvas>
-            </div>
-
-            {/* Premium UI Overlay */}
-            <div className={`game-controls modern-glass-panel ${(isSpinning || hasLanded) ? 'hidden' : ''}`}>
-                <div className="glass-inner">
-                    <div className="badge-exclusive">🎁 PHẦN THƯỞNG BÍ ẨN</div>
-                    <h1 className="game-title">ĐỘC QUYỀN <br /><span>HỘP QUÀ BÍ ẨN ẨM THỰC</span></h1>
-                    <p className="game-subtitle">Mỗi chiếc hộp chứa đựng một điều bất ngờ tuyệt vời. Hãy khám phá món quà dành riêng cho bạn!</p>
-
-                    <div className="action-area">
-                        <button
-                            className="open-bag-btn premium-glow-btn"
-                            onClick={openBlindBag}
-                            disabled={isSpinning}
-                        >
-                            <span className="btn-content">
-                                {isSpinning ? 'ĐANG QUAY...' : 'BẮT ĐẦU QUAY (19.000đ)'}
-                                {!isSpinning && <span className="btn-icon">✨</span>}
-                            </span>
-                            <div className="btn-glow-aura"></div>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Splendid Result Modal */}
-            {showResult && winningIndex !== null && (
-                <div className="result-modal-backdrop modern-backdrop">
-                    <div className="result-modal modern-modal">
-                        <div className="confetti modern-confetti">✨</div>
-                        <h2 className="gradient-text">Chúc Mừng Bạn!</h2>
-                        <p>Vận may đã mỉm cười với bạn, phần quà nhận được là:</p>
-                        <div className="result-prize-display">
-                            <img src={PRIZES[winningIndex].image} alt={PRIZES[winningIndex].name} className="result-prize-image" style={{ borderColor: PRIZES[winningIndex].color, boxShadow: `0 15px 35px ${PRIZES[winningIndex].color}55` }} />
-                        </div>
-                        <div className="prize-box premium-box" style={{ background: `linear-gradient(135deg, ${PRIZES[winningIndex].color}22 0%, rgba(20,20,25,0.9) 100%)`, borderColor: PRIZES[winningIndex].color }}>
-                            {PRIZES[winningIndex].name}
-                        </div>
-                        <div className="modal-actions">
-                            <button className="btn-claim modern-btn" onClick={() => navigate('/menu')}>Sử Dụng Ngay</button>
-                            <button className="btn-play-again modern-outline-btn" onClick={handleReset}>Chơi Lại</button>
-                        </div>
-                    </div>
-                </div>
+          {/* Heavy post-processing to create modern glow & blur */}
+          <EffectComposer>
+            <Bloom
+              luminanceThreshold={0.2}
+              luminanceSmoothing={0.9}
+              intensity={phase === "shaking" ? 3 : 1.5}
+              radius={0.8}
+            />
+            <Noise opacity={0.03} />
+            {phase === "shaking" && (
+              <DepthOfField
+                focusDistance={0}
+                focalLength={0.02}
+                bokehScale={2}
+                height={480}
+              />
             )}
-        </div>
-    );
+          </EffectComposer>
+        </Canvas>
+      </div>
+
+      {/* UI Layer */}
+      <div className="bb-ui-layer">
+        {phase === "idle" && (
+          <div className="bb-idle-ui animate-fade-up">
+            <div className="bb-badge-neon">Lootbox Premium</div>
+            <h1>
+              BÓC TÚI MÙ <br />
+              <span className="text-glow">SĂN PHẦN THƯỞNG</span>
+            </h1>
+            <p>
+              19,000VND / Lượt quay. Cơ hội nhận siêu phẩm Wagyu, Sushi Omakase
+              và vô vàn Voucher cực sốc!
+            </p>
+
+            <button className="bb-cta-btn" onClick={openBag}>
+              <span className="btn-icon">🎁</span> Bóc Ngay
+              <div className="btn-particles"></div>
+            </button>
+          </div>
+        )}
+
+        {phase === "reveal" && (
+          <div className="bb-reveal-ui animate-slide-up">
+            <div className="bb-reward-card glassmorphism">
+              <div
+                className="bb-rc-rarity"
+                style={{
+                  color: winner.color,
+                  borderColor: winner.color,
+                  boxShadow: `0 0 15px ${winner.glow}`,
+                }}
+              >
+                {winner.rarity}
+              </div>
+
+              <h2 style={{ textShadow: `0 0 20px ${winner.glow}` }}>
+                {winner.name}
+              </h2>
+              <div className="bb-rc-badges">
+                <span className="bb-badge-discount">🔥 {winner.discount}</span>
+                <span className="bb-badge-expire">🕒 {winner.expire}</span>
+              </div>
+
+              <p className="bb-rc-desc">{winner.desc}</p>
+
+              <div className="bb-rc-actions">
+                <button
+                  className="bb-rc-btn-primary"
+                  onClick={() => navigate("/cart")}
+                >
+                  🛒 Thêm vào giỏ
+                </button>
+                <button
+                  className="bb-rc-btn-secondary"
+                  onClick={() => alert("Đã lưu mã vào ví!")}
+                >
+                  💳 Lưu vào ví
+                </button>
+                <button
+                  className="bb-rc-btn-secondary"
+                  onClick={handlePlayAgain}
+                >
+                  🎁 Bóc thêm
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default BlindBag;
