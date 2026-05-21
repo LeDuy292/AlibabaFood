@@ -90,10 +90,14 @@ const Navbar = () => {
     }
   };
 
-  const isAiPage = location.pathname === "/ai-consultant";
+  const isDarkPage =
+    location.pathname === "/ai-consultant" ||
+    location.pathname === "/blind-bag";
 
   return (
-    <nav className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
+    <nav
+      className={`navbar ${scrolled ? "navbar-scrolled" : ""} ${isDarkPage && !scrolled ? "navbar-on-dark" : ""}`}
+    >
       <div className="navbar-container container">
         <div className="navbar-logo">
           <Link to="/">

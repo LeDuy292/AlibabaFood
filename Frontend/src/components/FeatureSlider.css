@@ -1,258 +1,360 @@
 .feature-slider-section {
-    padding: 5rem 0;
-    background-color: #f6fbf4;
-    /* Very light green/white matching theme */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden;
-    /* Prevent horizontal scroll from 3D transforms */
+  padding: 2rem 0rem;
+  background: linear-gradient(135deg, #f5f1e8 0%, #e8dcc8 50%, #d4c5a9 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  color: #1a1a1a;
 }
 
 .slider-header {
-    text-align: center;
-    margin-bottom: 4rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  z-index: 2;
+  position: relative;
 }
 
 .slider-header h2 {
-    font-size: 2.5rem;
-    color: var(--primary-dark, #134e15);
-    margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, #d4a574, #c9855f, #b8704a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 2px 2px 4px rgba(212, 165, 116, 0.1);
 }
 
 .slider-header p {
-    color: var(--text-gray, #4b5563);
-    font-size: 1.1rem;
+  font-size: 1.1rem;
+  color: #5a4a3a;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
-/* 3D Container */
 .slider-container {
-    position: relative;
-    width: 100%;
-    max-width: 1200px;
-    height: 680px;
-    /* Force height so absolute cards don't collapse it */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    perspective: 1200px;
-    /* Depth of the 3D space */
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  height: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1500px;
+  transform-style: preserve-3d;
 }
 
-/* Base Card Style */
 .slider-card {
-    position: absolute;
-    width: 440px;
-    /* Significantly wider */
-    height: 620px;
-    /* Significantly taller */
-    border-radius: 20px;
-    overflow: hidden;
-    background-color: #ffffff;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    /* Smooth, slightly bouncy spring feel */
-    will-change: transform, opacity, width, height;
+  position: absolute;
+  width: 360px;
+  height: 400px;
+  border-radius: 20px;
+  transition:
+    transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.8s ease,
+    z-index 0s;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 
-/* The background image of the card */
+.slider-card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #000;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transform-style: preserve-3d;
+}
+
 .card-bg-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 10s linear;
-    /* Slow zoom over time or hover if wanted */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 10s linear;
 }
 
-.slider-card:hover .card-bg-img {
-    transform: scale(1.05);
-    /* Slight zoom on hover for interactivity */
+.active-card:hover .card-bg-img {
+  transform: scale(1.1);
 }
 
-/* Top Left Icon Pill (as seen in design) */
 .card-top-icon {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-    color: white;
-    z-index: 10;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+  z-index: 10;
+  border: 2px solid rgba(255, 122, 0, 0.4);
+  transition: all 0.4s ease;
+  box-shadow: 0 0 20px rgba(255, 122, 0, 0.2);
+  animation: pulseGlow 2s ease-in-out infinite;
 }
 
-/* Dark Gradient bottom to make text readable */
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 20px rgba(255, 122, 0, 0.2),
+      inset 0 0 15px rgba(255, 122, 0, 0.1);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow:
+      0 0 40px rgba(255, 122, 0, 0.4),
+      inset 0 0 25px rgba(255, 122, 0, 0.2);
+    transform: scale(1.05);
+  }
+}
+
 .card-gradient-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 70%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 40%, rgba(0, 0, 0, 0) 100%);
-    z-index: 5;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.15) 40%,
+    rgba(0, 0, 0, 0.35) 65%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  z-index: 5;
+  transition: all 0.6s ease;
 }
 
-/* Text Content Container */
 .card-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 30px;
-    color: white;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 30px 20px;
+  color: white;
+  z-index: 10;
+  flex-direction: column;
+  align-items: flex-start;
+  transform: translateZ(30px);
 }
 
 .card-subtitle {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.8);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 0.5rem;
-    transition: opacity 0.3s;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  animation: slideInUp 0.6s ease 0.1s both;
 }
 
 .card-title {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 15px;
-    line-height: 1.2;
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 12px;
+  line-height: 1.2;
+  color: #ffffff;
+  text-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.7),
+    0 0 20px rgba(0, 0, 0, 0.5);
+  animation: slideInUp 0.6s ease 0.15s both;
 }
 
 .card-description {
-    font-size: 0.95rem;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.5;
-    margin-bottom: 20px;
-    /* Hide description on side cards */
-    opacity: 0;
-    height: 0;
-    overflow: hidden;
-    transition: opacity 0.5s ease-in-out, height 0.5s ease-in-out;
+  display: none;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  animation: slideInUp 0.6s ease 0.2s both;
 }
 
 .explore-btn {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-weight: 600;
-    font-size: 1rem;
-    color: white;
-    text-transform: none;
-    transition: gap 0.3s, color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: white;
+  padding: 11px 28px;
+  background: linear-gradient(135deg, #d4a574, #c9855f);
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.4s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transform: translateY(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: slideInUp 0.6s ease 0.3s both;
+}
+
+.active-card .explore-btn {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .explore-btn:hover {
-    gap: 10px;
-    color: #bfe5b3;
-    /* Theme light green */
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, #c9855f, #b8704a);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
-/* --- 3D Position Classes --- */
-
-/* The Focused Center Card */
+/* 3D POSITIONS */
+/* Active Card Center */
 .active-card {
-    transform: translateX(0) scale(1) translateZ(0);
-    /* Brought to front */
-    z-index: 20;
-    opacity: 1;
-    cursor: default;
-    /* Not clickable if it's already active */
+  transform: translateX(0) scale(1.1) translateZ(100px) rotateY(0deg);
+  z-index: 20;
+  opacity: 1;
 }
 
-/* Show description only on the active card */
 .active-card .card-description {
-    opacity: 1;
-    height: auto;
+  opacity: 1;
+  height: auto;
+  animation: slideInUp 0.6s ease 0.2s both;
 }
 
-/* The card on the left */
+/* Left Card */
 .left-card {
-    /* Push left, scale down, push back into 3D space, slight angle */
-    transform: translateX(-45%) scale(0.9) translateZ(-150px) rotateY(10deg);
-    z-index: 10;
-    opacity: 0.7;
-    /* Dimmed */
-    cursor: pointer;
-    /* Clickable */
+  transform: translateX(-65%) scale(0.9) translateZ(-150px) rotateY(25deg);
+  z-index: 10;
+  opacity: 0.5;
+  cursor: pointer;
 }
 
-/* The card on the right */
+/* Right Card */
 .right-card {
-    /* Push right, scale down, push back into 3D space, slight angle */
-    transform: translateX(45%) scale(0.9) translateZ(-150px) rotateY(-10deg);
-    z-index: 10;
-    opacity: 0.7;
-    /* Dimmed */
-    cursor: pointer;
-    /* Clickable */
-}
-
-/* Hover effects for inactive lateral cards */
-.left-card:hover,
-.right-card:hover {
-    opacity: 0.95;
-    /* Bring them slightly forward into focus on hover */
-    transform: translateX(calc(var(--dir, 1) * 45%)) scale(0.92) translateZ(-100px) rotateY(calc(var(--dir, -1) * 5deg));
+  transform: translateX(65%) scale(0.9) translateZ(-150px) rotateY(-25deg);
+  z-index: 10;
+  opacity: 0.5;
+  cursor: pointer;
 }
 
 .left-card:hover {
-    --dir: -1;
+  opacity: 0.8;
+  transform: translateX(-60%) scale(0.95) translateZ(-100px) rotateY(20deg);
 }
 
 .right-card:hover {
-    --dir: 1;
+  opacity: 0.8;
+  transform: translateX(60%) scale(0.95) translateZ(-100px) rotateY(-20deg);
 }
 
 .hidden-card {
-    transform: translateZ(-500px);
-    opacity: 0;
-    z-index: 0;
-    pointer-events: none;
+  transform: translateX(0) scale(0.5) translateZ(-500px);
+  opacity: 0;
+  pointer-events: none;
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
-    .slider-card {
-        width: 300px;
-        height: 420px;
-    }
+  .slider-card {
+    width: 250px;
+    height: 380px;
+  }
 
-    .left-card {
-        transform: translateX(-30%) scale(0.85) translateZ(-150px);
-    }
+  .active-card {
+    transform: translateX(0) scale(1.05) translateZ(50px) rotateY(0deg);
+  }
 
-    .right-card {
-        transform: translateX(30%) scale(0.85) translateZ(-150px);
-    }
+  .left-card {
+    transform: translateX(-50%) scale(0.85) translateZ(-150px) rotateY(15deg);
+  }
+
+  .right-card {
+    transform: translateX(50%) scale(0.85) translateZ(-150px) rotateY(-15deg);
+  }
 }
 
-@media (max-width: 480px) {
-    .slider-card {
-        width: 260px;
-        height: 380px;
-    }
+/* Navigation Indicators */
+.slider-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 40px;
+  position: relative;
+  z-index: 5;
+  animation: fadeIn 0.8s ease-out 0.5s both;
+}
 
-    .left-card {
-        transform: translateX(-20%) scale(0.8) translateZ(-150px);
-    }
+.indicator-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(212, 165, 116, 0.4);
+  border: 2px solid rgba(212, 165, 116, 0.7);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 
-    .right-card {
-        transform: translateX(20%) scale(0.8) translateZ(-150px);
-    }
+.indicator-dot.active {
+  background: #d4a574;
+  box-shadow: 0 0 15px rgba(212, 165, 116, 0.6);
+  transform: scale(1.4);
+}
+
+.indicator-dot:hover {
+  background: rgba(212, 165, 116, 0.7);
+  transform: scale(1.2);
+}
+
+/* Navigation Hints */
+.slider-hints {
+  text-align: center;
+  margin-top: 20px;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+  animation: fadeIn 0.8s ease-out 0.7s both;
+}
+
+.slider-hints:hover {
+  opacity: 1;
+}
+
+.hint-text {
+  color: #5a4a3a;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
