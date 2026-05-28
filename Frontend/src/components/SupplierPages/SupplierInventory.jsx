@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./SupplierInventory.css";
 import SupplierNavbar from "./SupplierNavbar";
+import { INITIAL_ITEMS } from "./supplierInventoryData";
 
 const UNSPLASH = (id, w = 600, h = 400) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&h=${h}&q=80`;
@@ -15,129 +16,21 @@ const STORE_PHOTOS = [
 const FALLBACK_IMG =
   "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&h=400&q=80";
 
-const INITIAL_ITEMS = [
-  {
-    id: 1,
-    emoji: "🍗",
-    image: UNSPLASH("1512058564366-18510be2db19"),
-    name: "Crispy Chicken Rice",
-    category: "Rice",
-    qty: 12,
-    price: "55,000₫",
-    expireH: 3,
-    status: "active",
-  },
-  {
-    id: 2,
-    emoji: "🥗",
-    image: UNSPLASH("1512621776951-a57141f2eefd"),
-    name: "Caesar Salad Bowl",
-    category: "Salad",
-    qty: 4,
-    price: "55,000₫",
-    expireH: 5,
-    status: "active",
-  },
-  {
-    id: 3,
-    emoji: "🧋",
-    image: UNSPLASH("1558618666-fcd25c85cd64"),
-    name: "Bubble Milk Tea",
-    category: "Drinks",
-    qty: 20,
-    price: "30,000₫",
-    expireH: 8,
-    status: "active",
-  },
-  {
-    id: 4,
-    emoji: "🍜",
-    image: UNSPLASH("1569718212165-3a8278d5f624"),
-    name: "Signature Pho",
-    category: "Noodles",
-    qty: 2,
-    price: "65,000₫",
-    expireH: 1.5,
-    status: "active",
-  },
-  {
-    id: 5,
-    emoji: "🥐",
-    image: UNSPLASH("1482049016688-2d3e1b311543"),
-    name: "BBQ Banh Mi",
-    category: "Sandwich",
-    qty: 9,
-    price: "27,000₫",
-    expireH: 4,
-    status: "active",
-  },
-  {
-    id: 6,
-    emoji: "🍣",
-    image: UNSPLASH("1617196034183-421b4040ed20"),
-    name: "Salmon Sushi Box",
-    category: "Sushi",
-    qty: 0,
-    price: "85,000₫",
-    expireH: 2,
-    status: "out",
-  },
-  {
-    id: 7,
-    emoji: "☕",
-    image: UNSPLASH("1509042239860-f550ce710b93"),
-    name: "Hanoi Egg Coffee",
-    category: "Drinks",
-    qty: 7,
-    price: "38,000₫",
-    expireH: 6,
-    status: "active",
-  },
-  {
-    id: 8,
-    emoji: "🍩",
-    image: UNSPLASH("1551024506-0bccd828d307"),
-    name: "Matcha Cream Donut",
-    category: "Dessert",
-    qty: 3,
-    price: "22,000₫",
-    expireH: 9,
-    status: "active",
-  },
-  {
-    id: 9,
-    emoji: "🍱",
-    image: UNSPLASH("1547592180-85f783d837c4"),
-    name: "Seafood Bento Box",
-    category: "Bento",
-    qty: 6,
-    price: "72,000₫",
-    expireH: 3.5,
-    status: "active",
-  },
-  {
-    id: 10,
-    emoji: "🥩",
-    image: UNSPLASH("1432139555-477436a943be"),
-    name: "Broken Rice with Pork",
-    category: "Rice",
-    qty: 1,
-    price: "48,000₫",
-    expireH: 1,
-    status: "active",
-  },
-];
-
 const CATEGORIES = [
-  "All",
-  "Rice",
-  "Salad",
-  "Drinks",
-  "Noodles",
-  "Sandwich",
-  "Sushi",
-  "Dessert",
-  "Bento",
+  "Tất cả",
+  "Đồ Uống",
+  "Sữa",
+  "Bánh Quy",
+  "Snack",
+  "Bánh",
+  "Mì Gói",
+  "Đồ Ăn Chín",
+  "Bánh mì",
+  "Trứng",
+  "Trái Cây",
+  "Đồ ăn sẵn",
+  "Đồ ăn nhanh",
+  "Kem",
 ];
 
 const urgencyClass = (h, qty) => {
@@ -151,9 +44,9 @@ const urgencyBarWidth = (h) => {
   return `${pct}%`;
 };
 const fmtExpiry = (h) => {
-  if (h < 1) return `${Math.round(h * 60)} min left`;
-  if (h < 24) return `${h}h left`;
-  return `${Math.floor(h / 24)}d left`;
+  if (h < 1) return `Còn ${Math.round(h * 60)} phút`;
+  if (h < 24) return `Còn ${h} giờ`;
+  return `Còn ${Math.floor(h / 24)} ngày`;
 };
 
 const SupplierInventory = ({
@@ -165,7 +58,7 @@ const SupplierInventory = ({
   const [localItems, setLocalItems] = useState(INITIAL_ITEMS);
   const items = itemsProp !== undefined ? itemsProp : localItems;
   const setItems = itemsProp !== undefined ? setItemsProp : setLocalItems;
-  const [catFilter, setCatFilter] = useState("All");
+  const [catFilter, setCatFilter] = useState("Tất cả");
   const [search, setSearch] = useState("");
   const [editId, setEditId] = useState(null);
   const [editQty, setEditQty] = useState("");
@@ -205,7 +98,7 @@ const SupplierInventory = ({
     setItems((prev) => prev.filter((it) => it.id !== id));
 
   const filtered = items.filter((it) => {
-    const matchCat = catFilter === "All" || it.category === catFilter;
+    const matchCat = catFilter === "Tất cả" || it.category === catFilter;
     const matchSearch =
       !search || it.name.toLowerCase().includes(search.toLowerCase());
     return matchCat && matchSearch;
@@ -242,14 +135,14 @@ const SupplierInventory = ({
           <div className="si-hero-overlay" />
         </div>
         <div className="si-hero-content">
-          <div className="si-header-badge">📦 Inventory Manager</div>
-          <h1 className="si-page-title">Your Food Inventory</h1>
+          <div className="si-header-badge">📦 Quản Lý Kho Hàng</div>
+          <h1 className="si-page-title">Kho Thực Phẩm Của Bạn</h1>
           <p className="si-page-sub">
-            Manage stock levels, track expiry windows, and keep your menu fresh
-            — all in one place.
+            Quản lý tồn kho, theo dõi hạn sử dụng, và giữ thực đơn của bạn luôn
+            tươi mới — tất cả ở một nơi.
           </p>
           <button className="si-hero-cta" onClick={() => onNavigate?.("post")}>
-            ➕ Add New Item
+            ➕ Thêm Món Mới
           </button>
         </div>
         <div className="si-hero-store-card">
@@ -269,28 +162,28 @@ const SupplierInventory = ({
         {[
           {
             icon: "🍽️",
-            label: "Total Items",
+            label: "Tổng Số Món",
             val: totalItems,
             cls: "si-sb-total",
             bg: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&h=200&q=60",
           },
           {
             icon: "⚠️",
-            label: "Low Stock",
+            label: "Sắp Hết",
             val: lowStock,
             cls: "si-sb-low",
             bg: "https://images.unsplash.com/photo-1493770348161-369560ae357d?auto=format&fit=crop&w=400&h=200&q=60",
           },
           {
             icon: "⏱️",
-            label: "Expiring Today",
+            label: "Hết Hạn Hôm Nay",
             val: expiringToday,
             cls: "si-sb-expiring",
             bg: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=400&h=200&q=60",
           },
           {
             icon: "❌",
-            label: "Out of Stock",
+            label: "Hết Hàng",
             val: outOfStock,
             cls: "si-sb-out",
             bg: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&h=200&q=60",
@@ -320,7 +213,7 @@ const SupplierInventory = ({
           <span className="si-search-icon">🔍</span>
           <input
             className="si-search"
-            placeholder="Search items by name..."
+            placeholder="Tìm món ăn theo tên..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -337,7 +230,7 @@ const SupplierInventory = ({
           ))}
         </div>
         <button className="si-add-btn" onClick={() => onNavigate?.("post")}>
-          ➕ Add New Item
+          ➕ Thêm Món Mới
         </button>
       </div>
 
@@ -350,16 +243,16 @@ const SupplierInventory = ({
               alt="empty"
               className="si-empty-img"
             />
-            <div className="si-empty-title">No items found</div>
+            <div className="si-empty-title">Không tìm thấy món nào</div>
             <div className="si-empty-sub">
-              Try a different search term or category filter.
+              Hãy thử từ khóa hoặc bộ lọc khác.
             </div>
             <button
               className="si-add-btn"
               style={{ marginTop: 16 }}
               onClick={() => onNavigate?.("post")}
             >
-              ➕ Post Your First Item
+              ➕ Đăng Món Đầu Tiên
             </button>
           </div>
         ) : (
@@ -384,15 +277,15 @@ const SupplierInventory = ({
                         e.target.src = FALLBACK_IMG;
                       }}
                     />
-                    {item.isNew && <div className="si-new-badge">✨ NEW</div>}
+                    {item.isNew && <div className="si-new-badge">✨ MỚI</div>}
                     <div
                       className={`si-card-status-badge ${item.qty === 0 ? "out" : urg}`}
                     >
                       {item.qty === 0
-                        ? "Out of Stock"
+                        ? "Hết hàng"
                         : item.expireH < 2
-                          ? "Expiring Soon"
-                          : "Active"}
+                          ? "Sắp hết hạn"
+                          : "Hiệu lực"}
                     </div>
                   </div>
 
@@ -413,14 +306,14 @@ const SupplierInventory = ({
                       <div className="si-expiry-label-row">
                         <span className="si-expiry-label">
                           {item.qty === 0
-                            ? "⛔ Out of stock"
+                            ? "⛔ Hết hàng"
                             : `⏱ ${fmtExpiry(item.expireH)}`}
                         </span>
                         <span className="si-qty-chip">
                           <span
                             className={`si-qty-dot ${item.qty === 0 ? "zero" : item.qty < 5 ? "low" : "ok"}`}
                           />
-                          {item.qty} left
+                          Còn {item.qty}
                         </span>
                       </div>
                       <div className="si-expiry-bar-bg">
@@ -456,7 +349,7 @@ const SupplierInventory = ({
                             className="si-save-btn"
                             onClick={() => saveEdit(item.id)}
                           >
-                            ✓ Save
+                            ✓ Lưu
                           </button>
                           <button
                             className="si-cancel-btn"
@@ -473,13 +366,13 @@ const SupplierInventory = ({
                             setEditQty(String(item.qty));
                           }}
                         >
-                          ✏️ Edit Qty
+                          ✏️ Sửa SL
                         </button>
                       )}
                       <button
                         className="si-del-btn"
                         onClick={() => removeItem(item.id)}
-                        title="Remove item"
+                        title="Xóa món"
                       >
                         🗑️
                       </button>
@@ -498,11 +391,11 @@ const SupplierInventory = ({
               <div className="si-add-card-overlay" />
               <div className="si-add-card-body">
                 <div className="si-add-card-icon">➕</div>
-                <div className="si-add-card-title">Add New Item</div>
+                <div className="si-add-card-title">Thêm Món Mới</div>
                 <div className="si-add-card-sub">
-                  Post a new dish and reach 50,000+ customers
+                  Đăng món mới và tiếp cận 50,000+ khách hàng
                 </div>
-                <span className="si-add-card-btn">Post Now →</span>
+                <span className="si-add-card-btn">Đăng ngay →</span>
               </div>
             </div>
           </>

@@ -47,84 +47,84 @@ const WEEKLY_REVENUE = [
 const RECENT_ORDERS = [
   {
     id: "#ORD-2418",
-    customer: "Alex Johnson",
-    items: "Chicken Rice × 2",
-    total: "50,000₫",
-    time: "5 min ago",
+    customer: "Nguyễn Văn A",
+    items: "Coca Cola Original 330ml × 2",
+    total: "20.000đ",
+    time: "5 phút trước",
     status: "confirmed",
   },
   {
     id: "#ORD-2417",
-    customer: "Sarah Williams",
-    items: "Banh Mi × 3",
-    total: "54,000₫",
-    time: "12 min ago",
+    customer: "Trần Thị B",
+    items: "Bánh Oreo Socola × 1",
+    total: "18.000đ",
+    time: "12 phút trước",
     status: "preparing",
   },
   {
     id: "#ORD-2416",
-    customer: "Michael Brown",
-    items: "Beef Pho × 1",
-    total: "45,000₫",
-    time: "28 min ago",
+    customer: "Lê Văn C",
+    items: "Sữa Vinamilk Không Đường 1L × 1",
+    total: "38.000đ",
+    time: "28 phút trước",
     status: "delivered",
   },
   {
     id: "#ORD-2415",
-    customer: "Emily Davis",
-    items: "Bun Bo × 2",
-    total: "90,000₫",
-    time: "45 min ago",
+    customer: "Phạm Thị D",
+    items: "Mì Hảo Hảo Tôm Chua Cay × 2",
+    total: "10.000đ",
+    time: "45 phút trước",
     status: "delivered",
   },
   {
     id: "#ORD-2414",
-    customer: "Chris Wilson",
-    items: "Fried Rice × 1",
-    total: "35,000₫",
-    time: "1h ago",
+    customer: "Võ Văn E",
+    items: "Snack Lay's Khoai Tây × 1",
+    total: "15.000đ",
+    time: "1 giờ trước",
     status: "pending",
   },
   {
     id: "#ORD-2413",
-    customer: "Lisa Anderson",
-    items: "Quang Noodles × 2",
-    total: "70,000₫",
-    time: "2h ago",
+    customer: "Lý Thị F",
+    items: "Bánh AFC Rau Củ × 1",
+    total: "32.000đ",
+    time: "2 giờ trước",
     status: "cancelled",
   },
 ];
 
 const TOP_PRODUCTS = [
   {
-    img: "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=80&h=80&q=80",
-    name: "Chicken Rice Hoi An",
-    meta: "234 orders · 4.9 ★",
-    revenue: "5,850,000₫",
+    img: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=80&h=80&q=80",
+    name: "Coca Cola Original 330ml",
+    meta: "316 đơn · 4.9 ★",
+    revenue: "3,160,000đ",
   },
   {
-    img: "https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?auto=format&fit=crop&w=80&h=80&q=80",
-    name: "Special Beef Pho",
-    meta: "178 orders · 4.8 ★",
-    revenue: "8,010,000₫",
+    img: "https://images.unsplash.com/photo-1581636625402-29b2a704ef13?auto=format&fit=crop&w=80&h=80&q=80",
+    name: "Pepsi Lon 330ml",
+    meta: "284 đơn · 4.8 ★",
+    revenue: "2,556,000đ",
   },
   {
-    img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=80&h=80&q=80",
-    name: "Banh Mi Sandwich",
-    meta: "156 orders · 4.7 ★",
-    revenue: "2,808,000₫",
+    img: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=80&h=80&q=80",
+    name: "Sữa Vinamilk Không Đường 1L",
+    meta: "197 đơn · 5.0 ★",
+    revenue: "7,486,000đ",
   },
   {
-    img: "https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=80&h=80&q=80",
-    name: "Bun Bo Hue",
-    meta: "132 orders · 4.9 ★",
-    revenue: "5,940,000₫",
+    img: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=80&h=80&q=80",
+    name: "Bánh Oreo Socola",
+    meta: "144 đơn · 4.8 ★",
+    revenue: "2,592,000đ",
   },
   {
-    img: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=80&h=80&q=80",
-    name: "Broken Rice & Rib",
-    meta: "118 orders · 4.6 ★",
-    revenue: "4,720,000₫",
+    img: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?auto=format&fit=crop&w=80&h=80&q=80",
+    name: "Snack Lay's Khoai Tây",
+    meta: "131 đơn · 4.7 ★",
+    revenue: "1,965,000đ",
   },
 ];
 
@@ -132,93 +132,93 @@ const NOTIFICATIONS = [
   {
     icon: "🛎️",
     type: "order",
-    title: "New order #2418 received",
-    time: "5 min ago",
+    title: "Đã nhận đơn hàng mới #2418",
+    time: "5 phút trước",
     unread: true,
   },
   {
     icon: "⚠️",
     type: "warning",
-    title: "Chicken Rice expiring soon (3h left)",
-    time: "20 min ago",
+    title: "Cơm Gà sắp hết hạn (còn 3h)",
+    time: "20 phút trước",
     unread: true,
   },
   {
     icon: "⭐",
     type: "star",
-    title: "New 5★ review from Alex J.",
-    time: "1h ago",
+    title: "Đánh giá 5★ mới từ Nguyễn A.",
+    time: "1 giờ trước",
     unread: false,
   },
   {
     icon: "ℹ️",
     type: "info",
-    title: "System maintenance at 2:00 AM",
-    time: "3h ago",
+    title: "Bảo trì hệ thống lúc 2:00 SA",
+    time: "3 giờ trước",
     unread: false,
   },
   {
     icon: "🛎️",
     type: "order",
-    title: "Order #2416 delivered successfully",
-    time: "4h ago",
+    title: "Đơn hàng #2416 đã giao thành công",
+    time: "4 giờ trước",
     unread: false,
   },
 ];
 
 /* ── Orders Analytics data (12 months) ── */
 const MONTHLY_DATA = [
-  { label: "Jan", offline: 14, online: 28 },
-  { label: "Feb", offline: 19, online: 35 },
-  { label: "Mar", offline: 38, online: 62 },
-  { label: "Apr", offline: 28, online: 52 },
-  { label: "May", offline: 45, online: 68 },
-  { label: "Jun", offline: 52, online: 55 },
-  { label: "Jul", offline: 60, online: 71 },
-  { label: "Aug", offline: 48, online: 64 },
-  { label: "Sep", offline: 55, online: 73 },
-  { label: "Oct", offline: 63, online: 80 },
-  { label: "Nov", offline: 70, online: 85 },
-  { label: "Dec", offline: 76, online: 91 },
+  { label: "Th1", offline: 14, online: 28 },
+  { label: "Th2", offline: 19, online: 35 },
+  { label: "Th3", offline: 38, online: 62 },
+  { label: "Th4", offline: 28, online: 52 },
+  { label: "Th5", offline: 45, online: 68 },
+  { label: "Th6", offline: 52, online: 55 },
+  { label: "Th7", offline: 60, online: 71 },
+  { label: "Th8", offline: 48, online: 64 },
+  { label: "Th9", offline: 55, online: 73 },
+  { label: "Th10", offline: 63, online: 80 },
+  { label: "Th11", offline: 70, online: 85 },
+  { label: "Th12", offline: 76, online: 91 },
 ];
 
 const EARNINGS_SEGMENTS = [
-  { label: "Offline", color: "#1e2d5a", pct: 58 },
-  { label: "Online", color: "#f97316", pct: 42 },
+  { label: "Tại Thu Ngân", color: "#1e2d5a", pct: 58 },
+  { label: "Trực Tuyến", color: "#f97316", pct: 42 },
 ];
 
 const STATUS_LABEL = {
-  pending: "Pending",
-  confirmed: "Confirmed",
-  preparing: "Preparing",
-  delivered: "Delivered",
-  cancelled: "Cancelled",
+  pending: "Chờ xác nhận",
+  confirmed: "Đã xác nhận",
+  preparing: "Đang chuẩn bị",
+  delivered: "Đã giao",
+  cancelled: "Đã hủy",
 };
 
 const NAV_TABS = [
-  { id: "overview", label: "Overview", icon: "📊" },
-  { id: "orders", label: "Orders", icon: "🛎️" },
-  { id: "products", label: "Products", icon: "🥗" },
-  { id: "analytics", label: "Analytics", icon: "📈" },
+  { id: "overview", label: "Tổng Quan", icon: "📊" },
+  { id: "orders", label: "Đơn Hàng", icon: "🛎️" },
+  { id: "products", label: "Sản Phẩm", icon: "🥗" },
+  { id: "analytics", label: "Phân Tích", icon: "📈" },
 ];
 
 const SIDEBAR_ITEMS = [
   {
-    section: "Management",
+    section: "Quản Lý",
     items: [
-      { id: "overview", icon: "📊", label: "Overview", badge: null },
-      { id: "orders", icon: "🛎️", label: "Orders", badge: "4" },
-      { id: "products", icon: "🥗", label: "Products", badge: null },
-      { id: "analytics", icon: "📈", label: "Analytics", badge: null },
-      { id: "customers", icon: "👥", label: "Customers", badge: null },
+      { id: "overview", icon: "📊", label: "Tổng Quan", badge: null },
+      { id: "orders", icon: "🛎️", label: "Đơn Hàng", badge: "4" },
+      { id: "products", icon: "🥗", label: "Sản Phẩm", badge: null },
+      { id: "analytics", icon: "📈", label: "Phân Tích", badge: null },
+      { id: "customers", icon: "👥", label: "Khách Hàng", badge: null },
     ],
   },
   {
-    section: "Settings",
+    section: "Cài Đặt",
     items: [
-      { id: "profile", icon: "🏪", label: "Store Profile", badge: null },
-      { id: "payments", icon: "💳", label: "Payments", badge: null },
-      { id: "support", icon: "💬", label: "Support", badge: "1" },
+      { id: "profile", icon: "🏪", label: "Hồ Sơ Cửa Hàng", badge: null },
+      { id: "payments", icon: "💳", label: "Thanh Toán", badge: null },
+      { id: "support", icon: "💬", label: "Hỗ Trợ", badge: "1" },
     ],
   },
 ];
@@ -462,7 +462,7 @@ const OrdersLineChart = () => {
                   fontWeight="700"
                   fill="#1e2d5a"
                 >
-                  ● {d.offline} offline orders
+                  ● {d.offline} đơn tại thu ngân
                 </text>
                 <text
                   x={bX + 10}
@@ -471,7 +471,7 @@ const OrdersLineChart = () => {
                   fontWeight="700"
                   fill="#f97316"
                 >
-                  ● {d.online} online orders
+                  ● {d.online} đơn trực tuyến
                 </text>
               </g>
             );
@@ -495,13 +495,13 @@ const OrdersLineChart = () => {
       <div className="sd-lc-legend">
         <span className="sd-lc-legend-item">
           <span className="sd-lc-dot" style={{ background: "#1e2d5a" }} />{" "}
-          Offline orders
+          Đơn tại thu ngân
         </span>
         <span className="sd-lc-legend-item">
           <span className="sd-lc-dot" style={{ background: "#f97316" }} />{" "}
-          Online orders
+          Đơn trực tuyến
         </span>
-        <button className="sd-lc-filter-btn">Monthly ▾</button>
+        <button className="sd-lc-filter-btn">Hàng tháng ▾</button>
       </div>
     </div>
   );
@@ -582,7 +582,7 @@ const EarningsDonut = () => {
           fontSize="7.5"
           fill="#9ca3af"
         >
-          This month
+          Tháng này
         </text>
       </svg>
       <div className="sd-donut-legend">
@@ -629,8 +629,8 @@ const SupplierDashboard = ({ onNavigate, onSwitchToCustomer }) => {
           {/* Page header */}
           <div className="sd-page-header">
             <div>
-              <h1>Store Overview</h1>
-              <p>Welcome back 👋 — here's your store performance today.</p>
+              <h1>Tổng Quan Cửa Hàng</h1>
+              <p>Chào mừng trở lại 👋 — đây là hiệu suất cửa hàng của bạn hôm nay.</p>
             </div>
             <div
               style={{
@@ -641,7 +641,7 @@ const SupplierDashboard = ({ onNavigate, onSwitchToCustomer }) => {
               }}
             >
               <span className="sd-header-date">📅 {today}</span>
-              <RippleBtn className="sd-btn-primary">➕ Add New Item</RippleBtn>
+              <RippleBtn className="sd-btn-primary">➕ Thêm Món Mới</RippleBtn>
             </div>
           </div>
 
@@ -653,7 +653,7 @@ const SupplierDashboard = ({ onNavigate, onSwitchToCustomer }) => {
                 <span className="sd-kpi-trend up">↑ 12.4%</span>
               </div>
               <div className="sd-kpi-value">4,320,000₫</div>
-              <div className="sd-kpi-label">Today's Revenue</div>
+              <div className="sd-kpi-label">Doanh Thu Hôm Nay</div>
             </div>
             <div className="sd-kpi-card">
               <div className="sd-kpi-top">
@@ -661,7 +661,7 @@ const SupplierDashboard = ({ onNavigate, onSwitchToCustomer }) => {
                 <span className="sd-kpi-trend up">↑ 8.1%</span>
               </div>
               <div className="sd-kpi-value">38</div>
-              <div className="sd-kpi-label">Today's Orders</div>
+              <div className="sd-kpi-label">Đơn Hàng Hôm Nay</div>
             </div>
             <div className="sd-kpi-card">
               <div className="sd-kpi-top">
@@ -669,7 +669,7 @@ const SupplierDashboard = ({ onNavigate, onSwitchToCustomer }) => {
                 <span className="sd-kpi-trend down">↓ 2.0%</span>
               </div>
               <div className="sd-kpi-value">24</div>
-              <div className="sd-kpi-label">Active Menu Items</div>
+              <div className="sd-kpi-label">Món Đang Hoạt Động</div>
             </div>
             <div className="sd-kpi-card">
               <div className="sd-kpi-top">
@@ -677,7 +677,7 @@ const SupplierDashboard = ({ onNavigate, onSwitchToCustomer }) => {
                 <span className="sd-kpi-trend up">↑ 0.2</span>
               </div>
               <div className="sd-kpi-value">4.87</div>
-              <div className="sd-kpi-label">Avg. Rating</div>
+              <div className="sd-kpi-label">Đánh Giá TB</div>
             </div>
           </div>
 
@@ -686,7 +686,7 @@ const SupplierDashboard = ({ onNavigate, onSwitchToCustomer }) => {
             {/* Orders Analytics */}
             <div className="sd-card">
               <div className="sd-card-head">
-                <h3 className="sd-card-title">Orders Analytics</h3>
+                <h3 className="sd-card-title">Phân Tích Đơn Hàng</h3>
               </div>
               <OrdersLineChart />
             </div>
@@ -694,7 +694,7 @@ const SupplierDashboard = ({ onNavigate, onSwitchToCustomer }) => {
             {/* Earnings donut */}
             <div className="sd-card sd-card--center">
               <div className="sd-card-head">
-                <h3 className="sd-card-title">Earnings</h3>
+                <h3 className="sd-card-title">Thu Nhập</h3>
                 <span className="sd-card-link">···</span>
               </div>
               <EarningsDonut />
@@ -706,21 +706,21 @@ const SupplierDashboard = ({ onNavigate, onSwitchToCustomer }) => {
             {/* Recent orders */}
             <div className="sd-card">
               <div className="sd-card-head">
-                <h3 className="sd-card-title">Recent Orders</h3>
+                <h3 className="sd-card-title">Đơn Hàng Gần Đây</h3>
                 <button
                   className="sd-card-link"
                   onClick={() => onNavigate?.("orders")}
                 >
-                  View all →
+                  Xem tất cả →
                 </button>
               </div>
               <table className="sd-orders-table">
                 <thead>
                   <tr>
-                    <th>Order ID</th>
-                    <th>Customer</th>
-                    <th>Total</th>
-                    <th>Status</th>
+                    <th>Mã Đơn Hàng</th>
+                    <th>Khách Hàng</th>
+                    <th>Tổng Tiền</th>
+                    <th>Trạng Thái</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -750,12 +750,12 @@ const SupplierDashboard = ({ onNavigate, onSwitchToCustomer }) => {
             {/* Top products */}
             <div className="sd-card">
               <div className="sd-card-head">
-                <h3 className="sd-card-title">Top Products</h3>
+                <h3 className="sd-card-title">Sản Phẩm Hàng Đầu</h3>
                 <button
                   className="sd-card-link"
                   onClick={() => onNavigate?.("inventory")}
                 >
-                  View all →
+                  Xem tất cả →
                 </button>
               </div>
               <div className="sd-products-list">
@@ -787,8 +787,8 @@ const SupplierDashboard = ({ onNavigate, onSwitchToCustomer }) => {
             {/* Notifications */}
             <div className="sd-card">
               <div className="sd-card-head">
-                <h3 className="sd-card-title">Notifications</h3>
-                <span className="sd-card-link">Mark all read</span>
+                <h3 className="sd-card-title">Thông Báo</h3>
+                <span className="sd-card-link">Đánh dấu đã đọc</span>
               </div>
               <div className="sd-notif-list">
                 {NOTIFICATIONS.map((n, i) => (
@@ -809,32 +809,32 @@ const SupplierDashboard = ({ onNavigate, onSwitchToCustomer }) => {
             {/* Quick actions */}
             <div className="sd-card">
               <div className="sd-card-head">
-                <h3 className="sd-card-title">Quick Actions</h3>
+                <h3 className="sd-card-title">Thao Tác Nhanh</h3>
               </div>
               <div className="sd-actions-grid">
                 <button className="sd-action-btn">
                   <span>➕</span>
-                  <span>Add Item</span>
+                  <span>Thêm Món</span>
                 </button>
                 <button className="sd-action-btn">
                   <span>📋</span>
-                  <span>View Orders</span>
+                  <span>Xem Đơn Hàng</span>
                 </button>
                 <button className="sd-action-btn">
                   <span>📦</span>
-                  <span>Inventory</span>
+                  <span>Kho Hàng</span>
                 </button>
                 <button className="sd-action-btn">
                   <span>💬</span>
-                  <span>Message Customer</span>
+                  <span>Nhắn Tin Khách</span>
                 </button>
                 <button className="sd-action-btn">
                   <span>📊</span>
-                  <span>Monthly Report</span>
+                  <span>Báo Cáo Tháng</span>
                 </button>
                 <button className="sd-action-btn">
                   <span>⚙️</span>
-                  <span>Store Settings</span>
+                  <span>Cài Đặt Cửa Hàng</span>
                 </button>
               </div>
             </div>

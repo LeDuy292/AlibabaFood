@@ -15,150 +15,150 @@ const HERO_PHOTOS = [
 
 /* Small thumbnail per notification type */
 const TYPE_IMG = {
-  order: UNSPLASH("1512621776951-a57141f2eefd", 200, 140),
-  review: UNSPLASH("1512058564366-18510be2db19", 200, 140),
-  warning: UNSPLASH("1493770348161-369560ae357d", 200, 140),
-  system: UNSPLASH("1466978913421-dad2ebd01d17", 200, 140),
+  order: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=200&h=140&q=80",
+  review: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?auto=format&fit=crop&w=200&h=140&q=80",
+  warning: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&w=200&h=140&q=80",
+  system: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=200&h=140&q=80",
 };
 
 const INITIAL_NOTIFS = [
-  /* TODAY */
+  /* HÔM NAY */
   {
     id: 1,
-    group: "Today",
+    group: "Hôm nay",
     type: "review",
     icon: "⭐",
-    title: "New 5-star review",
-    body: "John Smith left a 5-star review on your Crispy Chicken Rice.",
-    time: "2 min ago",
+    title: "Đánh giá mới",
+    body: "Nguyễn Văn A đã để lại đánh giá 5 sao cho Coca Cola của bạn.",
+    time: "2 phút trước",
     read: false,
   },
   {
     id: 2,
-    group: "Today",
+    group: "Hôm nay",
     type: "order",
     icon: "🧾",
-    title: "New order received",
-    body: "Order #ORD-4830 — Crispy Chicken Rice × 2 from Alice Wong.",
-    time: "5 min ago",
+    title: "Đơn hàng mới",
+    body: "Đơn hàng #ORD-6001 — Coca Cola Original 330ml × 2 từ Phạm Thị B.",
+    time: "5 phút trước",
     read: false,
   },
   {
     id: 3,
-    group: "Today",
+    group: "Hôm nay",
     type: "warning",
     icon: "⚠️",
-    title: "Item expiring soon",
-    body: "Signature Pho has only 1.5 hours left. Reduce price or remove listing.",
-    time: "18 min ago",
+    title: "Sản phẩm sắp hết hạn",
+    body: "Mì Hảo Hảo Tôm Chua Cay có hạn sử dụng ngắn, cân nhắc giảm giá.",
+    time: "18 phút trước",
     read: false,
   },
   {
     id: 4,
-    group: "Today",
+    group: "Hôm nay",
     type: "order",
     icon: "✅",
-    title: "Order #ORD-4827 ready",
-    body: "Signature Pho × 2 for David Park is ready for pickup.",
-    time: "22 min ago",
+    title: "Đơn #ORD-5998 đã sẵn sàng",
+    body: "Sữa Vinamilk 1L × 1 của Trần Văn C đã sẵn sàng để giao.",
+    time: "22 phút trước",
     read: true,
   },
   {
     id: 5,
-    group: "Today",
+    group: "Hôm nay",
     type: "system",
     icon: "🔔",
-    title: "Scheduled maintenance",
-    body: "Planned downtime tonight 2:00 – 3:00 AM. Please plan accordingly.",
-    time: "1 hr ago",
+    title: "Bảo trì hệ thống",
+    body: "Bảo trì định kỳ 02:00–03:00. Vui lòng lưu ý cập nhật giờ giao hàng.",
+    time: "1 giờ trước",
     read: true,
   },
   {
     id: 6,
-    group: "Today",
+    group: "Hôm nay",
     type: "review",
     icon: "💬",
-    title: "Review reply needed",
-    body: "Carol Lee left a comment on Caesar Salad. She has a question.",
-    time: "1.5 hr ago",
+    title: "Cần trả lời đánh giá",
+    body: "Lê Thị D đã bình luận về Bánh Oreo — vui lòng phản hồi khách hàng.",
+    time: "1.5 giờ trước",
     read: true,
   },
-  /* YESTERDAY */
+  /* HÔM QUA */
   {
     id: 7,
-    group: "Yesterday",
+    group: "Hôm qua",
     type: "order",
     icon: "🎉",
-    title: "Order #ORD-4826 delivered",
-    body: "Emma Smith picked up BBQ Banh Mi × 4. Payment confirmed.",
-    time: "Yesterday",
+    title: "Đơn #ORD-5995 đã giao",
+    body: "Bánh AFC Rau Củ × 1 đã được giao cho khách. Thanh toán hoàn tất.",
+    time: "Hôm qua",
     read: true,
   },
   {
     id: 8,
-    group: "Yesterday",
+    group: "Hôm qua",
     type: "warning",
     icon: "📦",
-    title: "Low stock alert",
-    body: "Broken Rice with Pork is nearly sold out — only 1 serving left!",
-    time: "Yesterday",
+    title: "Cảnh báo tồn kho thấp",
+    body: "Trứng gà hộp 10 quả sắp hết — chỉ còn 2 hộp.",
+    time: "Hôm qua",
     read: true,
   },
   {
     id: 9,
-    group: "Yesterday",
+    group: "Hôm qua",
     type: "system",
     icon: "💳",
-    title: "Payout processed",
-    body: "Your weekly payout of 1,240,000₫ has been sent to your bank.",
-    time: "Yesterday",
+    title: "Đã chuyển tiền",
+    body: "Khoản thanh toán tuần này: 1,240,000₫ đã được chuyển vào tài khoản của bạn.",
+    time: "Hôm qua",
     read: true,
   },
-  /* EARLIER */
+  /* CŨ HƠN */
   {
     id: 10,
-    group: "Earlier",
+    group: "Cũ hơn",
     type: "review",
     icon: "⭐",
-    title: "New 4-star review",
-    body: "Lily H. rated your Bubble Milk Tea 4 stars. Great job!",
-    time: "2 days ago",
+    title: "Đánh giá mới",
+    body: "Khách hàng đã đánh giá Bánh Oreo 4 sao.",
+    time: "2 ngày trước",
     read: true,
   },
   {
     id: 11,
-    group: "Earlier",
+    group: "Cũ hơn",
     type: "system",
     icon: "🏆",
-    title: "Top Supplier badge earned",
-    body: "Congratulations! You've earned the Top Supplier badge this week.",
-    time: "3 days ago",
+    title: "Đạt huy hiệu Nhà Cung Cấp",
+    body: "Chúc mừng! Bạn đã được trao huy hiệu Top Nhà Cung Cấp tuần này.",
+    time: "3 ngày trước",
     read: true,
   },
   {
     id: 12,
-    group: "Earlier",
+    group: "Cũ hơn",
     type: "order",
     icon: "🧾",
-    title: "Order #ORD-4815 complete",
-    body: "All items for this order have been delivered successfully.",
-    time: "4 days ago",
+    title: "Đơn #ORD-5994 hoàn tất",
+    body: "Trứng gà hộp 10 quả đã được giao thành công.",
+    time: "4 ngày trước",
     read: true,
   },
 ];
 
-const TYPE_FILTERS = ["All", "Orders", "Warnings", "Reviews", "System"];
+const TYPE_FILTERS = ["Tất cả", "Đơn hàng", "Cảnh báo", "Đánh giá", "Hệ thống"];
 
 const typeOf = (t) => {
-  if (t === "order") return "Orders";
-  if (t === "warning") return "Warnings";
-  if (t === "review") return "Reviews";
-  return "System";
+  if (t === "order") return "Đơn hàng";
+  if (t === "warning") return "Cảnh báo";
+  if (t === "review") return "Đánh giá";
+  return "Hệ thống";
 };
 
 const SupplierNotifications = ({ onNavigate, onSwitchToCustomer }) => {
   const [notifs, setNotifs] = useState(INITIAL_NOTIFS);
-  const [filter, setFilter] = useState("All");
+  const [filter, setFilter] = useState("Tất cả");
   const [heroPhi, setHeroPhi] = useState(0);
 
   /* Hero crossfader */
@@ -198,9 +198,9 @@ const SupplierNotifications = ({ onNavigate, onSwitchToCustomer }) => {
   const dismiss = (id) => setNotifs((prev) => prev.filter((n) => n.id !== id));
 
   const filtered = notifs.filter(
-    (n) => filter === "All" || typeOf(n.type) === filter,
+    (n) => filter === "Tất cả" || typeOf(n.type) === filter,
   );
-  const groups = ["Today", "Yesterday", "Earlier"];
+  const groups = ["Hôm nay", "Hôm qua", "Cũ hơn"];
   const unreadCount = notifs.filter((n) => !n.read).length;
   const unreadOrders = notifs.filter(
     (n) => !n.read && n.type === "order",
@@ -233,41 +233,40 @@ const SupplierNotifications = ({ onNavigate, onSwitchToCustomer }) => {
           <div className="sn-hero-overlay" />
         </div>
         <div className="sn-hero-content">
-          <div className="sn-hero-badge">🔔 Notification Center</div>
+          <div className="sn-hero-badge">🔔 Trung Tâm Thông Báo</div>
           <h1 className="sn-hero-title">
-            Notifications
+            Thông Báo
             {unreadCount > 0 && (
               <span className="sn-unread-bubble">{unreadCount}</span>
             )}
           </h1>
           <p className="sn-hero-sub">
-            Stay on top of orders, reviews, warnings, and system alerts — all in
-            one place.
+            Luôn cập nhật đơn hàng, đánh giá, cảnh báo và thông báo hệ thống — tất cả ở một nơi.
           </p>
           <div className="sn-hero-chips">
-            <span className="sn-hero-chip">⚡ Real-Time</span>
-            <span className="sn-hero-chip">📊 All Channels</span>
-            <span className="sn-hero-chip">✓ Quick Actions</span>
+            <span className="sn-hero-chip">⚡ Thời Gian Thực</span>
+            <span className="sn-hero-chip">📊 Mọi Kênh</span>
+            <span className="sn-hero-chip">✓ Thao Tác Nhanh</span>
           </div>
         </div>
         {/* Floating unread summary card */}
         <div className="sn-hero-summary-card">
-          <div className="sn-sum-label">Unread Alerts</div>
+          <div className="sn-sum-label">Chưa Đọc</div>
           <div className="sn-sum-val">{unreadCount}</div>
           <div className="sn-sum-rows">
             <div className="sn-sum-row">
               <span className="sn-sum-dot sn-dot-order" />
-              <span>Orders</span>
+              <span>Đơn Hàng</span>
               <strong>{unreadOrders}</strong>
             </div>
             <div className="sn-sum-row">
               <span className="sn-sum-dot sn-dot-review" />
-              <span>Reviews</span>
+              <span>Đánh Giá</span>
               <strong>{unreadReviews}</strong>
             </div>
             <div className="sn-sum-row">
               <span className="sn-sum-dot sn-dot-warning" />
-              <span>Warnings</span>
+              <span>Cảnh Báo</span>
               <strong>{unreadWarn}</strong>
             </div>
           </div>
@@ -279,28 +278,28 @@ const SupplierNotifications = ({ onNavigate, onSwitchToCustomer }) => {
         {[
           {
             icon: "🔔",
-            label: "Total",
+            label: "Tổng cộng",
             val: notifs.length,
             cls: "sn-sb-total",
             bg: HERO_PHOTOS[3],
           },
           {
             icon: "📬",
-            label: "Unread",
+            label: "Chưa đọc",
             val: unreadCount,
             cls: "sn-sb-unread",
             bg: HERO_PHOTOS[0],
           },
           {
             icon: "🧾",
-            label: "Orders",
+            label: "Đơn hàng",
             val: notifs.filter((n) => n.type === "order").length,
             cls: "sn-sb-order",
             bg: TYPE_IMG.order,
           },
           {
             icon: "⭐",
-            label: "Reviews",
+            label: "Đánh giá",
             val: notifs.filter((n) => n.type === "review").length,
             cls: "sn-sb-review",
             bg: TYPE_IMG.review,
@@ -329,7 +328,7 @@ const SupplierNotifications = ({ onNavigate, onSwitchToCustomer }) => {
         <div className="sn-filters">
           {TYPE_FILTERS.map((f) => {
             const cnt =
-              f === "All"
+              f === "Tất cả"
                 ? unreadCount
                 : notifs.filter((n) => !n.read && typeOf(n.type) === f).length;
             return (
@@ -349,12 +348,12 @@ const SupplierNotifications = ({ onNavigate, onSwitchToCustomer }) => {
           onClick={markAllRead}
           disabled={unreadCount === 0}
         >
-          ✓ Mark all as read
+          ✓ Đánh dấu tất cả đã đọc
         </button>
       </div>
 
       {/* ── Grouped List ── */}
-      <div className="sn-list-wrap" data-reveal>
+      <div className="sn-list-wrap revealed">
         {filtered.length === 0 ? (
           <div className="sn-empty">
             <img
@@ -362,9 +361,9 @@ const SupplierNotifications = ({ onNavigate, onSwitchToCustomer }) => {
               alt="no notifications"
               className="sn-empty-img"
             />
-            <div className="sn-empty-title">All caught up!</div>
+            <div className="sn-empty-title">Không có thông báo mới!</div>
             <div className="sn-empty-sub">
-              No notifications match your current filter.
+              Không có thông báo nào khớp với bộ lọc của bạn.
             </div>
           </div>
         ) : (
@@ -414,7 +413,7 @@ const SupplierNotifications = ({ onNavigate, onSwitchToCustomer }) => {
                           e.stopPropagation();
                           dismiss(n.id);
                         }}
-                        title="Dismiss"
+                        title="Bỏ qua"
                       >
                         ×
                       </button>
