@@ -131,7 +131,7 @@ const MenuHeroSection = () => {
                     <div className="menu-hero-cards">
                         {[
                             { img: fastFoodImg, title: "Đồ Ăn Nhanh", delay: 0.6 },
-                            { img: foodComboImg, title: "Combo Đồ Ăn", delay: 0.8 },
+                            { img: foodComboImg, title: "Đồ hộp", delay: 0.8 },
                             { img: cakeImg, title: "Bánh Ngọt", delay: 1.0 },
                             { img: dryFoodImg, title: "Đồ Khô", delay: 1.2 }
                         ].map((card, index) => (

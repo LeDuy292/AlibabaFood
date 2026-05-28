@@ -1,23 +1,28 @@
-import React from "react";
-import "./MenuProductCard.css";
-import { Star, ShoppingCart } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import { useCart } from "../contexts/CartContext";
+import React from 'react';
+import './MenuProductCard.css';
+import { Star, ShoppingCart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { useCart } from '../contexts/CartContext';
+
+const formatVND = (value) => {
+  const amount = typeof value === 'number' ? value : parseInt(String(value).replace(/[^0-9]/g, ''), 10);
+  return amount > 0 ? amount.toLocaleString('vi-VN') : '0';
+};
 
 const MenuProductCard = ({ product }) => {
-  const { name, price, rating, discount, image, quantity } = product;
+  const { name, price, rating, discount, img, image, quantity } = product;
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  // Convert price string (e.g. '5') to VND integer
-  const priceVND = Math.round(parseFloat(price) * 10000);
+  const rawPrice = typeof price === 'number' ? price : parseInt(String(price).replace(/[^0-9]/g, ''), 10) || 0;
+  const imageUrl = img || image;
 
   const buildItem = () => ({
     name,
-    price: priceVND,
+    price: rawPrice,
     quantity: 1,
-    image,
+    image: imageUrl,
   });
 
   const handleAddToCart = () => {
@@ -27,42 +32,42 @@ const MenuProductCard = ({ product }) => {
 
   const handleBuyNow = () => {
     addToCart(buildItem());
-    navigate("/checkout");
+    navigate('/checkout');
   };
 
   return (
     <div className="menu-product-card">
       <div className="card-badge-container">
-        <span className="quantity-badge">Số lượng: {quantity}</span>
-        <span className="discount-badge">Giảm giá: {discount}</span>
+        <span className="quantity-badge">Số lượng: {quantity ?? 0}</span>
+        {discount && discount !== '0%' && <span className="discount-badge">Giảm giá: {discount}</span>}
       </div>
- 
+
       <button className="cart-shortcut-btn" onClick={handleAddToCart}>
         <ShoppingCart size={20} color="white" />
       </button>
- 
+
       <div className="product-image-container">
-        <img src={image} alt={name} className="product-image" />
+        <img src={imageUrl} alt={name} className="product-image" />
       </div>
- 
+
       <div className="product-info">
         <h3 className="product-name">{name}</h3>
- 
+
         <div className="product-rating">
           {[...Array(5)].map((_, i) => (
             <Star
               key={i}
               size={16}
-              fill={i < rating ? "#FFD700" : "none"}
-              stroke={i < rating ? "#FFD700" : "#ccc"}
+              fill={i < rating ? '#FFD700' : 'none'}
+              stroke={i < rating ? '#FFD700' : '#ccc'}
             />
           ))}
         </div>
- 
+
         <div className="product-footer">
           <div className="price-tag">
-            <span className="currency">$</span>
-            <span className="amount">{price}</span>
+            <span className="currency">₫</span>
+            <span className="amount">{formatVND(rawPrice)}</span>
           </div>
           <div className="action-buttons">
             <button className="add-to-cart-btn" onClick={handleAddToCart}>

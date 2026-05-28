@@ -4,41 +4,37 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import '../components/HotDealSection.css'; // Re-use the styles
 import './NearbyDishesList.css';
-import chickenRiceImg from '../assets/FoodCombo.png';
-import banhMiImg from '../assets/FastFood.png';
-import milkTeaImg from '../assets/Cake.png';
-import saladImg from '../assets/DryFood.png';
 
 const parseVND = (str) => parseInt(String(str).replace(/[^0-9]/g, "")) || 0;
 
 const mockNearbyProducts = [
   {
     id: 101,
-    name: "Cơm gà xối mỡ (cận date 2h)",
+    name: "Cá hộp",
     price: "25,000đ",
     rating: 5,
-    img: chickenRiceImg
+    img: "https://th.bing.com/th/id/OIP.hxxpyDEE50jRRL3D3WHpxAAAAA?w=181&h=181&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
   },
   {
     id: 102,
-    name: "Bánh mì thịt nướng (cận 4h)",
+    name: "Bánh mì nướng",
     price: "15,000đ",
     rating: 4,
-    img: banhMiImg
+    img: "https://th.bing.com/th/id/OIP.FW51OSMmhbKbMkotpssC4wHaHa?w=209&h=209&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
   },
   {
     id: 103,
-    name: "Trà sữa trân châu (cận 1h)",
+    name: "Trà sữa trân châu",
     price: "20,000đ",
     rating: 4,
-    img: milkTeaImg
+    img: "https://th.bing.com/th/id/OIP.Nvz3TOA3U4vc9zCmP-kLYAHaE7?w=274&h=183&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
   },
   {
     id: 104,
-    name: "Salad gà quay (cận 3h)",
+    name: "Snack oshi",
     price: "30,000đ",
     rating: 5,
-    img: saladImg
+    img: "https://th.bing.com/th/id/OIP.h_qVkjBFHfNBnnustS_6xgHaHa?w=220&h=220&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3"
   }
 ];
 

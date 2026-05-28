@@ -188,6 +188,19 @@
     white-space: nowrap;
 }
 
+.food-link {
+    display: inline-block;
+    margin-top: 0.6rem;
+    color: var(--primary-dark);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.food-link:hover {
+    text-decoration: underline;
+}
+
 .add-to-cart-btn {
     background-color: var(--primary-dark);
     color: #fff;
