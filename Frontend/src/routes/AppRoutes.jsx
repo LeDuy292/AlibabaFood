@@ -12,6 +12,7 @@ import SupplierDashboard from "../components/SupplierDashboard/SupplierDashboard
 import SupplierPost from "../components/SupplierPages/SupplierPost";
 import SupplierOrders from "../components/SupplierPages/SupplierOrders";
 import SupplierInventory from "../components/SupplierPages/SupplierInventory";
+import { INITIAL_ITEMS as SUPPLIER_INVENTORY_INITIAL_ITEMS } from "../components/SupplierPages/supplierInventoryData";
 import SupplierNotifications from "../components/SupplierPages/SupplierNotifications";
 import PartnerRegistration from "../pages/PartnerRegistration";
 import Login from "../pages/Login";
@@ -23,114 +24,13 @@ import Checkout from "../pages/Checkout";
 import PaymentSuccess from "../pages/PaymentSuccess";
 import PaymentCancel from "../pages/PaymentCancel";
 
-const INVENTORY_DEFAULT = [
-  {
-    id: 1,
-    emoji: "🍗",
-    name: "Cơm Gà Giòn",
-    category: "Cơm",
-    qty: 12,
-    price: "55,000₫",
-    expireH: 3,
-    status: "active",
-  },
-  {
-    id: 2,
-    emoji: "🥗",
-    name: "Salad Caesar",
-    category: "Salad",
-    qty: 4,
-    price: "55,000₫",
-    expireH: 5,
-    status: "active",
-  },
-  {
-    id: 3,
-    emoji: "🧃",
-    name: "Trà Sữa Trân Châu",
-    category: "Đồ Uống",
-    qty: 20,
-    price: "30,000₫",
-    expireH: 8,
-    status: "active",
-  },
-  {
-    id: 4,
-    emoji: "🍜",
-    name: "Phở Đặc Biệt",
-    category: "Mì",
-    qty: 2,
-    price: "65,000₫",
-    expireH: 1.5,
-    status: "active",
-  },
-  {
-    id: 5,
-    emoji: "🥐",
-    name: "Bánh Mì BBQ",
-    category: "Bánh Mì",
-    qty: 9,
-    price: "27,000₫",
-    expireH: 4,
-    status: "active",
-  },
-  {
-    id: 6,
-    emoji: "🍣",
-    name: "Hộp Sushi Cá Hồi",
-    category: "Sushi",
-    qty: 0,
-    price: "85,000₫",
-    expireH: 2,
-    status: "out",
-  },
-  {
-    id: 7,
-    emoji: "☕",
-    name: "Cà Phê Trứng Hà Nội",
-    category: "Đồ Uống",
-    qty: 7,
-    price: "38,000₫",
-    expireH: 6,
-    status: "active",
-  },
-  {
-    id: 8,
-    emoji: "🍩",
-    name: "Bánh Donut Kem Matcha",
-    category: "Tráng Miệng",
-    qty: 3,
-    price: "22,000₫",
-    expireH: 9,
-    status: "active",
-  },
-  {
-    id: 9,
-    emoji: "🍱",
-    name: "Hộp Cơm Bento Hải Sản",
-    category: "Bento",
-    qty: 6,
-    price: "72,000₫",
-    expireH: 3.5,
-    status: "active",
-  },
-  {
-    id: 10,
-    emoji: "🥩",
-    name: "Cơm Tấm Sườn",
-    category: "Cơm",
-    qty: 1,
-    price: "48,000₫",
-    expireH: 1,
-    status: "active",
-  },
-];
-
 const SupplierCtx = createContext(null);
 
 const SupplierLayout = () => {
   const navigate = useNavigate();
-  const [inventoryItems, setInventoryItems] = useState(INVENTORY_DEFAULT);
+  const [inventoryItems, setInventoryItems] = useState(
+    SUPPLIER_INVENTORY_INITIAL_ITEMS,
+  );
 
   const onNavigate = (page) =>
     navigate(page === "home" ? "/supplier" : `/supplier/${page}`);

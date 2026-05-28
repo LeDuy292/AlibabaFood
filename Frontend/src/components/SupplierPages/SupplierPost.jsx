@@ -3,25 +3,25 @@ import "./SupplierPost.css";
 import SupplierNavbar from "./SupplierNavbar";
 
 const CATEGORIES = [
-  "🍱 Rice Dishes",
-  "🍜 Noodles & Soup",
-  "🥗 Salads & Healthy",
-  "🥐 Bakery & Bread",
-  "🧋 Drinks & Desserts",
-  "🍣 Sushi & Japanese",
-  "🌮 Fast Food",
-  "🍛 Curries & Stews",
-  "🥩 BBQ & Grill",
-  "🍰 Cakes & Sweets",
+  "🍱 Cơm",
+  "🍜 Mì & Phở",
+  "🥗 Salad & Đồ ăn tốt cho sức khỏe",
+  "🥐 Bánh Mì & Bánh Ngọt",
+  "🧋 Đồ Uống & Tráng Miệng",
+  "🍣 Sushi & Đồ Nhật",
+  "🌮 Đồ Ăn Nhanh",
+  "🍛 Cà Ri & Món Hầm",
+  "🥩 BBQ & Đồ Nướng",
+  "🍰 Bánh Kem & Kẹo Ngọt",
 ];
 
 const INSPIRATION_PHOTOS = [
-  { id: "photo-1512058564366-18510be2db19", label: "Rice Bowl" },
-  { id: "photo-1568901346375-23c9450c58cd", label: "Burger" },
-  { id: "photo-1546069901-ba9599a7e63c", label: "Salad" },
-  { id: "photo-1556909114-f6e7ad7d3136", label: "Restaurant Kitchen" },
-  { id: "photo-1565958011703-44f9829ba187", label: "Pasta" },
-  { id: "photo-1567620905732-2d1ec7ab7445", label: "Creative Dishes" },
+  { image: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=320&h=200&q=80", label: "Coca Cola 330ml" },
+  { image: "https://images.unsplash.com/photo-1581636625402-29b2a704ef13?auto=format&fit=crop&w=320&h=200&q=80", label: "Pepsi 330ml" },
+  { image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=320&h=200&q=80", label: "Sữa Vinamilk 1L" },
+  { image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=320&h=200&q=80", label: "Bánh Oreo" },
+  { image: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?auto=format&fit=crop&w=320&h=200&q=80", label: "Snack Lay's" },
+  { image: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&w=320&h=200&q=80", label: "Mì Hảo Hảo" },
 ];
 
 const RippleBtn = ({
@@ -105,18 +105,18 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
 
   const validate = () => {
     const errs = {};
-    if (!form.name.trim()) errs.name = "Item name is required.";
-    if (!form.category) errs.category = "Please select a category.";
+    if (!form.name.trim()) errs.name = "Vui lòng nhập tên món.";
+    if (!form.category) errs.category = "Vui lòng chọn danh mục.";
     if (!form.price || isNaN(form.price) || Number(form.price) <= 0)
-      errs.price = "Enter a valid sale price.";
+      errs.price = "Nhập giá bán hợp lệ.";
     if (!form.quantity || isNaN(form.quantity) || Number(form.quantity) < 1)
-      errs.quantity = "Enter a valid quantity.";
+      errs.quantity = "Nhập số lượng hợp lệ.";
     if (
       !form.expiryHours ||
       isNaN(form.expiryHours) ||
       Number(form.expiryHours) <= 0
     )
-      errs.expiryHours = "Enter valid hours until expiry.";
+      errs.expiryHours = "Nhập thời gian hết hạn hợp lệ.";
     return errs;
   };
 
@@ -190,27 +190,27 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
           <div className="sp-header-bg-overlay" />
         </div>
         <div className="sp-header-inner">
-          <div className="sp-header-badge">➕ Add New Item</div>
-          <h1 className="sp-page-title">Post Food Item</h1>
+          <div className="sp-header-badge">➕ Thêm Món Mới</div>
+          <h1 className="sp-page-title">Đăng Món Mới</h1>
           <p className="sp-page-sub">
-            Takes just <strong>60 seconds</strong> — your item goes live to{" "}
-            <strong>50,000+</strong> customers instantly.
+            Chỉ mất <strong>60 giây</strong> — món của bạn sẽ tiếp cận{" "}
+            <strong>50,000+</strong> khách hàng ngay lập tức.
           </p>
           {/* Quick stats row */}
           <div className="sp-header-stats">
             <div className="sp-hstat">
               <span className="sp-hstat-val">60s</span>
-              <span className="sp-hstat-l">To list 1 item</span>
+              <span className="sp-hstat-l">Để đăng 1 món</span>
             </div>
             <div className="sp-hstat-div" />
             <div className="sp-hstat">
               <span className="sp-hstat-val">50k+</span>
-              <span className="sp-hstat-l">Customers</span>
+              <span className="sp-hstat-l">Khách hàng</span>
             </div>
             <div className="sp-hstat-div" />
             <div className="sp-hstat">
-              <span className="sp-hstat-val">Free</span>
-              <span className="sp-hstat-l">Zero commission</span>
+              <span className="sp-hstat-val">Miễn phí</span>
+              <span className="sp-hstat-l">Không hoa hồng</span>
             </div>
           </div>
         </div>
@@ -222,11 +222,7 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
       <div className="sp-insp-strip">
         {INSPIRATION_PHOTOS.map((p, i) => (
           <div key={i} className="sp-insp-item">
-            <img
-              src={`https://images.unsplash.com/${p.id}?auto=format&fit=crop&w=320&h=200&q=80`}
-              alt={p.label}
-              loading="lazy"
-            />
+            <img src={p.image} alt={p.label} loading="lazy" />
             <div className="sp-insp-overlay">
               <span className="sp-insp-label">{p.label}</span>
             </div>
@@ -247,34 +243,34 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
               <div className="sp-success-bg-overlay" />
             </div>
             <div className="sp-success-body">
-              <div className="sp-success-icon">🎉</div>
-              <h2 className="sp-success-title">Item Posted Successfully!</h2>
-              <p className="sp-success-sub">
-                <strong>{form.name}</strong> is now live for customers.
-              </p>
-              <div className="sp-success-meta">
-                <span>📦 {form.quantity} servings</span>
-                <span>💰 {Number(form.price).toLocaleString()}₫</span>
-                <span>⏱ {form.expiryHours}h left</span>
-              </div>
-              <div className="sp-success-btns">
-                <RippleBtn
-                  className="sp-btn-primary"
-                  onClick={() => onNavigate?.("inventory")}
-                >
-                  📦 View in Inventory
-                </RippleBtn>
-                <RippleBtn className="sp-btn-ghost" onClick={resetForm}>
-                  ➕ Post Another Item
-                </RippleBtn>
-                <RippleBtn
-                  className="sp-btn-ghost"
-                  onClick={() => onNavigate?.("home")}
-                >
-                  🏠 Back to Home
-                </RippleBtn>
-              </div>
-            </div>
+                  <div className="sp-success-icon">🎉</div>
+                  <h2 className="sp-success-title">Đăng món thành công!</h2>
+                  <p className="sp-success-sub">
+                    <strong>{form.name}</strong> đã được đăng và hiển thị cho khách hàng.
+                  </p>
+                  <div className="sp-success-meta">
+                    <span>📦 {form.quantity} phần</span>
+                    <span>💰 {Number(form.price).toLocaleString()}₫</span>
+                    <span>⏱ {form.expiryHours} giờ</span>
+                  </div>
+                  <div className="sp-success-btns">
+                    <RippleBtn
+                      className="sp-btn-primary"
+                      onClick={() => onNavigate?.("inventory")}
+                    >
+                      📦 Xem trong Kho
+                    </RippleBtn>
+                    <RippleBtn className="sp-btn-ghost" onClick={resetForm}>
+                      ➕ Đăng món mới
+                    </RippleBtn>
+                    <RippleBtn
+                      className="sp-btn-ghost"
+                      onClick={() => onNavigate?.("home")}
+                    >
+                      🏠 Về Trang Chủ
+                    </RippleBtn>
+                  </div>
+                </div>
           </div>
         </div>
       ) : (
@@ -283,25 +279,25 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
           <form className="sp-form" onSubmit={handleSubmit} noValidate>
             {/* Basic Info */}
             <div className="sp-form-section" data-reveal>
-              <div className="sp-section-img">
+                <div className="sp-section-img">
                 <img
                   src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=800&h=200&q=70"
                   alt=""
                 />
                 <div className="sp-section-img-overlay">
                   <h3 className="sp-section-title sp-section-title-light">
-                    📝 Basic Info
+                    📝 Thông tin cơ bản
                   </h3>
                 </div>
               </div>
               <div className="sp-section-body">
                 <div className="sp-field">
                   <label className="sp-label">
-                    Item Name <span className="sp-req">*</span>
+                    Tên sản phẩm <span className="sp-req">*</span>
                   </label>
                   <input
                     className={`sp-input ${errors.name ? "sp-input-err" : ""}`}
-                    placeholder="e.g. Crispy Chicken Rice Box"
+                    placeholder="Ví dụ: Hộp Cơm Thịt Giòn"
                     value={form.name}
                     onChange={set("name")}
                     maxLength={80}
@@ -313,14 +309,14 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
 
                 <div className="sp-field">
                   <label className="sp-label">
-                    Category <span className="sp-req">*</span>
+                    Danh mục <span className="sp-req">*</span>
                   </label>
                   <select
                     className={`sp-select ${errors.category ? "sp-input-err" : ""}`}
                     value={form.category}
                     onChange={set("category")}
                   >
-                    <option value="">— Select a category —</option>
+                    <option value="">— Chọn danh mục —</option>
                     {CATEGORIES.map((c) => (
                       <option key={c} value={c}>
                         {c}
@@ -333,10 +329,10 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
                 </div>
 
                 <div className="sp-field">
-                  <label className="sp-label">Description</label>
+                  <label className="sp-label">Mô tả</label>
                   <textarea
                     className="sp-textarea"
-                    placeholder="Short description — ingredients, portion size, special flavors..."
+                    placeholder="Mô tả ngắn — thành phần, khẩu phần, hương vị..."
                     rows={4}
                     value={form.description}
                     onChange={set("description")}
@@ -352,14 +348,14 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
 
             {/* Pricing */}
             <div className="sp-form-section" data-reveal>
-              <div className="sp-section-img">
+                <div className="sp-section-img">
                 <img
                   src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&h=200&q=70"
                   alt=""
                 />
                 <div className="sp-section-img-overlay">
                   <h3 className="sp-section-title sp-section-title-light">
-                    💰 Pricing
+                    💰 Giá bán
                   </h3>
                 </div>
               </div>
@@ -367,7 +363,7 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
                 <div className="sp-row-2">
                   <div className="sp-field">
                     <label className="sp-label">
-                      Sale Price (₫) <span className="sp-req">*</span>
+                      Giá bán (₫) <span className="sp-req">*</span>
                     </label>
                     <input
                       className={`sp-input ${errors.price ? "sp-input-err" : ""}`}
@@ -383,8 +379,7 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
                   </div>
                   <div className="sp-field">
                     <label className="sp-label">
-                      Original Price (₫){" "}
-                      <span className="sp-opt">(optional)</span>
+                      Giá gốc (₫) <span className="sp-opt">(tùy chọn)</span>
                     </label>
                     <input
                       className="sp-input"
@@ -398,7 +393,7 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
                 </div>
                 {discount !== null && (
                   <div className="sp-discount-badge">
-                    🔥 {discount}% OFF — great deal!
+                    🔥 Giảm {discount}% — ưu đãi hấp dẫn!
                   </div>
                 )}
               </div>
@@ -407,14 +402,14 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
 
             {/* Supply & Timing */}
             <div className="sp-form-section" data-reveal>
-              <div className="sp-section-img">
+                <div className="sp-section-img">
                 <img
                   src="https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?auto=format&fit=crop&w=800&h=200&q=70"
                   alt=""
                 />
                 <div className="sp-section-img-overlay">
                   <h3 className="sp-section-title sp-section-title-light">
-                    📦 Quantity & Timing
+                    📦 Số lượng & Thời gian
                   </h3>
                 </div>
               </div>
@@ -422,7 +417,7 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
                 <div className="sp-row-2">
                   <div className="sp-field">
                     <label className="sp-label">
-                      Servings Available <span className="sp-req">*</span>
+                      Số phần có sẵn <span className="sp-req">*</span>
                     </label>
                     <input
                       className={`sp-input ${errors.quantity ? "sp-input-err" : ""}`}
@@ -438,7 +433,7 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
                   </div>
                   <div className="sp-field">
                     <label className="sp-label">
-                      Hours Until Expiry <span className="sp-req">*</span>
+                      Thời gian đến khi hết (giờ) <span className="sp-req">*</span>
                     </label>
                     <input
                       className={`sp-input ${errors.expiryHours ? "sp-input-err" : ""}`}
@@ -460,14 +455,14 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
 
             {/* Photo Upload */}
             <div className="sp-form-section" data-reveal>
-              <div className="sp-section-img">
+                <div className="sp-section-img">
                 <img
                   src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=800&h=200&q=70"
                   alt=""
                 />
                 <div className="sp-section-img-overlay">
                   <h3 className="sp-section-title sp-section-title-light">
-                    📷 Food Photo
+                    📷 Ảnh sản phẩm
                   </h3>
                 </div>
               </div>
@@ -485,7 +480,7 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
                     }
                   }}
                 >
-                  {preview ? (
+                      {preview ? (
                     <img
                       src={preview}
                       alt="Preview"
@@ -495,10 +490,10 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
                     <div className="sp-upload-placeholder">
                       <span className="sp-upload-icon">📤</span>
                       <span className="sp-upload-text">
-                        Click or drag & drop a photo
+                        Nhấp hoặc kéo thả ảnh
                       </span>
                       <span className="sp-upload-hint">
-                        JPG, PNG up to 5 MB
+                        JPG, PNG tối đa 5 MB
                       </span>
                     </div>
                   )}
@@ -519,7 +514,7 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
                       setForm((f) => ({ ...f, image: "" }));
                     }}
                   >
-                    ✕ Remove Photo
+                    ✕ Xóa ảnh
                   </button>
                 )}
                 {/* Sample food photos to inspire */}
@@ -547,16 +542,16 @@ const SupplierPost = ({ onNavigate, onSwitchToCustomer, onAddItem }) => {
             </div>
 
             {/* Submit */}
-            <div className="sp-form-actions" data-reveal>
+              <div className="sp-form-actions" data-reveal>
               <RippleBtn type="submit" className="sp-btn-primary sp-btn-submit">
-                🚀 Post Item
+                🚀 Đăng món
               </RippleBtn>
               <RippleBtn
                 type="button"
                 className="sp-btn-ghost"
                 onClick={resetForm}
               >
-                🔄 Reset
+                🔄 Đặt lại
               </RippleBtn>
             </div>
           </form>

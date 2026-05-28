@@ -18,84 +18,84 @@ const FOOD_FALLBACK = UNSPLASH("1504674900247-0877df9cc836");
 
 const SAMPLE_ORDERS = [
   {
-    id: "#ORD-4830",
-    image: UNSPLASH("1512058564366-18510be2db19"),
-    item: "Crispy Chicken Rice × 2",
-    customer: "Alice Wong",
-    total: "165,000₫",
+    id: "#ORD-6001",
+    image: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=600&q=80",
+    item: "Coca Cola Original 330ml × 2",
+    customer: "Nguyễn Văn A",
+    total: "20.000đ",
     status: "pending",
-    time: "1 min ago",
-    note: "No dark meat please",
+    time: "1 phút trước",
+    note: "",
   },
   {
-    id: "#ORD-4829",
-    image: UNSPLASH("1558618666-fcd25c85cd64"),
-    item: "Bubble Milk Tea × 3",
-    customer: "Bob Chen",
-    total: "90,000₫",
+    id: "#ORD-6000",
+    image: "https://images.unsplash.com/photo-1581636625402-29b2a704ef13?auto=format&fit=crop&w=600&q=80",
+    item: "Pepsi Lon 330ml × 3",
+    customer: "Trần Thị B",
+    total: "27.000đ",
     status: "confirmed",
-    time: "5 min ago",
+    time: "5 phút trước",
     note: "",
   },
   {
-    id: "#ORD-4828",
-    image: UNSPLASH("1512621776951-a57141f2eefd"),
-    item: "Caesar Salad × 1",
-    customer: "Carol Lee",
-    total: "55,000₫",
+    id: "#ORD-5999",
+    image: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&w=600&q=80",
+    item: "Mì Hảo Hảo Tôm Chua Cay × 4",
+    customer: "Lê Văn C",
+    total: "20.000đ",
     status: "preparing",
-    time: "12 min ago",
-    note: "Dressing on side",
+    time: "12 phút trước",
+    note: "Thêm ớt",
   },
   {
-    id: "#ORD-4827",
-    image: UNSPLASH("1569718212165-3a8278d5f624"),
-    item: "Signature Pho × 2",
-    customer: "David Park",
-    total: "112,000₫",
+    id: "#ORD-5998",
+    image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80",
+    item: "Sữa Vinamilk 1L × 1",
+    customer: "Phạm Thị D",
+    total: "38.000đ",
     status: "ready",
-    time: "18 min ago",
-    note: "",
+    time: "18 phút trước",
+    note: "Giao ngoài cửa",
   },
   {
-    id: "#ORD-4826",
-    image: UNSPLASH("1482049016688-2d3e1b311543"),
-    item: "BBQ Banh Mi × 4",
-    customer: "Emma Smith",
-    total: "108,000₫",
+    id: "#ORD-5997",
+    image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80",
+    item: "Bánh Oreo Socola × 2",
+    customer: "Võ Văn E",
+    total: "36.000đ",
     status: "delivered",
-    time: "35 min ago",
+    time: "35 phút trước",
     note: "",
   },
   {
-    id: "#ORD-4825",
-    image: UNSPLASH("1617196034183-421b4040ed20"),
-    item: "Salmon Sushi Box × 1",
-    customer: "Frank Kim",
-    total: "75,000₫",
+    id: "#ORD-5996",
+    image: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?auto=format&fit=crop&w=600&q=80",
+    item: "Snack Lay's Khoai Tây × 1",
+    customer: "Lý Thị F",
+    total: "15.000đ",
     status: "cancelled",
-    time: "52 min ago",
-    note: "Customer cancelled",
+    time: "52 phút trước",
+    note: "Khách hủy",
   },
   {
-    id: "#ORD-4824",
-    image: UNSPLASH("1509042239860-f550ce710b93"),
-    item: "Egg Coffee × 2",
-    customer: "Grace Liu",
-    total: "76,000₫",
+    id: "#ORD-5995",
+    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
+    item: "Bánh AFC Rau Củ × 1",
+    customer: "Bùi Văn G",
+    total: "32.000đ",
     status: "delivered",
-    time: "1 hr ago",
+    time: "1 giờ trước",
     note: "",
   },
   {
-    id: "#ORD-4823",
-    image: UNSPLASH("1551024506-0bccd828d307"),
-    item: "Matcha Donut × 6",
-    customer: "Henry Tan",
-    total: "84,000₫",
+    id: "#ORD-5994",
+    image: "https://images.unsplash.com/photo-1506976785307-8732e854ad03?auto=format&fit=crop&w=600&q=80",
+    item: "Trứng gà hộp 10 quả × 1",
+    customer: "Đặng Thị H",
+    total: "36.000đ",
     status: "delivered",
-    time: "1.5 hrs ago",
-    note: "Gift wrap please",
+    time: "1.5 giờ trước",
+    note: "Vui lòng gói gọn",
   },
 ];
 
@@ -103,42 +103,42 @@ const STATUS_FLOW = ["pending", "confirmed", "preparing", "ready", "delivered"];
 
 const STATUS_META = {
   pending: {
-    label: "Pending",
+    label: "Chờ duyệt",
     cls: "so-st-pending",
     icon: "⏳",
-    next: "Confirm Order",
+    next: "Xác nhận đơn",
     color: "#f97316",
   },
   confirmed: {
-    label: "Confirmed",
+    label: "Đã xác nhận",
     cls: "so-st-confirmed",
     icon: "✅",
-    next: "Start Preparing",
+    next: "Bắt đầu chuẩn bị",
     color: "#3b82f6",
   },
   preparing: {
-    label: "Preparing",
+    label: "Đang chuẩn bị",
     cls: "so-st-preparing",
     icon: "👨‍🍳",
-    next: "Mark Ready",
+    next: "Đã xong",
     color: "#8b5cf6",
   },
   ready: {
-    label: "Ready",
+    label: "Đã xong",
     cls: "so-st-ready",
     icon: "🔔",
-    next: "Mark Delivered",
+    next: "Đã giao hàng",
     color: "#0ea5e9",
   },
   delivered: {
-    label: "Delivered",
+    label: "Đã giao",
     cls: "so-st-delivered",
     icon: "🎉",
     next: null,
     color: "#134e15",
   },
   cancelled: {
-    label: "Cancelled",
+    label: "Đã hủy",
     cls: "so-st-cancelled",
     icon: "❌",
     next: null,
@@ -147,13 +147,13 @@ const STATUS_META = {
 };
 
 const FILTERS = [
-  "All",
-  "Pending",
-  "Confirmed",
-  "Preparing",
-  "Ready",
-  "Delivered",
-  "Cancelled",
+  "Tất cả",
+  "Chờ duyệt",
+  "Đã xác nhận",
+  "Đang chuẩn bị",
+  "Đã xong",
+  "Đã giao",
+  "Đã hủy",
 ];
 
 /* Stat card background scenes */
@@ -256,25 +256,23 @@ const SupplierOrders = ({ onNavigate, onSwitchToCustomer }) => {
           <div className="so-hero-overlay" />
         </div>
         <div className="so-hero-content">
-          <div className="so-hero-badge">🧾 Orders Manager</div>
-          <h1 className="so-hero-title">Order Management</h1>
+          <div className="so-hero-badge">🧾 Quản Lý Đơn Hàng</div>
+          <h1 className="so-hero-title">Quản Lý Đơn Hàng</h1>
           <p className="so-hero-sub">
-            Track, advance, and manage all customer orders in real time — all in
-            one professional dashboard.
+            Theo dõi, cập nhật và quản lý tất cả đơn hàng của khách theo thời gian thực — trên một bảng điều khiển chuyên nghiệp.
           </p>
           <div className="so-hero-chips">
-            <span className="so-hero-chip">⚡ Live Updates</span>
-            <span className="so-hero-chip">📊 Full Pipeline</span>
-            <span className="so-hero-chip">🔔 Instant Actions</span>
+            <span className="so-hero-chip">⚡ Cập Nhật Trực Tiếp</span>
+            <span className="so-hero-chip">📊 Toàn Bộ Tiến Trình</span>
+            <span className="so-hero-chip">🔔 Thao Tác Nhanh</span>
           </div>
         </div>
         {/* Floating revenue card */}
         <div className="so-hero-revenue-card">
-          <div className="so-rev-label">Today's Revenue</div>
+          <div className="so-rev-label">Doanh Thu Hôm Nay</div>
           <div className="so-rev-val">{totalRevenue}</div>
           <div className="so-rev-note">
-            <span className="so-rev-dot" /> {counts["Delivered"] || 0} orders
-            delivered
+            <span className="so-rev-dot" /> {counts["Đã giao"] || 0} đơn đã giao
           </div>
         </div>
       </div>
@@ -284,28 +282,28 @@ const SupplierOrders = ({ onNavigate, onSwitchToCustomer }) => {
         {[
           {
             icon: "⏳",
-            label: "Pending",
+            label: "Chờ duyệt",
             val: counts["Pending"] || 0,
             cls: "so-sb-pending",
             bg: STAT_BG[0],
           },
           {
             icon: "👨‍🍳",
-            label: "Preparing",
+            label: "Đang chuẩn bị",
             val: counts["Preparing"] || 0,
             cls: "so-sb-preparing",
             bg: STAT_BG[1],
           },
           {
             icon: "🔔",
-            label: "Ready",
+            label: "Đã xong",
             val: counts["Ready"] || 0,
             cls: "so-sb-ready",
             bg: STAT_BG[2],
           },
           {
             icon: "🎉",
-            label: "Delivered",
+            label: "Đã giao",
             val: counts["Delivered"] || 0,
             cls: "so-sb-delivered",
             bg: STAT_BG[3],
@@ -335,7 +333,7 @@ const SupplierOrders = ({ onNavigate, onSwitchToCustomer }) => {
           <span className="so-search-icon">🔍</span>
           <input
             className="so-search"
-            placeholder="Search by order ID, customer, or item..."
+            placeholder="Tìm kiếm mã đơn hàng, khách hàng, hoặc món..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -362,12 +360,12 @@ const SupplierOrders = ({ onNavigate, onSwitchToCustomer }) => {
           <div className="so-empty">
             <img
               src={UNSPLASH("1493770348161-369560ae357d", 400, 280)}
-              alt="no orders"
+              alt="không có đơn hàng"
               className="so-empty-img"
             />
-            <div className="so-empty-title">No orders found</div>
+            <div className="so-empty-title">Không tìm thấy đơn hàng nào</div>
             <div className="so-empty-sub">
-              Try adjusting your filter or search term.
+              Hãy thử điều chỉnh bộ lọc hoặc từ khóa tìm kiếm.
             </div>
           </div>
         ) : (
@@ -467,10 +465,10 @@ const SupplierOrders = ({ onNavigate, onSwitchToCustomer }) => {
                       <div className="so-detail-photo-info">
                         <div className="so-detail-item-name">{order.item}</div>
                         <div className="so-detail-item-customer">
-                          Customer: {order.customer}
+                          Khách hàng: {order.customer}
                         </div>
                         <div className="so-detail-item-total">
-                          Total: {order.total}
+                          Tổng cộng: {order.total}
                         </div>
                       </div>
                     </div>
@@ -491,15 +489,15 @@ const SupplierOrders = ({ onNavigate, onSwitchToCustomer }) => {
                             className="so-btn-cancel"
                             onClick={() => cancel(order.id)}
                           >
-                            ❌ Cancel Order
+                            ❌ Hủy Đơn Hàng
                           </button>
                         )}
                       {(order.status === "cancelled" ||
                         order.status === "delivered") && (
                         <span className="so-final-tag">
                           {order.status === "delivered"
-                            ? "✅ Order Complete"
-                            : "🚫 Order Cancelled"}
+                            ? "✅ Đơn Hàng Hoàn Tất"
+                            : "🚫 Đơn Hàng Đã Hủy"}
                         </span>
                       )}
                     </div>

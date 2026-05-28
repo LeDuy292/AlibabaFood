@@ -3,12 +3,12 @@ import "./SupplierNavbar.css";
 import logoImg from "../../assets/Artboard 4.png";
 
 const NAV_ITEMS = [
-  { id: "home", icon: "🏠", label: "Home" },
-  { id: "dashboard", icon: "📊", label: "Dashboard" },
-  { id: "post", icon: "➕", label: "Post Item" },
-  { id: "orders", icon: "🧾", label: "Orders" },
-  { id: "inventory", icon: "📦", label: "Inventory" },
-  { id: "notifications", icon: "🔔", label: "Notifications" },
+  { id: "home", icon: "🏠", label: "Trang Chủ" },
+  { id: "dashboard", icon: "📊", label: "Bảng Điều Khiển" },
+  { id: "post", icon: "➕", label: "Đăng Món" },
+  { id: "orders", icon: "🧾", label: "Đơn Hàng" },
+  { id: "inventory", icon: "📦", label: "Kho Hàng" },
+  { id: "notifications", icon: "🔔", label: "Thông Báo" },
 ];
 
 /**
@@ -75,7 +75,7 @@ const SupplierNavbar = ({
             onClick={() => handleNav("profile")}
           >
             <span className="snav-tab-icon-wrap">👤</span>
-            <span className="snav-tab-label">Me</span>
+            <span className="snav-tab-label">Tôi</span>
           </button>
         </div>
 
