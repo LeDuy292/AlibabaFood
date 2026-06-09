@@ -1,0 +1,206 @@
+.menu-categories-wrapper {
+    background: #fff;
+}
+
+/* ─── Info Bar ─── */
+.info-bar {
+    background-color: var(--bg-footer);
+    border-radius: 20px;
+    margin: 2rem auto;
+    max-width: 900px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 1.5rem 2rem;
+    gap: 1rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.info-icon {
+    background-color: var(--primary-dark);
+    border-radius: 50%;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.info-main {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 2px;
+}
+
+.info-sub {
+    font-size: 0.78rem;
+    color: var(--text-gray);
+    font-weight: 500;
+}
+
+.info-divider {
+    width: 1px;
+    height: 50px;
+    background-color: rgba(19, 78, 21, 0.2);
+    flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+    .info-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .info-divider {
+        display: none;
+    }
+}
+
+/* ─── Categories Section ─── */
+.menu-categories-section {
+    padding: 1rem 0 1rem;
+    background-color: #fff;
+}
+
+.categories-title {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 3rem;
+}
+
+/* Carousel row */
+.categories-carousel {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+@media (max-width: 900px) {
+    .categories-carousel {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .categories-carousel {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+/* Card */
+.category-card {
+    background-color: var(--bg-footer);
+    border-radius: 24px;
+    padding: 5rem 1.5rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: visible;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.category-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(19, 78, 21, 0.12);
+}
+
+.category-card-img {
+    position: absolute;
+    top: -3.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 160px;
+    height: 150px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.category-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 14px rgba(0, 0, 0, 0.18));
+    transition: transform 0.3s;
+}
+
+.category-card:hover .category-card-img img {
+    transform: scale(1.06) translateY(-6px);
+}
+
+.category-card-name {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    margin-bottom: 1rem;
+}
+
+.category-see-more {
+    display: inline-block;
+    padding: 8px 28px;
+    border: 1.5px solid rgba(19, 78, 21, 0.35);
+    border-radius: 30px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    text-decoration: none;
+    background: transparent;
+    transition: all 0.25s;
+}
+
+.category-see-more:hover {
+    background-color: var(--primary-dark);
+    color: #fff;
+    border-color: var(--primary-dark);
+}
+
+/* Navigation Arrows */
+.carousel-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    margin-top: 1rem;
+}
+
+.carousel-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.25s, transform 0.2s;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(19, 78, 21, 0.12);
+}
+
+.carousel-btn:hover:not(:disabled) {
+    background-color: var(--primary-dark);
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.carousel-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.carousel-btn svg {
+    stroke: currentColor;
+}

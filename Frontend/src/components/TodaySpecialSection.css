@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+/* ================================================
+   TODAY SPECIAL SECTION
+   ================================================ */
+.today-special-section {
+    padding: 70px 0 90px;
+    background-color: #ffffff;
+}
+
+/* Cursive title exactly matching the design */
+.section-title {
+    font-size: 3rem;
+    color: #1a5626;
+    margin-bottom: 3rem;
+    font-family: 'Pacifico', cursive;
+    font-weight: 400;
+    /* Pacifico is only weight 400 */
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* 3-column grid */
+.special-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 28px;
+}
+
+@media (min-width: 768px) {
+    .special-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ---- CARD ---- */
+.special-card {
+    background-color: #ffffff;
+    border-radius: 18px;
+    padding: 20px 20px 22px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.09);
+    border: 1.5px solid #eeeeee;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    /* so the top-right corner button clips neatly */
+}
+
+.special-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.13);
+}
+
+/* Top row: meta text left, bell button top-right */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.card-meta {
+    font-size: 0.75rem;
+    line-height: 1.6;
+}
+
+.card-qty {
+    color: #555;
+}
+
+.card-discount {
+    color: #e62e2d;
+    font-weight: 600;
+}
+
+/* Bell/notification icon button — top-right corner */
+.favorite-btn {
+    background-color: #245a27;
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 0 18px 0 18px;
+    /* only top-right rounded, rest sharp */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transition: background-color 0.2s;
+}
+
+.favorite-btn:hover {
+    background-color: #1a4520;
+}
+
+/* ---- CIRCULAR FOOD IMAGE ---- */
+.card-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8px 0 20px;
+}
+
+.card-image img {
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+}
+
+/* ---- CARD FOOTER ---- */
+.card-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: auto;
+}
+
+/* Row 1: Name + Add to Cart */
+.card-name-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-title {
+    font-size: 1.05rem;
+    color: #111;
+    font-weight: 700;
+}
+
+.add-to-cart-btn {
+    background-color: #1b5e27;
+    color: white;
+    font-size: 0.78rem;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+    flex-shrink: 0;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #144820;
+}
+
+/* Row 2: Stars + Price + Buy Now */
+.card-bottom-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-stars {
+    display: flex;
+    gap: 2px;
+    font-size: 1.3rem;
+    /* bigger stars */
+    flex: 1;
+}
+
+.star-filled {
+    color: #f5a623;
+}
+
+.star-empty {
+    color: #ddd;
+}
+
+.card-price {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #111;
+}
+
+.buy-now-btn {
+    background-color: #e01818;
+    color: white;
+    font-size: 0.78rem;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s;
+}
+
+.buy-now-btn:hover {
+    background-color: #b51111;
+}
+
+/* ---- NAVIGATION ARROWS ---- */
+.special-nav-arrows {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 36px;
+}
+
+.nav-arrow {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #f0f8f0;
+    border: 1.5px solid #b5d4b5;
+    color: #1b5e27;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.25s, border-color 0.25s;
+}
+
+.nav-arrow:hover {
+    background-color: #d4ebd4;
+    border-color: #1b5e27;
+}
+
+.nav-arrow svg {
+    width: 16px;
+    height: 16px;
+    stroke: #1b5e27;
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}

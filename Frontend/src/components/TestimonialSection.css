@@ -1,5 +1,14 @@
 .testimonial-section {
     padding: 4rem 2rem;
+    background: #ffffff;
+}
+
+.testimonial-title {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 4rem;
 }
 
 .testimonial-grid {
@@ -139,4 +148,94 @@
 
 .collage-img-small:hover {
     transform: scale(1.05) rotate(-5deg);
+}
+
+/* Pagination Controls */
+.testimonial-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.control-btn {
+    background: var(--white);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    /* Floating shadow */
+}
+
+.control-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(74, 139, 61, 0.3);
+    /* Premium hover shadow */
+}
+
+.control-btn:active {
+    transform: translateY(0) scale(0.95);
+}
+
+.customer-thumbnails {
+    display: flex;
+    gap: 12px;
+}
+
+.customer-thumbnails img {
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    opacity: 0.5;
+    transform: scale(0.85);
+    filter: grayscale(100%);
+    padding: 3px;
+    border-radius: 50%;
+    background: transparent;
+    border: 2px solid transparent;
+}
+
+.customer-thumbnails img:hover {
+    opacity: 0.8;
+    transform: scale(0.95);
+    filter: grayscale(30%);
+}
+
+.customer-thumbnails img.active-thumb {
+    opacity: 1;
+    transform: scale(1.15);
+    filter: grayscale(0%);
+    z-index: 2;
+    background: linear-gradient(135deg, var(--primary), #a6f294);
+    box-shadow: 0 5px 15px rgba(74, 139, 61, 0.5);
+    border: 2px solid transparent;
+}
+
+/* Base Card Animation (fires on component render or key change) */
+.testimonial-card {
+    animation: fadeSlideRight 0.5s ease backwards;
+}
+
+@keyframes fadeSlideRight {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }

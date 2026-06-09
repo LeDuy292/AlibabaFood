@@ -71,13 +71,13 @@
 }
 
 .btn-view-more {
-    padding: 6px 20px;
+    padding: 10px 24px;
     border-radius: 30px;
     border: 1px solid #73a758;
     background: transparent;
     color: #73a758;
-    font-weight: 500;
-    font-size: 0.9rem;
+    font-weight: 600;
+    font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s;
 }
@@ -85,4 +85,13 @@
 .btn-view-more:hover {
     background-color: #73a758;
     color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(115, 167, 88, 0.3);
+}
+
+.about-description {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
 }

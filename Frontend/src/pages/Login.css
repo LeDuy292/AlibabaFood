@@ -1,0 +1,336 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* Basic reset for auth pages to ensure full screen */
+body.auth-body-active {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /* Prevent scrolling on fullscreen auth pages */
+}
+
+.auth-fullscreen-page {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100vw;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: 'Outfit', sans-serif;
+    overflow: hidden;
+}
+
+/* Decorative Orbs for Glass depth */
+.glass-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+    opacity: 0.6;
+    animation: floatOrb 10s infinite ease-in-out alternate;
+}
+
+.glass-blob-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--primary-color, #ff6b00);
+    top: -100px;
+    left: -100px;
+}
+
+.glass-blob-2 {
+    width: 300px;
+    height: 300px;
+    background: #ffb17a;
+    bottom: -50px;
+    right: -50px;
+    animation-delay: -5s;
+}
+
+@keyframes floatOrb {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+
+    100% {
+        transform: translateY(50px) scale(1.1);
+    }
+}
+
+/* Glassmorphism Card Main */
+.auth-glass-card {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 440px;
+    padding: 3rem 2.5rem;
+
+    /* The Magic of Glass */
+    background: rgba(255, 255, 255, 0.05);
+    /* very transparent white */
+    backdrop-filter: blur(20px);
+    /* strong blur */
+    -webkit-backdrop-filter: blur(20px);
+
+    /* Semi-transparent border */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+    color: white;
+    /* Default text color */
+    animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.auth-logo-center {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.auth-logo-center img {
+    height: 55px;
+    object-fit: contain;
+    /* Filter to make logo pop against dark background if it's dark text */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.auth-glass-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-glass-header h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.5px;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.auth-glass-header p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.05rem;
+    margin: 0;
+}
+
+.auth-glass-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-group-glass input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: rgba(0, 0, 0, 0.2);
+    /* Dark translucent background */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.3s ease;
+    outline: none;
+    box-sizing: border-box;
+    /* ensure padding doesn't affect width */
+}
+
+.form-group-glass input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.form-group-glass input:focus {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: var(--primary-color, #ff6b00);
+    box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.form-options-glass {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    margin-top: -0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.checkbox-glass {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+}
+
+.checkbox-glass input {
+    accent-color: var(--primary-color, #ff6b00);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.forgot-password-glass {
+    color: var(--primary-color, #ff6b00);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s, text-shadow 0.2s;
+}
+
+.forgot-password-glass:hover {
+    color: #ff8533;
+    text-shadow: 0 0 8px rgba(255, 107, 0, 0.6);
+}
+
+/* Beautiful Animated Submit Button */
+.glass-submit-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, var(--primary-color, #ff6b00) 0%, #e65c00 100%);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px -5px rgba(255, 107, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: all 0.5s ease;
+}
+
+.glass-submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 25px -5px rgba(255, 107, 0, 0.6);
+}
+
+.glass-submit-btn:hover::before {
+    left: 100%;
+}
+
+.glass-submit-btn:hover .btn-arrow {
+    transform: translateX(4px);
+}
+
+.btn-arrow {
+    transition: transform 0.3s;
+}
+
+.auth-divider-glass {
+    display: flex;
+    align-items: center;
+    margin: 1.75rem 0;
+}
+
+.auth-divider-glass::before,
+.auth-divider-glass::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.auth-divider-glass span {
+    padding: 0 1rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+.social-login-glass {
+    display: flex;
+    flex-direction: column;
+}
+
+.glass-social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.8rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.glass-social-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.auth-footer-glass {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.auth-footer-glass a {
+    color: var(--primary-color, #ff6b00);
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 0.25rem;
+    transition: color 0.2s, text-shadow 0.2s;
+}
+
+.auth-footer-glass a:hover {
+    color: #ff8533;
+    text-decoration: underline;
+    text-shadow: 0 0 8px rgba(255, 107, 0, 0.6);
+}
+
+/* Make it responsive */
+@media (max-width: 500px) {
+    .auth-fullscreen-page {
+        padding: 1rem;
+    }
+
+    .auth-glass-card {
+        padding: 2.5rem 1.5rem;
+        backdrop-filter: blur(15px);
+        /* Less blur for performance on mobile */
+    }
+
+    .auth-logo-center img {
+        height: 45px;
+    }
+}

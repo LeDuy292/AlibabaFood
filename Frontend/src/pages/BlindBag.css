@@ -1,0 +1,342 @@
+/* Futuristic Dark Theme CSS for Blind Bag Mini-Game */
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;900&display=swap");
+
+.bb-futuristic-page {
+  min-height: 100vh;
+  /* Chỉnh lại nền gradient tĩnh, từ xanh đen đậm sang đen nhánh */
+  background: radial-gradient(circle at 50% 20%, #17153a 0%, #0c0d16 100%);
+  color: #ffffff;
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.cam-flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-out;
+}
+
+.cam-flash.active {
+  opacity: 1;
+  transition: opacity 0.05s ease-in;
+}
+
+.bb-f-canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.bb-ui-layer {
+  position: relative;
+  z-index: 10;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* Let clicks pass to 3D canvas */
+}
+
+/* Let specific UI elements receive clicks */
+.bb-idle-ui,
+.bb-reveal-ui {
+  pointer-events: auto;
+}
+
+/* Idle State UI */
+.bb-idle-ui {
+  text-align: center;
+  position: absolute;
+  bottom: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+  padding: 0 20px;
+}
+
+.bb-badge-neon {
+  background: rgba(123, 97, 255, 0.15);
+  color: #7b61ff;
+  border: 1px solid #7b61ff;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 15px rgba(123, 97, 255, 0.5);
+  backdrop-filter: blur(5px);
+}
+
+.bb-idle-ui h1 {
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 1.1;
+  text-transform: uppercase;
+  margin: 0 0 20px;
+}
+
+.text-glow {
+  background: linear-gradient(90deg, #ff7a00, #ffd166);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(255, 122, 0, 0.4);
+}
+
+.bb-idle-ui p {
+  color: #a0a0b0;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.bb-cta-btn {
+  background: linear-gradient(135deg, #ff7a00, #ff5100);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  padding: 20px 60px;
+  font-size: 1.5rem;
+  font-weight: 900;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow:
+    0 10px 30px rgba(255, 122, 0, 0.6),
+    inset 0 0 20px rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.3s;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.bb-cta-btn:hover {
+  transform: scale(1.05) translateY(-5px);
+  box-shadow:
+    0 20px 40px rgba(255, 122, 0, 0.8),
+    inset 0 0 30px rgba(255, 255, 255, 0.6);
+}
+
+/* Winner Reveal Card - Glassmorphism */
+.bb-reveal-ui {
+  position: absolute;
+  bottom: 5%;
+  width: 90%;
+  max-width: 550px;
+}
+
+.bb-reward-card {
+  background: rgba(15, 16, 32, 0.6);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 30px;
+  padding: 40px;
+  text-align: center;
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.8),
+    inset 0 0 40px rgba(123, 97, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.bb-rc-rarity {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid;
+}
+
+.bb-reward-card h2 {
+  font-size: 2.8rem;
+  font-weight: 900;
+  margin: 50px 0 20px;
+  color: #ffffff;
+}
+
+.bb-rc-badges {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.bb-badge-discount,
+.bb-badge-expire {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.bb-badge-discount {
+  color: #ff7a00;
+  background: rgba(255, 122, 0, 0.15);
+  border: 1px solid rgba(255, 122, 0, 0.3);
+}
+
+.bb-badge-expire {
+  color: #00fa9a;
+  background: rgba(0, 250, 154, 0.15);
+  border: 1px solid rgba(0, 250, 154, 0.3);
+}
+
+.bb-rc-desc {
+  color: #b0b0c0;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.bb-rc-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap; /* Cho phép các nút xuống dòng trên màn hình nhỏ */
+}
+
+.bb-rc-btn-primary,
+.bb-rc-btn-secondary {
+  flex: 1 1 20%; /* Chia tỷ lệ ngang nhau */
+  padding: 14px 10px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.bb-rc-btn-primary {
+  background: linear-gradient(135deg, #7b61ff, #5a3dff);
+  color: white;
+  box-shadow: 0 10px 20px rgba(123, 97, 255, 0.4);
+}
+
+.bb-rc-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(123, 97, 255, 0.6);
+}
+
+.bb-rc-btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.bb-rc-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-3px);
+}
+
+/* 3D Elements HTML Wrapper */
+.bb-myst-mark {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 140px;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 0 50px rgba(255, 255, 255, 0.8);
+}
+
+.slot-item-view {
+  width: 300px;
+  height: 400px;
+  background: rgba(15, 16, 32, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  transition: transform 0.5s ease;
+}
+
+.slot-item-view img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  border: 4px solid rgba(255, 255, 255, 0.8);
+}
+
+.slot-item-view h4 {
+  font-size: 2rem;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+.hero-scaled {
+  transform: scale(1.5) translateY(-50px);
+}
+
+/* Animations */
+.animate-fade-up {
+  animation: fadeUp 1s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(100px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .bb-idle-ui h1 {
+    font-size: 2.5rem;
+  }
+  .bb-cta-btn {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+  }
+  .bb-reward-card h2 {
+    font-size: 2rem;
+  }
+}

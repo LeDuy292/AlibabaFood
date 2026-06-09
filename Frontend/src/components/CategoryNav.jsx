@@ -1,0 +1,63 @@
+import React from 'react';
+import './CategoryNav.css';
+import { LayoutGrid, Coffee, Package, Droplet, Egg, Leaf, Pizza, Cookie, Utensils, Croissant } from 'lucide-react';
+
+const menuCategories = ['All', 'Cơm', 'Bánh mì', 'Đồ uống', 'Bánh ngọt', 'Đồ ăn nhẹ'];
+
+const slug = (name) => {
+  if (!name) return '';
+  return name
+    .toLowerCase()
+    .replace(/[àáạảãâầấậẩẫăằắặẳẵ]/g, 'a')
+    .replace(/[èéẹẻẽêềếệểễ]/g, 'e')
+    .replace(/[ìíịỉĩ]/g, 'i')
+    .replace(/[òóọỏõôồốộổỗơờớợởỡ]/g, 'o')
+    .replace(/[ùúụủũưừứựửữ]/g, 'u')
+    .replace(/[ỳýỵỷỹ]/g, 'y')
+    .replace(/đ/g, 'd')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+};
+
+const iconMap = {
+  all: <LayoutGrid size={20} />,
+  'com': <Utensils size={20} />,
+  'banh-mi': <Package size={20} />,
+  'do-uong': <Coffee size={20} />,
+  'banh-ngot': <Croissant size={20} />,
+  'do-an-nhe': <Cookie size={20} />,
+};
+
+const CategoryNav = ({ activeCategory = 'all', onCategoryChange }) => {
+  const categories = menuCategories.map((category) => {
+    const id = category === 'All' ? 'all' : slug(category);
+    return {
+      id,
+      name: category,
+      icon: iconMap[id] || <Package size={20} />,
+    };
+  });
+
+  return (
+    <div className="category-nav-container">
+      <div className="category-nav-scroll">
+        {categories.map((category) => (
+          <button
+            key={category.id}
+            className={`category-item ${activeCategory === category.id ? 'active' : ''}`}
+            onClick={() => onCategoryChange && onCategoryChange(category.id)}
+          >
+            <span className="category-icon">{category.icon}</span>
+            <span className="category-name">{category.name}</span>
+          </button>
+        ))}
+        <button className="view-all-btn" onClick={() => onCategoryChange && onCategoryChange('all')}>
+          Tất cả
+          <span className="cart-icon">🛒</span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default CategoryNav;

@@ -1,0 +1,239 @@
+.hot-deal-section {
+    padding: 0em 0 2rem;
+    background-color: #fff;
+}
+
+/* Title */
+.hot-deal-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Filter Tabs */
+.hot-deal-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+}
+
+.hot-deal-filter-btn {
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.25s ease;
+}
+
+/* Near-Expiry Deals — outline green by default, active: filled green */
+.hot-deal-filter-btn.outline {
+    border: 2px solid #4caf50;
+    background-color: transparent;
+    color: #4caf50;
+}
+
+.hot-deal-filter-btn.outline.active {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+/* Other tabs — red filled */
+.hot-deal-filter-btn.filled {
+    border: 2px solid #e53935;
+    background-color: #e53935;
+    color: #fff;
+}
+
+.hot-deal-filter-btn.filled:hover {
+    background-color: #c62828;
+    border-color: #c62828;
+}
+
+.hot-deal-filter-btn.outline:not(.active):hover {
+    background-color: #e8f5e9;
+}
+
+/* Grid */
+.hot-deal-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 900px) {
+    .hot-deal-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .hot-deal-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Deal Card */
+.deal-card {
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1.5px solid #e5e7eb;
+    background: #fff;
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.deal-card:hover {
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+/* Card Image */
+.deal-card-img {
+    width: 100%;
+    height: 190px;
+    overflow: hidden;
+}
+
+.deal-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+    display: block;
+}
+
+.deal-card:hover .deal-card-img img {
+    transform: scale(1.05);
+}
+
+/* Card Body */
+.deal-card-body {
+    padding: 1rem 1.2rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.deal-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.deal-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.add-cart-btn {
+    background-color: var(--primary-dark);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+    transition: background-color 0.25s;
+    flex-shrink: 0;
+}
+
+.add-cart-btn:hover {
+    background-color: #69a656;
+}
+
+.deal-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.star-rating {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+}
+
+.deal-price-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.deal-price {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    white-space: nowrap;
+}
+
+.buy-now-btn {
+    background-color: #e53935;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+    transition: background-color 0.25s;
+    flex-shrink: 0;
+}
+
+.buy-now-btn:hover {
+    background-color: #c62828;
+}
+
+/* Navigation */
+.hot-deal-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.nav-arrow-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.25s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(19, 78, 21, 0.12);
+}
+
+.nav-arrow-btn:hover:not(:disabled) {
+    background-color: var(--primary-dark);
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.nav-arrow-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.no-items {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-gray);
+    padding: 3rem 0;
+    font-size: 1rem;
+}

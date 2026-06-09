@@ -1,0 +1,442 @@
+.promo-section {
+    padding: 80px 0;
+    background-color: #fff;
+}
+
+.promo-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.promo-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.promo-header h2 {
+    font-size: 2.8rem;
+    color: #333;
+    line-height: 1.2;
+    font-weight: 500;
+}
+
+.highlight-text {
+    color: #e62e2d;
+    /* Red highlight */
+    font-weight: 700;
+}
+
+/* Grid Layout matching the design */
+.promo-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 60px;
+}
+
+@media (min-width: 992px) {
+    .promo-grid {
+        grid-template-columns: 1.2fr 1fr;
+        grid-template-rows: auto auto;
+    }
+
+    .testy-burger {
+        grid-row: span 2;
+    }
+
+    .promo-cards-right-top {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .limited-offer {
+        grid-column: 2 / 3;
+    }
+}
+
+.promo-card {
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    padding: 30px;
+    display: flex;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.promo-content {
+    position: relative;
+    z-index: 2;
+}
+
+.promo-subtitle {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.promo-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    color: white;
+    /* Default white, overridden per card */
+}
+
+.promo-img {
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    height: 120%;
+    object-fit: contain;
+    z-index: 1;
+}
+
+.add-to-cart-btn-small {
+    background-color: #f39c12;
+    /* Orange/Yellow button */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific Card Styles */
+.testy-burger {
+    background-color: #1a5626;
+    /* Dark Green */
+    min-height: 400px;
+}
+
+.testy-burger .promo-subtitle {
+    color: #f39c12;
+}
+
+.testy-burger .promo-title {
+    font-size: 2.5rem;
+    color: #f39c12;
+}
+
+.discount-badge {
+    background-color: #f39c12;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 3;
+    clip-path: polygon(50% 0%, 61% 15%, 79% 10%, 82% 28%, 100% 35%, 90% 50%, 100% 65%, 82% 72%, 79% 90%, 61% 85%, 50% 100%, 39% 85%, 21% 90%, 18% 72%, 0% 65%, 10% 50%, 0% 35%, 18% 28%, 21% 10%, 39% 15%);
+}
+
+.discount-value {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #1a5626;
+    line-height: 1;
+}
+
+.discount-lbl {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #1a5626;
+}
+
+
+.nodels-promo {
+    background-color: #e62e2d;
+    /* Red */
+    color: white;
+}
+
+.nodels-promo .promo-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.nodels-promo .promo-discount {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.burger-promo {
+    background-color: #1a5626;
+    /* Dark Green */
+}
+
+.burger-promo .promo-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.burger-promo .promo-title {
+    color: #f39c12;
+}
+
+
+.limited-offer {
+    background-color: #4CAF50;
+    /* Lighter Green */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 30px 40px;
+}
+
+.limited-offer .promo-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.limited-offer .promo-title {
+    margin-bottom: 0;
+}
+
+.limited-offer .promo-content {
+    flex: 1;
+}
+
+.pizza-img {
+    right: 20px;
+    bottom: auto;
+    height: 160%;
+    top: -30%;
+}
+
+
+/* Features Section */
+.promo-features {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px dashed #ccc;
+    border-bottom: 1px dashed #ccc;
+    padding: 30px 0;
+    margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+    .promo-features {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .feature-divider {
+        display: none;
+    }
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    justify-content: center;
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #1a5626;
+    /* Dark Green */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-text h4 {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.feature-text p {
+    font-size: 0.8rem;
+    color: #777;
+    margin: 0;
+}
+
+.feature-divider {
+    width: 1px;
+    height: 60px;
+    background-color: #eee;
+}
+
+/* ================================================
+   BLIND BAG SECTION
+   ================================================ */
+.blind-bag-section {
+    background: linear-gradient(135deg, #1a5626 0%, #0d3318 100%);
+    padding: 80px 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.blind-bag-section::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 350px;
+    height: 350px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 50%;
+}
+
+.blind-bag-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .blind-bag-container {
+        flex-direction: row;
+        text-align: left;
+        justify-content: space-between;
+    }
+}
+
+/* Left text area */
+.blind-bag-text {
+    flex: 1;
+    max-width: 520px;
+}
+
+.blind-bag-tag {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #f5c842;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 6px 16px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+}
+
+.blind-bag-title {
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.25;
+    margin-bottom: 20px;
+}
+
+.blind-bag-highlight {
+    color: #f5c842;
+}
+
+.blind-bag-desc {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.7;
+    margin-bottom: 32px;
+    max-width: 460px;
+}
+
+.blind-bag-btn {
+    background: linear-gradient(135deg, #f5c842, #f39c12);
+    color: #1a3a10;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(245, 200, 66, 0.35);
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.blind-bag-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(245, 200, 66, 0.5);
+}
+
+/* Right image area */
+.blind-bag-visual {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.blind-bag-circle {
+    position: relative;
+    width: 300px;
+    height: 300px;
+}
+
+.blind-bag-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 6px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.blind-bag-badge {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 64px;
+    height: 64px;
+    background: #f5c842;
+    color: #1a3a10;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 900;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    animation: pulseBadge 2s ease-in-out infinite;
+}
+
+@keyframes pulseBadge {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+}
+
+/* Small decorative circle — top right of main circle */
+.blind-bag-small-circle {
+    position: absolute;
+    top: -20px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.blind-bag-small-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}

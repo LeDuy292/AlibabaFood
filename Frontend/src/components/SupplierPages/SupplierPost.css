@@ -1,0 +1,882 @@
+/* ─────────────────────────────────────────────
+   SupplierPost Page Styles
+───────────────────────────────────────────── */
+
+/* Root */
+.sp-root {
+  min-height: 100vh;
+  background: #f8faf6;
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+/* ── Ripple ── */
+.sp-ripple-btn {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+}
+.sp-ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(0);
+  animation: sp-ripple 0.65s linear;
+  pointer-events: none;
+}
+@keyframes sp-ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* ── Page Header ── */
+.sp-page-header {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #134e15 0%, #1e5e20 60%, #246b26 100%);
+  color: #fff;
+  padding: 72px 24px 56px;
+  text-align: center;
+}
+.sp-header-inner {
+  position: relative;
+  z-index: 2;
+}
+.sp-header-badge {
+  display: inline-block;
+  background: rgba(200, 221, 172, 0.25);
+  color: #c8ddac;
+  border: 1px solid rgba(200, 221, 172, 0.4);
+  border-radius: 20px;
+  padding: 6px 18px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 18px;
+  animation: sp-fade-up 0.5s ease both;
+}
+.sp-page-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  margin: 0 0 14px;
+  color: #fff;
+  animation: sp-fade-up 0.55s 0.1s ease both;
+}
+.sp-page-sub {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.6;
+  animation: sp-fade-up 0.6s 0.2s ease both;
+}
+.sp-header-orb {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(200, 221, 172, 0.12);
+  filter: blur(60px);
+}
+.sp-orb-1 {
+  width: 320px;
+  height: 320px;
+  top: -100px;
+  left: -80px;
+}
+.sp-orb-2 {
+  width: 260px;
+  height: 260px;
+  bottom: -80px;
+  right: -60px;
+}
+
+@keyframes sp-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Reveal ── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+[data-reveal].revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Layout ── */
+.sp-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 24px 60px;
+}
+@media (max-width: 900px) {
+  .sp-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Form ── */
+.sp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.sp-form-section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(19, 78, 21, 0.06);
+  animation: sp-fade-up 0.5s ease both;
+}
+.sp-form-section:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.sp-form-section:nth-child(2) {
+  animation-delay: 0.12s;
+}
+.sp-form-section:nth-child(3) {
+  animation-delay: 0.19s;
+}
+.sp-form-section:nth-child(4) {
+  animation-delay: 0.26s;
+}
+
+.sp-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #134e15;
+  margin: 0 0 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e8f2e0;
+}
+.sp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.sp-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #374151;
+}
+.sp-req {
+  color: #ef4444;
+}
+.sp-opt {
+  color: #9ca3af;
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+.sp-input,
+.sp-select,
+.sp-textarea {
+  padding: 11px 14px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  color: #111827;
+  background: #fafafa;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  outline: none;
+  font-family: inherit;
+}
+.sp-input:focus,
+.sp-select:focus,
+.sp-textarea:focus {
+  border-color: #134e15;
+  box-shadow: 0 0 0 3px rgba(19, 78, 21, 0.12);
+  background: #fff;
+}
+.sp-input-err {
+  border-color: #ef4444 !important;
+}
+.sp-err-msg {
+  font-size: 0.8rem;
+  color: #ef4444;
+}
+.sp-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+.sp-char-count {
+  font-size: 0.78rem;
+  color: #9ca3af;
+  text-align: right;
+  margin-top: -12px;
+}
+
+.sp-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 600px) {
+  .sp-row-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sp-discount-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #134e15, #1e7020);
+  color: #c8ddac;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-top: 4px;
+  animation: sp-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes sp-pop {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Upload Zone */
+.sp-upload-zone {
+  border: 2px dashed #c8ddac;
+  border-radius: 14px;
+  padding: 8px;
+  cursor: pointer;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+  background: #f0f7ea;
+  overflow: hidden;
+}
+.sp-upload-zone:hover {
+  border-color: #134e15;
+  background: #e8f2e0;
+}
+.sp-upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.sp-upload-icon {
+  font-size: 2.5rem;
+}
+.sp-upload-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #134e15;
+}
+.sp-upload-hint {
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+.sp-upload-preview {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.sp-file-hidden {
+  display: none;
+}
+.sp-remove-img {
+  margin-top: 8px;
+  background: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 4px 12px;
+  font-size: 0.82rem;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.sp-remove-img:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+/* Form Actions */
+.sp-form-actions {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+.sp-btn-primary {
+  background: linear-gradient(135deg, #134e15, #1e7020);
+  color: #fff;
+  border-radius: 12px;
+  padding: 14px 32px;
+  font-size: 1rem;
+  font-weight: 700;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+  box-shadow: 0 4px 16px rgba(19, 78, 21, 0.28);
+}
+.sp-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(19, 78, 21, 0.35);
+}
+.sp-btn-ghost {
+  background: #fff;
+  color: #134e15;
+  border: 2px solid #c8ddac;
+  border-radius: 12px;
+  padding: 13px 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.sp-btn-ghost:hover {
+  background: #e8f2e0;
+}
+.sp-btn-submit {
+  flex: 1;
+  min-width: 200px;
+  text-align: center;
+}
+
+/* ── Preview Panel ── */
+.sp-preview-panel {
+  position: sticky;
+  top: 88px;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.sp-preview-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #134e15;
+  margin: 0;
+}
+.sp-preview-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(19, 78, 21, 0.1);
+  animation: sp-fade-up 0.4s 0.3s ease both;
+}
+.sp-preview-img-wrap {
+  position: relative;
+  height: 180px;
+  background: #e8f2e0;
+  overflow: hidden;
+}
+.sp-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.sp-preview-img-placeholder {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  color: #c8ddac;
+}
+.sp-preview-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #ef4444;
+  color: #fff;
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.sp-preview-countdown {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 0.78rem;
+}
+.sp-preview-body {
+  padding: 16px;
+}
+.sp-preview-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 6px;
+  min-height: 1.4em;
+}
+.sp-preview-category {
+  font-size: 0.8rem;
+  color: #134e15;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.sp-preview-desc {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0 0 10px;
+  line-height: 1.5;
+}
+.sp-preview-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.sp-preview-price-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sp-preview-price {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #134e15;
+}
+.sp-preview-original {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+.sp-preview-qty {
+  font-size: 0.82rem;
+  color: #6b7280;
+}
+
+/* Tips */
+.sp-tips {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(19, 78, 21, 0.06);
+  animation: sp-fade-up 0.5s 0.4s ease both;
+}
+.sp-tips-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #134e15;
+  margin: 0 0 12px;
+}
+.sp-tips-list {
+  margin: 0;
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sp-tips-list li {
+  font-size: 0.85rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+/* ── Success Screen ── */
+.sp-success-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 60px 24px;
+}
+.sp-success-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 48px 40px;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(19, 78, 21, 0.12);
+  animation: sp-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.sp-success-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+.sp-success-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #134e15;
+  margin: 0 0 10px;
+}
+.sp-success-sub {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0 0 24px;
+}
+.sp-success-meta {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.sp-success-meta span {
+  background: #f0f7ea;
+  color: #134e15;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.sp-success-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ─────────────────────────────────────────────
+   New classes added in JSX redesign
+───────────────────────────────────────────── */
+
+/* ── Header BG Image ── */
+.sp-header-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.sp-header-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.28;
+}
+.sp-header-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(19, 78, 21, 0.9) 0%,
+    rgba(30, 94, 32, 0.8) 100%
+  );
+}
+
+/* ── Header Stats Row ── */
+.sp-header-stats {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 24px;
+  animation: sp-fade-up 0.65s 0.3s ease both;
+}
+.sp-hstat {
+  text-align: center;
+}
+.sp-hstat-val {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #c8ddac;
+  line-height: 1.2;
+}
+.sp-hstat-l {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.72);
+  margin-top: 2px;
+  display: block;
+}
+.sp-hstat-div {
+  width: 1px;
+  height: 36px;
+  background: rgba(200, 221, 172, 0.3);
+  flex-shrink: 0;
+}
+
+/* ── Inspiration Strip ── */
+.sp-insp-strip {
+  display: flex;
+  height: 170px;
+  overflow: hidden;
+}
+.sp-insp-item {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.sp-insp-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  display: block;
+}
+.sp-insp-item:hover img {
+  transform: scale(1.08);
+}
+.sp-insp-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: flex-end;
+  padding: 10px;
+  transition: background 0.3s;
+}
+.sp-insp-item:hover .sp-insp-overlay {
+  background: rgba(0, 0, 0, 0.1);
+}
+.sp-insp-label {
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* ── Section image banners ── */
+.sp-form-section {
+  overflow: hidden;
+}
+.sp-section-img {
+  position: relative;
+  height: 88px;
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+  margin: -28px -28px 0;
+}
+.sp-section-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.sp-section-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(19, 78, 21, 0.84) 0%,
+    rgba(30, 94, 32, 0.68) 100%
+  );
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+}
+.sp-section-title-light {
+  color: #fff !important;
+  border-bottom: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.sp-section-body {
+  padding-top: 22px;
+}
+
+/* ── Photo hints ── */
+.sp-photo-hints {
+  margin-top: 14px;
+}
+.sp-photo-hint-label {
+  font-size: 0.82rem;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+.sp-photo-hint-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.sp-photo-hint-img {
+  width: 80px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  opacity: 0.82;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+.sp-photo-hint-img:hover {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* ── Preview header (above card) ── */
+.sp-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.sp-preview-header-icon {
+  font-size: 1.5rem;
+}
+.sp-preview-subtitle {
+  font-size: 0.78rem;
+  color: #9ca3af;
+  margin: 0;
+}
+
+/* ── Preview placeholder (real image) ── */
+.sp-preview-img-placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+}
+.sp-preview-placeholder-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.65;
+}
+.sp-preview-placeholder-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #fff;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.26);
+  gap: 6px;
+}
+.sp-preview-store {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #134e15;
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  z-index: 2;
+}
+.sp-preview-placeholder-text {
+  color: #9ca3af;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+/* ── Store Card ── */
+.sp-store-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  height: 90px;
+  box-shadow: 0 4px 20px rgba(19, 78, 21, 0.15);
+}
+.sp-store-card-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+}
+.sp-store-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(19, 78, 21, 0.8),
+    rgba(30, 94, 32, 0.58)
+  );
+}
+.sp-store-card-body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  color: #fff;
+}
+.sp-store-avatar {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+.sp-store-name {
+  font-weight: 800;
+  font-size: 0.92rem;
+}
+.sp-store-meta {
+  font-size: 0.73rem;
+  color: rgba(255, 255, 255, 0.82);
+  margin-top: 2px;
+}
+.sp-store-open {
+  color: #c8ddac;
+  font-weight: 700;
+}
+
+/* ── Success Screen BG ── */
+.sp-success-card {
+  overflow: hidden;
+  position: relative;
+}
+.sp-success-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.sp-success-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.22;
+}
+.sp-success-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.88);
+}
+.sp-success-body {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Responsive extras ── */
+@media (max-width: 600px) {
+  .sp-insp-strip {
+    height: 110px;
+  }
+  .sp-insp-item:nth-child(n + 5) {
+    display: none;
+  }
+  .sp-header-stats {
+    gap: 12px;
+  }
+  .sp-hstat-val {
+    font-size: 1.1rem;
+  }
+  .sp-photo-hint-img {
+    width: 64px;
+    height: 46px;
+  }
+}

@@ -1,0 +1,160 @@
+import React, { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import './MenuHeroSection.css';
+import fastFoodImg from '../assets/FastFood.png';
+import foodComboImg from '../assets/FoodCombo.png';
+import cakeImg from '../assets/Cake.png';
+import dryFoodImg from '../assets/DryFood.png';
+
+const MenuHeroSection = () => {
+    const navigate = useNavigate();
+    const glowRef = useRef(null);
+    const sparkleContainerRef = useRef(null);
+    const lastSparkleTime = useRef(0);
+
+    const handleMouseMove = (e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        if (glowRef.current) {
+            glowRef.current.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+        }
+
+        const now = Date.now();
+        if (now - lastSparkleTime.current > 25 && sparkleContainerRef.current) {
+            lastSparkleTime.current = now;
+            spawnSparkle(x, y);
+        }
+    };
+
+    const spawnSparkle = (x, y) => {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        const size = Math.random() * 12 + 5;
+        const offsetX = (Math.random() - 0.5) * 60;
+        const offsetY = (Math.random() - 0.5) * 60;
+
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+        sparkle.style.left = `${x + offsetX}px`;
+        sparkle.style.top = `${y + offsetY}px`;
+
+        const colors = ['#ffffff', '#ffd700', '#69a656', '#00e5ff'];
+        sparkle.style.color = colors[Math.floor(Math.random() * colors.length)];
+        sparkleContainerRef.current.appendChild(sparkle);
+
+        setTimeout(() => {
+            if (sparkle.parentNode === sparkleContainerRef.current) {
+                sparkleContainerRef.current.removeChild(sparkle);
+            }
+        }, 1500);
+    };
+
+    const handleMouseEnter = () => { if (glowRef.current) glowRef.current.style.opacity = 1; };
+    const handleMouseLeave = () => { if (glowRef.current) glowRef.current.style.opacity = 0; };
+
+    return (
+        <section
+            className="menu-hero-section"
+            onMouseMove={handleMouseMove}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            <div className="cursor-glow" ref={glowRef}></div>
+            <div className="sparkle-container" ref={sparkleContainerRef}></div>
+
+            <div className="container menu-hero-container">
+                {/* Left Side Content */}
+                <motion.div
+                    className="menu-hero-content"
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                >
+                    <motion.h1
+                        className="menu-hero-title"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2, duration: 0.6 }}
+                    >
+                        Thực Đơn Của Bạn,<br />
+                        Được Tối Giản
+                    </motion.h1>
+                    <motion.p
+                        className="menu-hero-desc"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4, duration: 0.6 }}
+                    >
+                        Đầy đủ các món ăn ngon lành, chất lượng cao cùng hàng loạt ưu đãi cực kỳ hấp dẫn dành riêng cho bạn mỗi ngày.
+                    </motion.p>
+ 
+                    <motion.div
+                        className="order-now-container"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.6, duration: 0.5 }}
+                    >
+                        <button className="btn-order-now" onClick={() => navigate('/main-menu')}>Đặt Hàng Ngay</button>
+ 
+                        <div className="dashed-arrow">
+                            <svg width="300" height="180" viewBox="0 0 300 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M 30 165 C 0 145, -5 85, 40 65 C 85 45, 135 75, 125 125 C 115 165, 75 185, 45 165 C 18 148, 35 110, 70 92 C 110 72, 175 50, 255 18"
+                                    stroke="white"
+                                    strokeWidth="3"
+                                    strokeDasharray="8,8"
+                                    fill="none"
+                                    strokeLinecap="round"
+                                />
+                                <polygon
+                                    points="243,5 275,22 250,50"
+                                    fill="white"
+                                    opacity="0.92"
+                                />
+                            </svg>
+                        </div>
+                    </motion.div>
+                </motion.div>
+ 
+                {/* Right Side Cards Grid */}
+                <motion.div
+                    className="menu-hero-cards-wrapper"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4, duration: 1, ease: "easeOut" }}
+                >
+                    <div className="cards-bg-lines"></div>
+ 
+                    <div className="menu-hero-cards">
+                        {[
+                            { img: fastFoodImg, title: "Đồ Ăn Nhanh", delay: 0.6 },
+                            { img: foodComboImg, title: "Đồ hộp", delay: 0.8 },
+                            { img: cakeImg, title: "Bánh Ngọt", delay: 1.0 },
+                            { img: dryFoodImg, title: "Đồ Khô", delay: 1.2 }
+                        ].map((card, index) => (
+                            <motion.div
+                                key={index}
+                                className="menu-card"
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: card.delay, duration: 0.6 }}
+                                whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                            >
+                                <div className="menu-card-img-wrapper">
+                                    <img src={card.img} alt={card.title} />
+                                </div>
+                                <h3>{card.title}</h3>
+                                <a href="#" className="see-more">Xem thêm</a>
+                            </motion.div>
+                        ))}
+                    </div>
+                </motion.div>
+            </div>
+        </section>
+    );
+};
+
+export default MenuHeroSection;

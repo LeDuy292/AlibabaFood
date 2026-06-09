@@ -1,0 +1,218 @@
+.combo-deal-section {
+    padding: 1rem 0 4rem;
+    background-color: #fff;
+}
+
+/* Green pill label */
+.combo-label-pill {
+    display: inline-block;
+    background-color: #4caf50;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 8px 22px;
+    border-radius: 30px;
+    margin-bottom: 2rem;
+}
+
+/* Grid */
+.combo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 900px) {
+    .combo-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 580px) {
+    .combo-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Card */
+.combo-card {
+    background-color: #fff;
+    border-radius: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+    position: relative;
+    padding: 1.5rem 1.2rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow 0.3s, transform 0.3s;
+    overflow: visible;
+}
+
+.combo-card:hover {
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+    transform: translateY(-6px);
+}
+
+/* Smile Icon */
+.combo-smile-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    box-shadow: 0 4px 10px rgba(19, 78, 21, 0.3);
+    transition: background-color 0.25s;
+}
+
+.combo-smile-btn:hover {
+    background-color: #69a656;
+}
+
+/* Circular Image */
+.combo-card-img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    flex-shrink: 0;
+}
+
+.combo-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+    display: block;
+}
+
+.combo-card:hover .combo-card-img img {
+    transform: scale(1.07);
+}
+
+/* Card Body */
+.combo-card-body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.combo-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.combo-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.combo-add-cart-btn {
+    background-color: var(--primary-dark);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+    transition: background-color 0.25s;
+    flex-shrink: 0;
+}
+
+.combo-add-cart-btn:hover {
+    background-color: #69a656;
+}
+
+.combo-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.combo-star-rating {
+    display: flex;
+    gap: 2px;
+}
+
+.combo-price-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.combo-price {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+    white-space: nowrap;
+}
+
+.combo-buy-now-btn {
+    background-color: #e53935;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+    transition: background-color 0.25s;
+    flex-shrink: 0;
+}
+
+.combo-buy-now-btn:hover {
+    background-color: #c62828;
+}
+
+/* Navigation */
+.combo-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.combo-nav-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.25s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(19, 78, 21, 0.12);
+}
+
+.combo-nav-btn:hover:not(:disabled) {
+    background-color: var(--primary-dark);
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.combo-nav-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}

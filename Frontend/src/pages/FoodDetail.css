@@ -1,0 +1,239 @@
+.food-detail-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+.food-detail-main-container {
+    padding: 0rem 0rem 4rem; /* Giảm padding bên cạnh */
+    flex: 1;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: #1a4d1a;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: transform 0.2s;
+}
+
+.back-button:hover {
+    transform: translateX(-5px);
+}
+
+.food-detail-card {
+    background-color: #0a3d1a; /* Xanh đậm như hình mẫu */
+    border-radius: 30px;
+    display: flex;
+    overflow: hidden;
+    color: white;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    width: 110%; /* Full width */
+    min-height: 500px; /* Giảm chiều dài */
+}
+
+.food-detail-image-section {
+    flex: 1;
+    padding: 1.5rem;
+}
+
+.main-food-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.food-detail-info-section {
+    flex: 1.2;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.food-name {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.rating-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rating-score {
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+.food-description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #eee;
+    margin: 0;
+}
+
+.food-highlight {
+    color: #ffb800; /* Màu cam vàng */
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.price-quantity-row {
+    display: flex;
+    gap: 16rem;
+    margin-top: 1rem;
+}
+
+.price-label, .quantity-label {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.price-value {
+    font-size: 2.5rem;
+    color: #4ade80; /* Màu xanh lá sáng */
+    margin: 0;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 0.3rem;
+    gap: 1rem;
+    width: fit-content;
+}
+
+.quantity-controls button {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.quantity-controls span {
+    font-size: 1.2rem;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+}
+
+.options-row {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.add-on-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.add-on-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.add-on-img-placeholder {
+    width: 40px;
+    height: 40px;
+    background: #ccc;
+    border-radius: 8px;
+}
+
+.add-on-name {
+    flex: 1;
+    font-size: 0.85rem;
+}
+
+.add-on-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.notes-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.notes-textarea {
+    width: 100%;
+    height: 120px;
+    background: #c2d1a4; /* Màu xanh nhạt như hình */
+    border: none;
+    border-radius: 15px;
+    padding: 1rem;
+    color: #eeeeee;
+    font-family: inherit;
+    resize: none;
+}
+
+.action-buttons-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+    justify-content: flex-end;
+}
+
+.add-to-cart-outline-btn {
+    background: none;
+    border: 1px solid white;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.order-now-solid-btn {
+    background: #ffb800; /* Màu vàng cam */
+    border: none;
+    color: #f4f8f5;
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+@media (max-width: 1024px) {
+    .food-detail-card {
+        flex-direction: column;
+    }
+    .food-detail-info-section {
+        padding: 2rem;
+    }
+}
