@@ -11,7 +11,7 @@ const formatVND = (value) => {
 };
 
 const MenuProductCard = ({ product }) => {
-  const { name, price, rating, discount, img, image, quantity } = product;
+  const { name, price, rating, discount, img, image, quantity, supplierName, supplierAddress, distanceKm } = product;
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
@@ -63,6 +63,25 @@ const MenuProductCard = ({ product }) => {
             />
           ))}
         </div>
+
+        {supplierName && (
+          <p className="product-supplier-name" style={{ fontSize: '0.8rem', color: '#374151', margin: '4px 0', fontWeight: 600 }}>
+            🏪 {supplierName}
+          </p>
+        )}
+        {supplierAddress && (
+          <p className="product-supplier-address" style={{
+            fontSize: '0.75rem', color: '#6b7280', margin: '2px 0',
+            whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'
+          }} title={supplierAddress}>
+            🗺️ {supplierAddress}
+          </p>
+        )}
+        {distanceKm !== undefined && distanceKm !== null && (
+          <p className="product-distance" style={{ fontSize: '0.75rem', color: '#10b981', margin: '2px 0', fontWeight: 600 }}>
+            📍 Cách bạn {typeof distanceKm === 'number' ? distanceKm.toFixed(2) : distanceKm} km
+          </p>
+        )}
 
         <div className="product-footer">
           <div className="price-tag">
