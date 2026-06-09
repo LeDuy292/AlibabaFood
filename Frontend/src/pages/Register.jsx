@@ -11,6 +11,7 @@ const Register = () => {
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
+        phone: '',
         password: '',
         confirmPassword: '',
     });
@@ -44,6 +45,7 @@ const Register = () => {
             const response = await api.post('/auth/register', {
                 fullName: formData.fullName,
                 email: formData.email,
+                phone: formData.phone,
                 password: formData.password,
                 confirmPassword: formData.confirmPassword,
                 username: formData.email.split('@')[0],
@@ -118,6 +120,17 @@ const Register = () => {
                             onChange={handleChange}
                             placeholder="Địa chỉ Email"
                             required
+                            disabled={loading}
+                        />
+                    </div>
+
+                    <div className="form-group-glass">
+                        <input
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            placeholder="Số điện thoại"
                             disabled={loading}
                         />
                     </div>
