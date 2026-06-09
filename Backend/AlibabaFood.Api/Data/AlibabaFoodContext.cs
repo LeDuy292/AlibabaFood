@@ -19,6 +19,12 @@ namespace AlibabaFood.Api.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
 
+        // Products & Suppliers
+        public DbSet<FoodItem> FoodItems { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<FoodItemImage> FoodItemImages { get; set; }
+        public DbSet<FoodCategory> FoodCategories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -128,6 +134,73 @@ namespace AlibabaFood.Api.Data
                 entity.HasOne(oi => oi.Order)
                       .WithMany(o => o.OrderItems)
                       .HasForeignKey(oi => oi.OrderId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Configure Supplier entity
+            modelBuilder.Entity<Supplier>(entity =>
+            {
+                entity.HasKey(e => e.SupplierId);
+                entity.Property(e => e.BusinessName).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.AddressLine1).IsRequired().HasMaxLength(500);
+                entity.Property(e => e.City).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Province).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Phone).IsRequired().HasMaxLength(20);
+                entity.Property(e => e.Latitude).HasColumnType("decimal(10,8)");
+                entity.Property(e => e.Longitude).HasColumnType("decimal(11,8)");
+                entity.Property(e => e.RatingAverage).HasColumnType("decimal(3,2)");
+                entity.Property(e => e.TotalFoodSavedKg).HasColumnType("decimal(10,2)");
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("GETDATE()");
+
+                entity.HasOne(s => s.User)
+                      .WithMany()
+                      .HasForeignKey(s => s.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // Configure FoodCategory entity
+            modelBuilder.Entity<FoodCategory>(entity =>
+            {
+                entity.HasKey(e => e.CategoryId);
+                entity.Property(e => e.CategoryName).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("GETDATE()");
+            });
+
+            // Configure FoodItem entity
+            modelBuilder.Entity<FoodItem>(entity =>
+            {
+                entity.HasKey(e => e.ItemId);
+                entity.Property(e => e.ItemName).IsRequired().HasMaxLength(255);
+                entity.Property(e => e.OriginalPrice).HasColumnType("decimal(10,2)");
+                entity.Property(e => e.DiscountedPrice).HasColumnType("decimal(10,2)");
+                entity.Property(e => e.DiscountPercentage).HasColumnType("decimal(5,2)");
+                entity.Property(e => e.WeightKg).HasColumnType("decimal(8,3)");
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("GETDATE()");
+
+                entity.HasOne(f => f.Supplier)
+                      .WithMany(s => s.FoodItems)
+                      .HasForeignKey(f => f.SupplierId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(f => f.Category)
+                      .WithMany(c => c.FoodItems)
+                      .HasForeignKey(f => f.CategoryId)
+                      .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            // Configure FoodItemImage entity
+            modelBuilder.Entity<FoodItemImage>(entity =>
+            {
+                entity.HasKey(e => e.ImageId);
+                entity.Property(e => e.ImageUrl).IsRequired().HasMaxLength(500);
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
+
+                entity.HasOne(i => i.FoodItem)
+                      .WithMany(f => f.Images)
+                      .HasForeignKey(i => i.ItemId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
 

@@ -1241,3 +1241,468 @@ INSERT INTO system_settings (setting_key, setting_value, setting_type, descripti
 -- =====================================================
 -- END OF DATABASE DESIGN
 -- =====================================================
+-- =====================================================
+-- SCRIPT TẠO BẢNG VÀ INSERT DỮ LIỆU MẪU (ALL-IN-ONE)
+-- Chạy script này trong SQL Server Management Studio
+-- kết nối vào database AlibabaFood
+-- =====================================================
+
+USE AlibabaFood;
+GO
+
+-- =====================================================
+-- PHẦN 1: TẠO BẢNG
+-- =====================================================
+
+-- 1. Tạo bảng business_types
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='business_types' AND xtype='U')
+BEGIN
+    CREATE TABLE business_types (
+        business_type_id INT PRIMARY KEY IDENTITY(1,1),
+        type_name VARCHAR(100) NOT NULL UNIQUE,
+        description TEXT,
+        created_at DATETIME DEFAULT GETDATE()
+    );
+    PRINT 'Created business_types';
+END
+
+-- 2. Tạo bảng suppliers
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='suppliers' AND xtype='U')
+BEGIN
+    CREATE TABLE suppliers (
+        supplier_id INT PRIMARY KEY IDENTITY(1,1),
+        user_id INT NOT NULL UNIQUE,
+        business_name VARCHAR(255) NOT NULL,
+        business_type_id INT NOT NULL,
+        business_registration_number VARCHAR(100),
+        tax_code VARCHAR(50),
+        logo_url VARCHAR(500),
+        cover_image_url VARCHAR(500),
+        description TEXT,
+        address_line1 VARCHAR(500) NOT NULL,
+        address_line2 VARCHAR(500),
+        ward VARCHAR(100),
+        district VARCHAR(100),
+        city VARCHAR(100) NOT NULL,
+        province VARCHAR(100) NOT NULL,
+        latitude DECIMAL(10, 8),
+        longitude DECIMAL(11, 8),
+        phone VARCHAR(20) NOT NULL,
+        email VARCHAR(255),
+        website VARCHAR(255),
+        opening_time TIME,
+        closing_time TIME,
+        is_verified BIT DEFAULT 0,
+        verification_date DATETIME,
+        is_active BIT DEFAULT 1,
+        rating_average DECIMAL(3, 2) DEFAULT 0.00,
+        total_reviews INT DEFAULT 0,
+        total_orders INT DEFAULT 0,
+        total_food_saved_kg DECIMAL(10, 2) DEFAULT 0.00,
+        created_at DATETIME DEFAULT GETDATE(),
+        updated_at DATETIME DEFAULT GETDATE(),
+        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+        FOREIGN KEY (business_type_id) REFERENCES business_types(business_type_id)
+    );
+    PRINT 'Created suppliers';
+END
+
+-- 3. Tạo bảng food_categories
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='food_categories' AND xtype='U')
+BEGIN
+    CREATE TABLE food_categories (
+        category_id INT PRIMARY KEY IDENTITY(1,1),
+        parent_category_id INT,
+        category_name NVARCHAR(100) NOT NULL,
+        category_name_en VARCHAR(100),
+        description TEXT,
+        icon_url VARCHAR(500),
+        display_order INT DEFAULT 0,
+        is_active BIT DEFAULT 1,
+        created_at DATETIME DEFAULT GETDATE(),
+        updated_at DATETIME DEFAULT GETDATE()
+    );
+    PRINT 'Created food_categories';
+END
+
+-- 4. Tạo bảng product_types
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='product_types' AND xtype='U')
+BEGIN
+    CREATE TABLE product_types (
+        product_type_id INT PRIMARY KEY IDENTITY(1,1),
+        type_name VARCHAR(50) NOT NULL UNIQUE,
+        type_name_vi VARCHAR(100) NOT NULL,
+        description TEXT,
+        created_at DATETIME DEFAULT GETDATE()
+    );
+    PRINT 'Created product_types';
+END
+
+-- 5. Tạo bảng food_statuses
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='food_statuses' AND xtype='U')
+BEGIN
+    CREATE TABLE food_statuses (
+        status_id INT PRIMARY KEY IDENTITY(1,1),
+        status_name VARCHAR(50) NOT NULL UNIQUE,
+        status_name_vi VARCHAR(100) NOT NULL,
+        description TEXT,
+        storage_instruction TEXT,
+        created_at DATETIME DEFAULT GETDATE()
+    );
+    PRINT 'Created food_statuses';
+END
+
+-- 6. Tạo bảng food_items
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='food_items' AND xtype='U')
+BEGIN
+    CREATE TABLE food_items (
+        item_id INT PRIMARY KEY IDENTITY(1,1),
+        supplier_id INT NOT NULL,
+        product_type_id INT NOT NULL,
+        category_id INT NOT NULL,
+        item_name VARCHAR(255) NOT NULL,
+        description TEXT,
+        is_surprise_bag BIT DEFAULT 0,
+        quantity_available INT NOT NULL DEFAULT 0,
+        original_price DECIMAL(10, 2) NOT NULL,
+        discounted_price DECIMAL(10, 2) NOT NULL,
+        discount_percentage DECIMAL(5, 2),
+        food_status_id INT NOT NULL,
+        preparation_time DATETIME NOT NULL,
+        safe_consumption_time DATETIME NOT NULL,
+        expiry_time DATETIME NOT NULL,
+        pickup_start_time DATETIME,
+        pickup_end_time DATETIME,
+        is_pre_order BIT DEFAULT 0,
+        weight_kg DECIMAL(8, 3),
+        calories INT,
+        allergens TEXT,
+        ingredients TEXT,
+        storage_instructions TEXT,
+        reheating_instructions TEXT,
+        is_active BIT DEFAULT 1,
+        is_approved BIT DEFAULT 0,
+        approved_by INT,
+        approved_at DATETIME,
+        total_sold INT DEFAULT 0,
+        view_count INT DEFAULT 0,
+        created_at DATETIME DEFAULT GETDATE(),
+        updated_at DATETIME DEFAULT GETDATE(),
+        FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id) ON DELETE CASCADE,
+        FOREIGN KEY (product_type_id) REFERENCES product_types(product_type_id),
+        FOREIGN KEY (category_id) REFERENCES food_categories(category_id),
+        FOREIGN KEY (food_status_id) REFERENCES food_statuses(status_id),
+        FOREIGN KEY (approved_by) REFERENCES users(user_id)
+    );
+    PRINT 'Created food_items';
+END
+
+-- 7. Tạo bảng food_item_images
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='food_item_images' AND xtype='U')
+BEGIN
+    CREATE TABLE food_item_images (
+        image_id INT PRIMARY KEY IDENTITY(1,1),
+        item_id INT NOT NULL,
+        image_url VARCHAR(500) NOT NULL,
+        is_primary BIT DEFAULT 0,
+        display_order INT DEFAULT 0,
+        created_at DATETIME DEFAULT GETDATE(),
+        FOREIGN KEY (item_id) REFERENCES food_items(item_id) ON DELETE CASCADE
+    );
+    PRINT 'Created food_item_images';
+END
+
+GO
+
+-- =====================================================
+-- PHẦN 2: INSERT DỮ LIỆU THAM CHIẾU
+-- =====================================================
+
+-- Insert business_types
+IF NOT EXISTS (SELECT 1 FROM business_types)
+BEGIN
+    INSERT INTO business_types (type_name, description) VALUES
+    ('restaurant', N'Nhà hàng'),
+    ('cafe', N'Quán cà phê'),
+    ('bakery', N'Tiệm bánh'),
+    ('supermarket', N'Siêu thị');
+    PRINT 'Inserted business_types';
+END
+
+-- Insert food_statuses
+IF NOT EXISTS (SELECT 1 FROM food_statuses)
+BEGIN
+    INSERT INTO food_statuses (status_name, status_name_vi, description) VALUES
+    ('hot', N'Nóng', N'Món ăn nóng mới nấu'),
+    ('cold', N'Lạnh', N'Món ăn lạnh'),
+    ('fresh', N'Tươi', N'Thực phẩm tươi sống'),
+    ('packaged', N'Đóng gói', N'Thực phẩm đã đóng gói sẵn');
+    PRINT 'Inserted food_statuses';
+END
+
+-- Insert product_types
+IF NOT EXISTS (SELECT 1 FROM product_types)
+BEGIN
+    INSERT INTO product_types (type_name, type_name_vi, description) VALUES
+    ('specific_cooked', N'Món ăn cụ thể đã nấu', N'Sản phẩm ăn liền cụ thể'),
+    ('surprise_bag_cooked', N'Túi bất ngờ món chín', N'Túi ngẫu nhiên các món đã nấu'),
+    ('specific_raw', N'Nguyên liệu tươi', N'Thực phẩm tươi sống cụ thể');
+    PRINT 'Inserted product_types';
+END
+
+-- Insert food_categories
+IF NOT EXISTS (SELECT 1 FROM food_categories)
+BEGIN
+    INSERT INTO food_categories (category_name, category_name_en, display_order) VALUES
+    (N'Cơm', 'Rice dishes', 1),
+    (N'Bánh mì', 'Bread', 2),
+    (N'Đồ uống', 'Drinks', 3),
+    (N'Bánh ngọt', 'Pastries', 4),
+    (N'Đồ ăn nhẹ', 'Snacks', 5),
+    (N'Rau củ quả', 'Vegetables & Fruits', 6),
+    (N'Thịt & Hải sản', 'Meat & Seafood', 7),
+    (N'Sữa & Trứng', 'Dairy & Eggs', 8);
+    PRINT 'Inserted food_categories';
+END
+
+GO
+
+-- =====================================================
+-- PHẦN 3: TẠO USER + SUPPLIER
+-- =====================================================
+
+-- Lấy hoặc tạo role supplier
+DECLARE @supplier_role_id INT;
+SELECT @supplier_role_id = role_id FROM roles WHERE role_name = 'supplier';
+
+IF @supplier_role_id IS NULL
+BEGIN
+    INSERT INTO roles (role_name, description) VALUES ('supplier', N'Nhà cung cấp/cửa hàng');
+    SET @supplier_role_id = SCOPE_IDENTITY();
+    PRINT 'Created supplier role';
+END
+
+-- Tạo user mẫu cho suppliers
+IF NOT EXISTS (SELECT 1 FROM users WHERE email = 'quan_com_a@demo.com')
+    INSERT INTO users (email, username, password_hash, full_name, role_id, is_verified, is_active)
+    VALUES ('quan_com_a@demo.com', 'quancoma', 'DEMO_HASH_1', N'Quán Cơm A', @supplier_role_id, 1, 1);
+
+IF NOT EXISTS (SELECT 1 FROM users WHERE email = 'banhmi_b@demo.com')
+    INSERT INTO users (email, username, password_hash, full_name, role_id, is_verified, is_active)
+    VALUES ('banhmi_b@demo.com', 'banhmib', 'DEMO_HASH_2', N'Tiệm Bánh Mì B', @supplier_role_id, 1, 1);
+
+IF NOT EXISTS (SELECT 1 FROM users WHERE email = 'cafe_c@demo.com')
+    INSERT INTO users (email, username, password_hash, full_name, role_id, is_verified, is_active)
+    VALUES ('cafe_c@demo.com', 'cafec', 'DEMO_HASH_3', N'Cà Phê C', @supplier_role_id, 1, 1);
+
+GO
+
+-- =====================================================
+-- PHẦN 4: INSERT SUPPLIERS (tọa độ GPS Đà Nẵng)
+-- =====================================================
+
+DECLARE @user1_id INT, @user2_id INT, @user3_id INT;
+DECLARE @btype_restaurant INT, @btype_bakery INT, @btype_cafe INT;
+
+SELECT @user1_id = user_id FROM users WHERE email = 'quan_com_a@demo.com';
+SELECT @user2_id = user_id FROM users WHERE email = 'banhmi_b@demo.com';
+SELECT @user3_id = user_id FROM users WHERE email = 'cafe_c@demo.com';
+SELECT @btype_restaurant = business_type_id FROM business_types WHERE type_name = 'restaurant';
+SELECT @btype_bakery = business_type_id FROM business_types WHERE type_name = 'bakery';
+SELECT @btype_cafe = business_type_id FROM business_types WHERE type_name = 'cafe';
+
+IF @user1_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM suppliers WHERE user_id = @user1_id)
+    INSERT INTO suppliers (user_id, business_name, business_type_id, address_line1, city, province,
+                           latitude, longitude, phone, is_verified, is_active, rating_average)
+    VALUES (@user1_id, N'Quán Cơm Gia Đình A', @btype_restaurant,
+            N'123 Lê Duẩn', N'Đà Nẵng', N'Đà Nẵng',
+            16.0540, 108.2015, '0901234567', 1, 1, 4.5);
+
+IF @user2_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM suppliers WHERE user_id = @user2_id)
+    INSERT INTO suppliers (user_id, business_name, business_type_id, address_line1, city, province,
+                           latitude, longitude, phone, is_verified, is_active, rating_average)
+    VALUES (@user2_id, N'Bánh Mì Việt B', @btype_bakery,
+            N'45 Trần Phú', N'Đà Nẵng', N'Đà Nẵng',
+            16.0560, 108.2030, '0912345678', 1, 1, 4.2);
+
+IF @user3_id IS NOT NULL AND NOT EXISTS (SELECT 1 FROM suppliers WHERE user_id = @user3_id)
+    INSERT INTO suppliers (user_id, business_name, business_type_id, address_line1, city, province,
+                           latitude, longitude, phone, is_verified, is_active, rating_average)
+    VALUES (@user3_id, N'Cà Phê Góc Phố C', @btype_cafe,
+            N'78 Nguyễn Văn Linh', N'Đà Nẵng', N'Đà Nẵng',
+            16.0520, 108.2010, '0923456789', 1, 1, 4.8);
+
+PRINT 'Inserted suppliers';
+GO
+
+-- =====================================================
+-- PHẦN 5: INSERT FOOD ITEMS (dùng ID tường minh, không bị NULL)
+-- =====================================================
+
+DECLARE @sup1 INT, @sup2 INT, @sup3 INT;
+DECLARE @ptype INT, @fstatus_hot INT, @fstatus_cold INT;
+DECLARE @cat_com INT, @cat_banh INT, @cat_drink INT;
+
+SELECT @sup1 = supplier_id FROM suppliers WHERE business_name = N'Quán Cơm Gia Đình A';
+SELECT @sup2 = supplier_id FROM suppliers WHERE business_name = N'Bánh Mì Việt B';
+SELECT @sup3 = supplier_id FROM suppliers WHERE business_name = N'Cà Phê Góc Phố C';
+SELECT @ptype = product_type_id FROM product_types WHERE type_name = 'specific_cooked';
+SELECT @fstatus_hot = status_id FROM food_statuses WHERE status_name = 'hot';
+SELECT @fstatus_cold = status_id FROM food_statuses WHERE status_name = 'cold';
+SELECT @cat_com = category_id FROM food_categories WHERE category_name_en = 'Rice dishes';
+SELECT @cat_banh = category_id FROM food_categories WHERE category_name_en = 'Bread';
+SELECT @cat_drink = category_id FROM food_categories WHERE category_name_en = 'Drinks';
+
+-- Debug: in ra giá trị để xác nhận không bị NULL
+PRINT 'sup1=' + ISNULL(CAST(@sup1 AS VARCHAR), 'NULL');
+PRINT 'sup2=' + ISNULL(CAST(@sup2 AS VARCHAR), 'NULL');
+PRINT 'sup3=' + ISNULL(CAST(@sup3 AS VARCHAR), 'NULL');
+PRINT 'ptype=' + ISNULL(CAST(@ptype AS VARCHAR), 'NULL');
+PRINT 'fstatus_hot=' + ISNULL(CAST(@fstatus_hot AS VARCHAR), 'NULL');
+PRINT 'fstatus_cold=' + ISNULL(CAST(@fstatus_cold AS VARCHAR), 'NULL');
+PRINT 'cat_com=' + ISNULL(CAST(@cat_com AS VARCHAR), 'NULL');
+PRINT 'cat_banh=' + ISNULL(CAST(@cat_banh AS VARCHAR), 'NULL');
+PRINT 'cat_drink=' + ISNULL(CAST(@cat_drink AS VARCHAR), 'NULL');
+
+-- Supplier 1: Cơm
+IF @sup1 IS NOT NULL AND @cat_com IS NOT NULL AND NOT EXISTS (SELECT 1 FROM food_items WHERE supplier_id = @sup1)
+BEGIN
+    INSERT INTO food_items (supplier_id, product_type_id, category_id, item_name, description,
+                            quantity_available, original_price, discounted_price, discount_percentage,
+                            food_status_id, preparation_time, safe_consumption_time, expiry_time,
+                            pickup_start_time, pickup_end_time, is_active, is_approved)
+    VALUES
+    (@sup1, @ptype, @cat_com, N'Cơm gà xối mỡ', N'Cơm gà xối mỡ thơm ngon, cận date buổi tối',
+     10, 45000, 25000, 44.44, @fstatus_hot,
+     GETDATE(), DATEADD(hour, 3, GETDATE()), DATEADD(hour, 4, GETDATE()),
+     GETDATE(), DATEADD(hour, 2, GETDATE()), 1, 1),
+    (@sup1, @ptype, @cat_com, N'Cơm sườn bì chả', N'Cơm sườn đầy đặn, còn mới',
+     5, 50000, 30000, 40.00, @fstatus_hot,
+     GETDATE(), DATEADD(hour, 3, GETDATE()), DATEADD(hour, 5, GETDATE()),
+     GETDATE(), DATEADD(hour, 3, GETDATE()), 1, 1),
+    (@sup1, @ptype, @cat_com, N'Cơm chiên dương châu', N'Cơm chiên còn nóng, bán nhanh cuối ngày',
+     10, 40000, 40000, 0, @fstatus_hot,
+     GETDATE(), DATEADD(hour, 2, GETDATE()), DATEADD(hour, 1, GETDATE()),
+     GETDATE(), DATEADD(hour, 1, GETDATE()), 1, 1);
+    PRINT 'Inserted food_items for supplier 1';
+END
+
+-- Supplier 2: Bánh mì
+IF @sup2 IS NOT NULL AND @cat_banh IS NOT NULL AND NOT EXISTS (SELECT 1 FROM food_items WHERE supplier_id = @sup2)
+BEGIN
+    INSERT INTO food_items (supplier_id, product_type_id, category_id, item_name, description,
+                            quantity_available, original_price, discounted_price, discount_percentage,
+                            food_status_id, preparation_time, safe_consumption_time, expiry_time,
+                            pickup_start_time, pickup_end_time, is_active, is_approved)
+    VALUES
+    (@sup2, @ptype, @cat_banh, N'Bánh mì thịt nướng', N'Bánh mì thịt nướng thơm lừng, sắp hết giờ bán',
+     15, 25000, 15000, 40.00, @fstatus_hot,
+     GETDATE(), DATEADD(hour, 2, GETDATE()), DATEADD(hour, 3, GETDATE()),
+     GETDATE(), DATEADD(hour, 1, GETDATE()), 1, 1);
+    PRINT 'Inserted food_items for supplier 2';
+END
+
+-- Supplier 3: Đồ uống
+IF @sup3 IS NOT NULL AND @cat_drink IS NOT NULL AND NOT EXISTS (SELECT 1 FROM food_items WHERE supplier_id = @sup3)
+BEGIN
+    INSERT INTO food_items (supplier_id, product_type_id, category_id, item_name, description,
+                            quantity_available, original_price, discounted_price, discount_percentage,
+                            food_status_id, preparation_time, safe_consumption_time, expiry_time,
+                            pickup_start_time, pickup_end_time, is_active, is_approved)
+    VALUES
+    (@sup3, @ptype, @cat_drink, N'Trà sữa trân châu', N'Trà sữa size L, cận hết hạn buổi chiều',
+     8, 35000, 20000, 42.86, @fstatus_cold,
+     GETDATE(), DATEADD(hour, 2, GETDATE()), DATEADD(hour, 4, GETDATE()),
+     GETDATE(), DATEADD(hour, 2, GETDATE()), 1, 1),
+    (@sup3, @ptype, @cat_drink, N'Cà phê sữa đá', N'Cà phê sữa đá Việt Nam thơm ngon',
+     12, 30000, 18000, 40.00, @fstatus_cold,
+     GETDATE(), DATEADD(hour, 3, GETDATE()), DATEADD(hour, 5, GETDATE()),
+     GETDATE(), DATEADD(hour, 3, GETDATE()), 1, 1),
+    (@sup3, @ptype, @cat_drink, N'Nước ép dưa hấu', N'Nước ép tươi mát, giảm giá cuối ngày',
+     12, 35000, 35000, 0, @fstatus_cold,
+     GETDATE(), DATEADD(hour, 2, GETDATE()), DATEADD(hour, 1, GETDATE()),
+     GETDATE(), DATEADD(hour, 1, GETDATE()), 1, 1);
+    PRINT 'Inserted food_items for supplier 3';
+END
+
+GO
+
+-- =====================================================
+-- PHẦN 6: INSERT HÌNH ẢNH SẢN PHẨM
+-- =====================================================
+
+DECLARE @item1 INT, @item2 INT, @item3 INT, @item4 INT, @item5 INT, @item6 INT, @item7 INT;
+SELECT @item1 = item_id FROM food_items WHERE item_name = N'Cơm gà xối mỡ';
+SELECT @item2 = item_id FROM food_items WHERE item_name = N'Cơm sườn bì chả';
+SELECT @item3 = item_id FROM food_items WHERE item_name = N'Bánh mì thịt nướng';
+SELECT @item4 = item_id FROM food_items WHERE item_name = N'Trà sữa trân châu';
+SELECT @item5 = item_id FROM food_items WHERE item_name = N'Cà phê sữa đá';
+SELECT @item6 = item_id FROM food_items WHERE item_name = N'Cơm chiên dương châu';
+SELECT @item7 = item_id FROM food_items WHERE item_name = N'Nước ép dưa hấu';
+
+IF @item1 IS NOT NULL AND NOT EXISTS (SELECT 1 FROM food_item_images WHERE item_id = @item1)
+    INSERT INTO food_item_images (item_id, image_url, is_primary) VALUES
+    (@item1, 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400', 1);
+
+IF @item2 IS NOT NULL AND NOT EXISTS (SELECT 1 FROM food_item_images WHERE item_id = @item2)
+    INSERT INTO food_item_images (item_id, image_url, is_primary) VALUES
+    (@item2, 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400', 1);
+
+IF @item3 IS NOT NULL AND NOT EXISTS (SELECT 1 FROM food_item_images WHERE item_id = @item3)
+    INSERT INTO food_item_images (item_id, image_url, is_primary) VALUES
+    (@item3, 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400', 1);
+
+IF @item4 IS NOT NULL AND NOT EXISTS (SELECT 1 FROM food_item_images WHERE item_id = @item4)
+    INSERT INTO food_item_images (item_id, image_url, is_primary) VALUES
+    (@item4, 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400', 1);
+
+IF @item5 IS NOT NULL AND NOT EXISTS (SELECT 1 FROM food_item_images WHERE item_id = @item5)
+    INSERT INTO food_item_images (item_id, image_url, is_primary) VALUES
+    (@item5, 'https://images.unsplash.com/photo-1509785307050-d4066910ec1e?w=400', 1);
+
+IF @item6 IS NOT NULL AND NOT EXISTS (SELECT 1 FROM food_item_images WHERE item_id = @item6)
+    INSERT INTO food_item_images (item_id, image_url, is_primary) VALUES
+    (@item6, 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400', 1);
+
+IF @item7 IS NOT NULL AND NOT EXISTS (SELECT 1 FROM food_item_images WHERE item_id = @item7)
+    INSERT INTO food_item_images (item_id, image_url, is_primary) VALUES
+    (@item7, 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=400', 1);
+
+PRINT '✅ Done! All tables and sample data created successfully.';
+GO
+/* insert_missing_food_items.sql */
+USE AlibabaFood;
+GO
+-- Insert food items with explicit category IDs (assuming categories were inserted as 1:Cơm, 2:Bánh mì, 3:Đồ uống)
+DECLARE @sup1 INT, @sup2 INT, @sup3 INT;
+DECLARE @ptype INT = (SELECT TOP 1 product_type_id FROM product_types WHERE type_name = 'specific_cooked');
+DECLARE @fstatus_hot INT = (SELECT TOP 1 status_id FROM food_statuses WHERE status_name = 'hot');
+DECLARE @fstatus_cold INT = (SELECT TOP 1 status_id FROM food_statuses WHERE status_name = 'cold');
+
+SELECT @sup1 = supplier_id FROM suppliers WHERE business_name = N'Quán Cơm Gia Đình A';
+SELECT @sup2 = supplier_id FROM suppliers WHERE business_name = N'Bánh Mì Việt B';
+SELECT @sup3 = supplier_id FROM suppliers WHERE business_name = N'Cà Phê Góc Phố C';
+
+-- Supplier 1 food items (category 1 = Cơm)
+INSERT INTO food_items (supplier_id, product_type_id, category_id, item_name, description, quantity_available, original_price, discounted_price, discount_percentage, food_status_id, preparation_time, safe_consumption_time, expiry_time, pickup_start_time, pickup_end_time, is_active, is_approved)
+VALUES
+(@sup1, @ptype, 1, N'Cơm gà xối mỡ', N'Cơm gà xối mỡ thơm ngon, cận date buổi tối', 10, 45000, 25000, 44.44, @fstatus_hot, GETDATE(), DATEADD(hour, 3, GETDATE()), DATEADD(hour, 4, GETDATE()), GETDATE(), DATEADD(hour, 2, GETDATE()), 1, 1),
+(@sup1, @ptype, 1, N'Cơm sườn bì chả', N'Cơm sườn đầy đặn, còn mới', 5, 50000, 30000, 40.00, @fstatus_hot, GETDATE(), DATEADD(hour, 3, GETDATE()), DATEADD(hour, 5, GETDATE()), GETDATE(), DATEADD(hour, 3, GETDATE()), 1, 1);
+
+-- Supplier 2 food items (category 2 = Bánh mì)
+INSERT INTO food_items (supplier_id, product_type_id, category_id, item_name, description, quantity_available, original_price, discounted_price, discount_percentage, food_status_id, preparation_time, safe_consumption_time, expiry_time, pickup_start_time, pickup_end_time, is_active, is_approved)
+VALUES
+(@sup2, @ptype, 2, N'Bánh mì thịt nướng', N'Bánh mì thịt nướng thơm lừng, sắp hết giờ bán', 15, 25000, 15000, 40.00, @fstatus_hot, GETDATE(), DATEADD(hour, 2, GETDATE()), DATEADD(hour, 3, GETDATE()), GETDATE(), DATEADD(hour, 1, GETDATE()), 1, 1);
+
+-- Supplier 3 food items (category 3 = Đồ uống)
+INSERT INTO food_items (supplier_id, product_type_id, category_id, item_name, description, quantity_available, original_price, discounted_price, discount_percentage, food_status_id, preparation_time, safe_consumption_time, expiry_time, pickup_start_time, pickup_end_time, is_active, is_approved)
+VALUES
+(@sup3, @ptype, 3, N'Trà sữa trân châu', N'Trà sữa size L, cận hết hạn buổi chiều', 8, 35000, 20000, 42.86, @fstatus_cold, GETDATE(), DATEADD(hour, 2, GETDATE()), DATEADD(hour, 4, GETDATE()), GETDATE(), DATEADD(hour, 2, GETDATE()), 1, 1),
+(@sup3, @ptype, 3, N'Cà phê sữa đá', N'Cà phê sữa đá Việt Nam thơm ngon', 12, 30000, 18000, 40.00, @fstatus_cold, GETDATE(), DATEADD(hour, 3, GETDATE()), DATEADD(hour, 5, GETDATE()), GETDATE(), DATEADD(hour, 3, GETDATE()), 1, 1),
+(@sup3, @ptype, 3, N'Nước ép dưa hấu', N'Nước ép tươi mát, giảm giá cuối ngày', 12, 35000, 35000, 0, @fstatus_cold, GETDATE(), DATEADD(hour, 2, GETDATE()), DATEADD(hour, 1, GETDATE()), GETDATE(), DATEADD(hour, 1, GETDATE()), 1, 1);
+
+-- Thêm món vào Supplier 1
+INSERT INTO food_items (supplier_id, product_type_id, category_id, item_name, description, quantity_available, original_price, discounted_price, discount_percentage, food_status_id, preparation_time, safe_consumption_time, expiry_time, pickup_start_time, pickup_end_time, is_active, is_approved)
+VALUES
+(@sup1, @ptype, 1, N'Cơm chiên dương châu', N'Cơm chiên còn nóng, bán nhanh cuối ngày', 10, 40000, 40000, 0, @fstatus_hot, GETDATE(), DATEADD(hour, 2, GETDATE()), DATEADD(hour, 1, GETDATE()), GETDATE(), DATEADD(hour, 1, GETDATE()), 1, 1);
+GO

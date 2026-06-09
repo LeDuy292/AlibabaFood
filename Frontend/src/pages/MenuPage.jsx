@@ -7,20 +7,16 @@ import HowItWorksSection from '../components/HowItWorksSection';
 import NearbyDishesList from '../components/NearbyDishesList';
 import LocationPromptModal from '../components/LocationPromptModal';
 import ScrollReveal from '../components/ScrollReveal';
+import { useLocationCtx } from '../contexts/LocationContext';
 import './MenuPage.css';
 
 const MenuPage = () => {
-    const [userLocation, setUserLocation] = useState(null);
+    const { userLocation } = useLocationCtx();
     const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
-
-    const handleLocationSet = useCallback((locationData) => {
-        setUserLocation(locationData);
-    }, []);
 
     return (
         <div className="menu-page">
             <LocationPromptModal 
-                onLocationSet={handleLocationSet} 
                 isOpen={isLocationModalOpen || undefined}
                 onClose={() => setIsLocationModalOpen(false)}
             />

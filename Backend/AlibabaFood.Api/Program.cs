@@ -48,6 +48,7 @@ builder.Services.AddHttpClient<IAIService, AIService>();
 builder.Services.AddScoped<IAIService, AIService>();
 builder.Services.AddHttpClient("PayOS");
 builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 // Add CORS
 builder.Services.AddCors(options =>

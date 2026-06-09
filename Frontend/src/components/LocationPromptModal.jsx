@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './LocationPromptModal.css';
 import toast from 'react-hot-toast';
+import { useLocationCtx } from '../contexts/LocationContext';
 
 const GOONG_API_KEY = import.meta.env.VITE_GOONG_API_KEY;
 
 const LocationPromptModal = ({ onLocationSet, isOpen, onClose }) => {
+  const { userLocation, setLocation } = useLocationCtx();
   const [addressInput, setAddressInput] = useState('');
   const [isLocating, setIsLocating] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -46,17 +48,19 @@ const LocationPromptModal = ({ onLocationSet, isOpen, onClose }) => {
   }, [addressInput]);
 
   useEffect(() => {
-    // Check if location already exists
-    const storedLocation = localStorage.getItem('userLocation');
-    if (!storedLocation) {
+    // We rely on LocationContext to provide userLocation
+    // However, userLocation might be null initially before it loads from localStorage
+    // Or it might be truly null. 
+    // To prevent flashing, LocationContext initializes from localStorage synchronously on mount.
+    if (!userLocation && !localStorage.getItem('userLocation')) {
       setIsVisible(true);
-    } else {
-      // Pass the existing location back up
+    } else if (userLocation) {
+      // Pass the existing location back up if needed
       if (onLocationSet) {
-        onLocationSet(JSON.parse(storedLocation));
+        onLocationSet(userLocation);
       }
     }
-  }, []); // Run only on mount to prevent infinite loop
+  }, [userLocation]); // Re-run when userLocation changes
 
   // Synchronize internal visibility state with isOpen prop if passed
   useEffect(() => {
@@ -67,7 +71,7 @@ const LocationPromptModal = ({ onLocationSet, isOpen, onClose }) => {
 
   const handleSaveLocation = (lat, lng, address) => {
     const locationData = { lat, lng, address };
-    localStorage.setItem('userLocation', JSON.stringify(locationData));
+    setLocation(locationData);
     toast.success('Đã cập nhật vị trí giao hàng!');
     setIsVisible(false);
     if (onLocationSet) {
@@ -92,6 +96,14 @@ const LocationPromptModal = ({ onLocationSet, isOpen, onClose }) => {
         async (position) => {
           const { latitude, longitude } = position.coords;
           try {
+            if (!GOONG_API_KEY || GOONG_API_KEY === 'undefined') {
+              const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+              const data = await response.json();
+              const addressName = data.display_name || "Vị trí của bạn (GPS)";
+              handleSaveLocation(latitude, longitude, addressName);
+              return;
+            }
+
             // Reverse Geocoding with Goong
             const response = await fetch(`https://rsapi.goong.io/Geocode?latlng=${latitude},${longitude}&api_key=${GOONG_API_KEY}`);
             const data = await response.json();
@@ -130,6 +142,23 @@ const LocationPromptModal = ({ onLocationSet, isOpen, onClose }) => {
 
     setIsLocating(true);
     try {
+      if (!GOONG_API_KEY || GOONG_API_KEY === 'undefined') {
+        // Fallback to OpenStreetMap (Nominatim API - Free, no API key required)
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addressInput)}&format=json&limit=1`);
+        const data = await response.json();
+        
+        if (data && data.length > 0) {
+          const lat = parseFloat(data[0].lat);
+          const lng = parseFloat(data[0].lon);
+          const formattedAddress = data[0].display_name;
+          handleSaveLocation(lat, lng, formattedAddress);
+        } else {
+          toast.error("Không tìm thấy địa chỉ này, vui lòng nhập chi tiết hơn.");
+        }
+        setIsLocating(false);
+        return;
+      }
+
       // Forward Geocoding with Goong
       const response = await fetch(`https://rsapi.goong.io/geocode?address=${encodeURIComponent(addressInput)}&api_key=${GOONG_API_KEY}`);
       const data = await response.json();
