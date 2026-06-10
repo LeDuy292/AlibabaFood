@@ -14,22 +14,29 @@ namespace AlibabaFood.Api.Models
         [Column("user_id")]
         public int UserId { get; set; }
 
+        [Required]
+        [MaxLength(255)]
+        [Column("email")]
+        public string Email { get; set; } = string.Empty;
+
         [Column("login_time")]
         public DateTime LoginTime { get; set; } = DateTime.UtcNow;
 
-        [Column("logout_time")]
-        public DateTime? LogoutTime { get; set; }
-
-        [MaxLength(45)]
+        [MaxLength(50)]
         [Column("ip_address")]
         public string? IpAddress { get; set; }
 
+        [MaxLength(500)]
         [Column("user_agent")]
         public string? UserAgent { get; set; }
 
+        [Required]
         [MaxLength(20)]
         [Column("login_status")]
         public string LoginStatus { get; set; } = "success";
+
+        [Column("is_successful")]
+        public bool IsSuccessful { get; set; } = true;
 
         [MaxLength(255)]
         [Column("failure_reason")]

@@ -105,6 +105,7 @@ namespace AlibabaFood.Api.Data
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.HasKey(e => e.OrderId);
+                entity.Property(e => e.SupplierId).IsRequired();
                 entity.Property(e => e.Status).IsRequired().HasMaxLength(50).HasDefaultValue("PENDING");
                 entity.Property(e => e.Description).IsRequired().HasMaxLength(255);
                 entity.Property(e => e.BuyerName).IsRequired().HasMaxLength(255);
@@ -117,6 +118,11 @@ namespace AlibabaFood.Api.Data
                 entity.Property(e => e.UpdatedAt).HasDefaultValueSql("GETDATE()");
 
                 entity.HasIndex(e => e.OrderCode).IsUnique();
+
+                entity.HasOne(o => o.Supplier)
+                    .WithMany()
+                    .HasForeignKey(o => o.SupplierId)
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(o => o.User)
                       .WithMany()

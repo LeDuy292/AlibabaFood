@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./SupplierOrders.css";
 import SupplierNavbar from "./SupplierNavbar";
+import {
+  getSupplierOrders,
+  updateOrderStatus,
+} from "../../services/supplierService";
 
 const UNSPLASH = (id, w = 600, h = 400) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&h=${h}&q=80`;
@@ -19,7 +23,8 @@ const FOOD_FALLBACK = UNSPLASH("1504674900247-0877df9cc836");
 const SAMPLE_ORDERS = [
   {
     id: "#ORD-6001",
-    image: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=600&q=80",
     item: "Coca Cola Original 330ml × 2",
     customer: "Nguyễn Văn A",
     total: "20.000đ",
@@ -29,7 +34,8 @@ const SAMPLE_ORDERS = [
   },
   {
     id: "#ORD-6000",
-    image: "https://images.unsplash.com/photo-1581636625402-29b2a704ef13?auto=format&fit=crop&w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1581636625402-29b2a704ef13?auto=format&fit=crop&w=600&q=80",
     item: "Pepsi Lon 330ml × 3",
     customer: "Trần Thị B",
     total: "27.000đ",
@@ -39,7 +45,8 @@ const SAMPLE_ORDERS = [
   },
   {
     id: "#ORD-5999",
-    image: "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&w=600&q=80",
     item: "Mì Hảo Hảo Tôm Chua Cay × 4",
     customer: "Lê Văn C",
     total: "20.000đ",
@@ -49,7 +56,8 @@ const SAMPLE_ORDERS = [
   },
   {
     id: "#ORD-5998",
-    image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=600&q=80",
     item: "Sữa Vinamilk 1L × 1",
     customer: "Phạm Thị D",
     total: "38.000đ",
@@ -59,7 +67,8 @@ const SAMPLE_ORDERS = [
   },
   {
     id: "#ORD-5997",
-    image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80",
     item: "Bánh Oreo Socola × 2",
     customer: "Võ Văn E",
     total: "36.000đ",
@@ -69,7 +78,8 @@ const SAMPLE_ORDERS = [
   },
   {
     id: "#ORD-5996",
-    image: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?auto=format&fit=crop&w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1566478989037-eec170784d0b?auto=format&fit=crop&w=600&q=80",
     item: "Snack Lay's Khoai Tây × 1",
     customer: "Lý Thị F",
     total: "15.000đ",
@@ -79,7 +89,8 @@ const SAMPLE_ORDERS = [
   },
   {
     id: "#ORD-5995",
-    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
     item: "Bánh AFC Rau Củ × 1",
     customer: "Bùi Văn G",
     total: "32.000đ",
@@ -89,7 +100,8 @@ const SAMPLE_ORDERS = [
   },
   {
     id: "#ORD-5994",
-    image: "https://images.unsplash.com/photo-1506976785307-8732e854ad03?auto=format&fit=crop&w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1506976785307-8732e854ad03?auto=format&fit=crop&w=600&q=80",
     item: "Trứng gà hộp 10 quả × 1",
     customer: "Đặng Thị H",
     total: "36.000đ",
@@ -170,6 +182,67 @@ const SupplierOrders = ({ onNavigate, onSwitchToCustomer }) => {
   const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState(null);
   const [heroPhi, setHeroPhi] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch orders from API
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        setLoading(true);
+        const ordersData = await getSupplierOrders();
+        if (ordersData && ordersData.length > 0) {
+          // Transform API data to match the component's expected format
+          const transformedOrders = ordersData.map((order) => {
+            const orderId = order.order_id ?? order.orderId ?? 0;
+            const orderNumber =
+              order.order_number ?? order.orderNumber ?? `#ORD-${orderId}`;
+            const finalAmount =
+              order.final_amount ??
+              order.finalAmount ??
+              order.total_amount ??
+              order.totalAmount ??
+              0;
+            const statusValue =
+              order.status_name ??
+              order.statusName ??
+              order.status ??
+              "pending";
+            return {
+              orderId,
+              id: orderNumber,
+              image: order.item_image ?? order.itemImage ?? FOOD_FALLBACK,
+              item: order.item_name ?? order.itemName ?? "Multiple items",
+              customer: order.customer_name ?? order.customerName ?? "Unknown",
+              total: `${Number(finalAmount || 0).toLocaleString()}đ`,
+              status: statusValue.toLowerCase(),
+              time: formatTimeAgo(order.created_at ?? order.createdAt),
+              note: order.notes ?? order.Notes ?? "",
+            };
+          });
+          setOrders(transformedOrders);
+        }
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        // Keep using SAMPLE_ORDERS if API fails
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  const formatTimeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+
+    if (diffMins < 60) return `${diffMins} phút trước`;
+    if (diffHours < 24) return `${diffHours} giờ trước`;
+    return `${Math.floor(diffHours / 24)} ngày trước`;
+  };
 
   /* Hero crossfader */
   useEffect(() => {
@@ -197,21 +270,55 @@ const SupplierOrders = ({ onNavigate, onSwitchToCustomer }) => {
     return () => obs.disconnect();
   }, []);
 
-  const advance = (id) =>
-    setOrders((prev) =>
-      prev.map((o) => {
-        if (o.id !== id) return o;
-        const idx = STATUS_FLOW.indexOf(o.status);
-        return idx < STATUS_FLOW.length - 1
-          ? { ...o, status: STATUS_FLOW[idx + 1] }
-          : o;
-      }),
-    );
+  const advance = async (id) => {
+    try {
+      const currentOrder = orders.find((o) => o.id === id);
+      if (currentOrder) {
+        const currentIndex = STATUS_FLOW.indexOf(currentOrder.status);
+        if (currentIndex < STATUS_FLOW.length - 1) {
+          const newStatus = STATUS_FLOW[currentIndex + 1];
+          await updateOrderStatus(currentOrder.orderId, newStatus);
+          setOrders((prev) =>
+            prev.map((o) => {
+              if (o.id !== id) return o;
+              const idx = STATUS_FLOW.indexOf(o.status);
+              return idx < STATUS_FLOW.length - 1
+                ? { ...o, status: STATUS_FLOW[idx + 1] }
+                : o;
+            }),
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Error advancing order:", error);
+      setOrders((prev) =>
+        prev.map((o) => {
+          if (o.id !== id) return o;
+          const idx = STATUS_FLOW.indexOf(o.status);
+          return idx < STATUS_FLOW.length - 1
+            ? { ...o, status: STATUS_FLOW[idx + 1] }
+            : o;
+        }),
+      );
+    }
+  };
 
-  const cancel = (id) =>
-    setOrders((prev) =>
-      prev.map((o) => (o.id === id ? { ...o, status: "cancelled" } : o)),
-    );
+  const cancel = async (id) => {
+    try {
+      const currentOrder = orders.find((o) => o.id === id);
+      if (currentOrder) {
+        await updateOrderStatus(currentOrder.orderId, "cancelled");
+      }
+      setOrders((prev) =>
+        prev.map((o) => (o.id === id ? { ...o, status: "cancelled" } : o)),
+      );
+    } catch (error) {
+      console.error("Error cancelling order:", error);
+      setOrders((prev) =>
+        prev.map((o) => (o.id === id ? { ...o, status: "cancelled" } : o)),
+      );
+    }
+  };
 
   const filtered = orders.filter((o) => {
     const matchFilter = filter === "All" || o.status === filter.toLowerCase();
@@ -259,7 +366,8 @@ const SupplierOrders = ({ onNavigate, onSwitchToCustomer }) => {
           <div className="so-hero-badge">🧾 Quản Lý Đơn Hàng</div>
           <h1 className="so-hero-title">Quản Lý Đơn Hàng</h1>
           <p className="so-hero-sub">
-            Theo dõi, cập nhật và quản lý tất cả đơn hàng của khách theo thời gian thực — trên một bảng điều khiển chuyên nghiệp.
+            Theo dõi, cập nhật và quản lý tất cả đơn hàng của khách theo thời
+            gian thực — trên một bảng điều khiển chuyên nghiệp.
           </p>
           <div className="so-hero-chips">
             <span className="so-hero-chip">⚡ Cập Nhật Trực Tiếp</span>

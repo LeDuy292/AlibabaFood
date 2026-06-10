@@ -596,7 +596,8 @@ INSERT INTO users (email, username, password_hash, full_name, phone, role_id) VA
 ('supplier2@alibabafood.com', 'supplier2', 'hashed_password_2', N'Trần Thị B', '0902345678', @role_supplier),
 ('supplier3@alibabafood.com', 'supplier3', 'hashed_password_3', N'Lê Văn C', '0903456789', @role_supplier),
 ('supplier4@alibabafood.com', 'supplier4', 'hashed_password_4', N'Phạm Thị D', '0904567890', @role_supplier),
-('supplier5@alibabafood.com', 'supplier5', 'hashed_password_5', N'Hoàng Văn E', '0905678901', @role_supplier);
+('supplier5@alibabafood.com', 'supplier5', 'hashed_password_5', N'Hoàng Văn E', '0905678901', @role_supplier),
+('supplier6@alibabafood.com', 'supplier6', 'hashed_password_6', N'Nguyễn Thị F', '0906789012', @role_supplier);
 
 PRINT 'Inserted users';
 
@@ -638,7 +639,7 @@ INSERT INTO dietary_preferences (preference_name, description) VALUES
 ('gluten_free', N'Không gluten');
 
 -- Insert suppliers
-DECLARE @user1 INT, @user2 INT, @user3 INT, @user4 INT, @user5 INT;
+DECLARE @user1 INT, @user2 INT, @user3 INT, @user4 INT, @user5 INT, @user6 INT;
 
 -- Lấy user_id từ users đã tạo
 SELECT @user1 = user_id FROM users WHERE email = 'supplier1@alibabafood.com';
@@ -646,20 +647,22 @@ SELECT @user2 = user_id FROM users WHERE email = 'supplier2@alibabafood.com';
 SELECT @user3 = user_id FROM users WHERE email = 'supplier3@alibabafood.com';
 SELECT @user4 = user_id FROM users WHERE email = 'supplier4@alibabafood.com';
 SELECT @user5 = user_id FROM users WHERE email = 'supplier5@alibabafood.com';
+SELECT @user6 = user_id FROM users WHERE email = 'supplier6@alibabafood.com';
 
 INSERT INTO suppliers (user_id, business_name, business_type_id, address_line1, ward, district, city, province, latitude, longitude, phone, opening_time, closing_time) VALUES
 (@user1, N'Quán Cơm Gia Đình A', 1, N'123 Nguyễn Văn Linh', N'Hòa Phường', N'Ngũ Hành Sơn', N'Đà Nẵng', N'Đà Nẵng', 16.0678, 108.2448, '0901234567', '10:00', '21:00'),
 (@user2, N'Bánh Mì Việt B', 3, N'456 Võ Nguyên Giáp', N'Hòa Phường', N'Ngũ Hành Sơn', N'Đà Nẵng', N'Đà Nẵng', 16.0685, 108.2455, '0902345678', '06:00', '18:00'),
 (@user3, N'Cà Phê Góc Phố C', 2, N'789 Trường Sa', N'Hòa Phường', N'Ngũ Hành Sơn', N'Đà Nẵng', N'Đà Nẵng', 16.0692, 108.2462, '0903456789', '07:00', '22:00'),
 (@user4, N'Nhà Hàng Hải Sản D', 1, N'321 Lê Văn Duyệt', N'Hòa Phường', N'Ngũ Hành Sơn', N'Đà Nẵng', N'Đà Nẵng', 16.0699, 108.2469, '0904567890', '11:00', '22:00'),
-(@user5, N'Tiệm Bánh Ngọt E', 4, N'654 Hoàng Sa', N'Hòa Phường', N'Ngũ Hành Sơn', N'Đà Nẵng', N'Đà Nẵng', 16.0706, 108.2476, '0905678901', '08:00', '20:00');
+(@user5, N'Tiệm Bánh Ngọt E', 4, N'654 Hoàng Sa', N'Hòa Phường', N'Ngũ Hành Sơn', N'Đà Nẵng', N'Đà Nẵng', 16.0706, 108.2476, '0905678901', '08:00', '20:00'),
+(@user6, N'Shop Thực Phẩm F', 1, N'789 Hoàng Diệu', N'Hòa Phường', N'Ngũ Hành Sơn', N'Đà Nẵng', N'Đà Nẵng', 16.0714, 108.2483, '0906789012', '09:00', '21:00');
 
 PRINT 'Inserted suppliers';
 
 -- Insert food items
 DECLARE @ptype INT, @fstatus_hot INT, @fstatus_cold INT;
 DECLARE @cat_com INT, @cat_banh INT, @cat_drink INT, @cat_thit INT, @cat_banhngot INT;
-DECLARE @sup1 INT, @sup2 INT, @sup3 INT, @sup4 INT, @sup5 INT;
+DECLARE @sup1 INT, @sup2 INT, @sup3 INT, @sup4 INT, @sup5 INT, @sup6 INT;
 
 SELECT @ptype = product_type_id FROM product_types WHERE type_name = 'specific_cooked';
 SELECT @fstatus_hot = status_id FROM food_statuses WHERE status_name = 'hot';
@@ -676,6 +679,7 @@ SELECT @sup2 = supplier_id FROM suppliers WHERE user_id = @user2;
 SELECT @sup3 = supplier_id FROM suppliers WHERE user_id = @user3;
 SELECT @sup4 = supplier_id FROM suppliers WHERE user_id = @user4;
 SELECT @sup5 = supplier_id FROM suppliers WHERE user_id = @user5;
+SELECT @sup6 = supplier_id FROM suppliers WHERE user_id = @user6;
 
 INSERT INTO food_items (supplier_id, product_type_id, category_id, item_name, description, quantity_available, original_price, discounted_price, discount_percentage, food_status_id, preparation_time, safe_consumption_time, expiry_time, pickup_start_time, pickup_end_time, is_pre_order, weight_kg, calories, allergens, ingredients, storage_instructions, reheating_instructions) VALUES
 (@sup1, @ptype, @cat_com, N'Cơm gà xối mỡ', N'Cơm gà vàng óng, da giòn, thịt mềm', 10, 45000, 25000, 44.44, @fstatus_hot,
@@ -712,12 +716,16 @@ INSERT INTO food_items (supplier_id, product_type_id, category_id, item_name, de
 
 (@sup5, @ptype, @cat_banhngot, N'Bánh flan', N'Bánh flan caramel mềm mịn', 15, 20000, 12000, 40.00, @fstatus_cold,
  GETDATE(), DATEADD(hour, 4, GETDATE()), DATEADD(hour, 6, GETDATE()),
- GETDATE(), DATEADD(hour, 4, GETDATE()), 1, 0.2, 180, 'dairy,eggs', N'Trái gà, sữa, caramel', N'Để trong tủ lạnh', N'Uống lạnh, không cần hâm nóng');
+ GETDATE(), DATEADD(hour, 4, GETDATE()), 1, 0.2, 180, 'dairy,eggs', N'Trái gà, sữa, caramel', N'Để trong tủ lạnh', N'Uống lạnh, không cần hâm nóng'),
+
+(@sup6, @ptype, @cat_banhngot, N'Combo Đặc Biệt F', N'Combo tối với nhiều món ngon, phù hợp supplier mới', 20, 100000, 75000, 25.00, @fstatus_hot,
+ GETDATE(), DATEADD(hour, 2, GETDATE()), DATEADD(hour, 5, GETDATE()),
+ GETDATE(), DATEADD(hour, 2, GETDATE()), 1, 1.0, 550, 'pork,dairy', N'Thịt, rau, gia vị', N'Để trong tủ lạnh', N'Hâm nóng trong lò vi sóng 4 phút');
 
 PRINT 'Inserted food items';
 
 -- Insert food item images
-DECLARE @item1 INT, @item2 INT, @item3 INT, @item4 INT, @item5 INT, @item6 INT, @item7 INT, @item8 INT, @item9 INT;
+DECLARE @item1 INT, @item2 INT, @item3 INT, @item4 INT, @item5 INT, @item6 INT, @item7 INT, @item8 INT, @item9 INT, @item10 INT;
 
 -- Lấy item_id từ food_items đã tạo
 SELECT @item1 = item_id FROM food_items WHERE item_name = N'Cơm gà xối mỡ';
@@ -729,6 +737,7 @@ SELECT @item6 = item_id FROM food_items WHERE item_name = N'Cá kho tộ';
 SELECT @item7 = item_id FROM food_items WHERE item_name = N'Tẩm hấp bia';
 SELECT @item8 = item_id FROM food_items WHERE item_name = N'Cơm tấm sườn bò';
 SELECT @item9 = item_id FROM food_items WHERE item_name = N'Bánh flan';
+SELECT @item10 = item_id FROM food_items WHERE item_name = N'Combo Đặc Biệt F';
 
 INSERT INTO food_item_images (item_id, image_url, is_primary) VALUES
 (@item1, 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400', 1),
@@ -739,9 +748,26 @@ INSERT INTO food_item_images (item_id, image_url, is_primary) VALUES
 (@item6, 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400', 1),
 (@item7, 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400', 1),
 (@item8, 'https://images.unsplash.com/photo-1559847844-5315695dadae?w=400', 1),
-(@item9, 'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=400', 1);
+(@item9, 'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=400', 1),
+(@item10, 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400', 1);
 
 PRINT 'Inserted food item images';
+
+-- Insert supplier-specific metadata for UI testing
+DECLARE @supplier6 INT;
+SELECT @supplier6 = supplier_id FROM suppliers WHERE user_id = @user6;
+
+INSERT INTO supplier_special_hours (supplier_id, date, opening_time, closing_time, is_closed, reason) VALUES
+(@supplier6, CAST(GETDATE() AS DATE), '09:00', '21:00', 0, N'Giờ mở cửa thường xuyên'),
+(@supplier6, DATEADD(day, 1, CAST(GETDATE() AS DATE)), '09:00', '21:00', 0, N'Giờ mở cửa ngày mai');
+
+INSERT INTO supplier_verification_documents (supplier_id, document_type, document_url, document_number, issue_date, expiry_date, status, notes) VALUES
+(@supplier6, 'business_license', 'https://example.com/docs/supplier6-license.pdf', 'BL-F-2026-006', CAST(DATEADD(month, -12, GETDATE()) AS DATE), CAST(DATEADD(year, 1, GETDATE()) AS DATE), 'verified', N'Đã xác minh giấy phép kinh doanh');
+
+INSERT INTO supplier_violations (supplier_id, violation_type, description, severity, reported_by, is_resolved, notes) VALUES
+(@supplier6, 'late_delivery', N'Giao hàng trễ quá 30 phút', N'medium', NULL, 1, N'Đã xử lý và rút kinh nghiệm');
+
+PRINT 'Inserted supplier metadata';
 
 -- Insert order statuses
 INSERT INTO order_statuses (status_name, status_name_vi, description) VALUES
@@ -805,7 +831,7 @@ PRINT 'Inserted supplier_impact_stats';
 
 -- Insert system_impact_stats
 INSERT INTO system_impact_stats (stat_date, total_orders, total_users, total_suppliers, total_food_saved_kg, total_discount_given, carbon_footprint_saved_kg)
-VALUES (CAST(GETDATE() AS DATE), 0, 1, 5, 0, 0, 0);
+VALUES (CAST(GETDATE() AS DATE), 0, 1, 6, 0, 0, 0);
 
 PRINT 'Inserted system_impact_stats';
 
