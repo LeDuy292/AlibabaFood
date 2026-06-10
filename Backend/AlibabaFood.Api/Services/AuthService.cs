@@ -224,7 +224,22 @@ namespace AlibabaFood.Api.Services
 
         public bool VerifyPassword(string password, string hash)
         {
-            return BCrypt.Net.BCrypt.Verify(password, hash);
+            if (string.IsNullOrEmpty(hash))
+                return false;
+
+            try
+            {
+                return BCrypt.Net.BCrypt.Verify(password, hash);
+            }
+            catch (BCrypt.Net.SaltParseException)
+            {
+                // Legacy passwords were stored as plain text values in the seeded database.
+                return password == hash;
+            }
+            catch (ArgumentException)
+            {
+                return password == hash;
+            }
         }
 
         private string GenerateJwtToken(User user)
@@ -237,6 +252,7 @@ namespace AlibabaFood.Api.Services
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.Name, user.FullName),
                 new Claim("username", user.Username),
@@ -267,10 +283,12 @@ namespace AlibabaFood.Api.Services
                     var loginHistory = new LoginHistory
                     {
                         UserId = user.UserId,
+                        Email = email,
                         LoginTime = DateTime.UtcNow,
                         IpAddress = ipAddress,
                         UserAgent = userAgent,
-                        LoginStatus = success ? "success" : "failed",
+                        LoginStatus = success ? "success" : "failure",
+                        IsSuccessful = success,
                         FailureReason = failureReason
                     };
 
