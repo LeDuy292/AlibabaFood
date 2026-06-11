@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: alibabafood-api
+    env: docker
+    rootDir: Backend/AlibabaFood.Api
+    plan: free

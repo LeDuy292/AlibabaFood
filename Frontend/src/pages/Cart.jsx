@@ -33,7 +33,7 @@ const Cart = () => {
       <div className="cart-page">
         <div className="cart-container">
           <div className="cart-header">
-            <button className="back-btn" onClick={() => navigate(-1)}>
+            <button className="back-btn" onClick={() => navigate("/main-menu")}>
               <ArrowLeft size={18} /> Quay lại
             </button>
           </div>
@@ -54,7 +54,7 @@ const Cart = () => {
     <div className="cart-page">
       <div className="cart-container">
         <div className="cart-header">
-          <button className="back-btn" onClick={() => navigate(-1)}>
+          <button className="back-btn" onClick={() => navigate("/main-menu")}>
             <ArrowLeft size={18} /> Quay lại
           </button>
           <h1>

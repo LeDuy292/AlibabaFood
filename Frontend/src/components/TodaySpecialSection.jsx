@@ -1,5 +1,8 @@
 import React from 'react';
 import './TodaySpecialSection.css';
+import { useCart } from '../contexts/CartContext';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const specialItems = [
     {
@@ -26,6 +29,31 @@ const specialItems = [
 ];
 
 const TodaySpecialSection = () => {
+    const { addToCart } = useCart();
+    const navigate = useNavigate();
+
+    const parseVND = (str) => parseInt(String(str).replace(/[^0-9]/g, ''), 10) || 0;
+
+    const handleAddToCart = (item) => {
+        addToCart({
+            name: item.title,
+            price: parseVND(item.price),
+            quantity: 1,
+            image: item.image,
+        });
+        toast.success(`Đã thêm "${item.title}" vào giỏ hàng!`);
+    };
+
+    const handleBuyNow = (item) => {
+        addToCart({
+            name: item.title,
+            price: parseVND(item.price),
+            quantity: 1,
+            image: item.image,
+        });
+        navigate('/checkout');
+    };
+
     return (
         <section className="today-special-section">
             <div className="container">
@@ -63,7 +91,7 @@ const TodaySpecialSection = () => {
                                 {/* Row 1: Name + Add to Cart */}
                                 <div className="card-name-row">
                                     <span className="card-title">{item.title}</span>
-                                    <button className="add-to-cart-btn">Thêm vào giỏ</button>
+                                    <button className="add-to-cart-btn" onClick={() => handleAddToCart(item)}>Thêm vào giỏ</button>
                                 </div>
 
                                 {/* Row 2: Stars + Price + Buy Now */}
@@ -76,7 +104,7 @@ const TodaySpecialSection = () => {
                                         ))}
                                     </div>
                                     <span className="card-price">{item.price}</span>
-                                    <button className="buy-now-btn">Mua ngay</button>
+                                    <button className="buy-now-btn" onClick={() => handleBuyNow(item)}>Mua ngay</button>
                                 </div>
                             </div>
 

@@ -23,6 +23,7 @@ import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
 import PaymentSuccess from "../pages/PaymentSuccess";
 import PaymentCancel from "../pages/PaymentCancel";
+import RescueStreak from "../pages/RescueStreak";
 
 const SupplierCtx = createContext(null);
 
@@ -141,6 +142,7 @@ const AppRoutes = () => {
         <Route path="food-detail" element={<FoodDetail />} />
         <Route path="news" element={<News />} />
         <Route path="ai-consultant" element={<AIConsultant />} />
+        <Route path="rescue-streak" element={<RescueStreak />} />
       </Route>
       <Route path="/partner-register" element={<PartnerRegistration />} />
       <Route path="/login" element={<Login />} />

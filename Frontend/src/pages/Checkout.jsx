@@ -25,6 +25,23 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // 1. Pre-fill user profile details if logged in
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        const userObj = JSON.parse(storedUser);
+        setForm((prev) => ({
+          ...prev,
+          buyerName: userObj.fullName || userObj.FullName || prev.buyerName,
+          buyerEmail: userObj.email || userObj.Email || prev.buyerEmail,
+          buyerPhone: userObj.phone || userObj.Phone || prev.buyerPhone,
+        }));
+      } catch (error) {
+        console.error("Error parsing user profile", error);
+      }
+    }
+
+    // 2. Pre-fill user address from stored location
     const storedLocation = localStorage.getItem("userLocation");
     if (storedLocation) {
       try {

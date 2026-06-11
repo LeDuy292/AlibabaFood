@@ -32,17 +32,63 @@ namespace AlibabaFood.Api.Services
 
         public async Task<CreateOrderResponseDto> CreatePaymentLinkAsync(CreateOrderRequestDto request)
         {
-            var clientId = _configuration["PayOS:ClientId"]!;
-            var apiKey = _configuration["PayOS:ApiKey"]!;
-            var checksumKey = _configuration["PayOS:ChecksumKey"]!;
-            var returnUrl = _configuration["PayOS:ReturnUrl"]!;
-            var cancelUrl = _configuration["PayOS:CancelUrl"]!;
+            var clientId = _configuration["PayOS:ClientId"];
+            var apiKey = _configuration["PayOS:ApiKey"];
+            var checksumKey = _configuration["PayOS:ChecksumKey"];
+            var returnUrl = _configuration["PayOS:ReturnUrl"] ?? "http://localhost:3000/payment/success";
+            var cancelUrl = _configuration["PayOS:CancelUrl"] ?? "http://localhost:3000/payment/cancel";
 
             // Generate unique order code (timestamp-based to stay within int32 range for PayOS)
             var orderCode = DateTimeOffset.UtcNow.ToUnixTimeSeconds() % 1000000000L + new Random().Next(1, 999);
-
             var totalAmount = request.Items.Sum(i => i.Price * i.Quantity);
             var description = $"DH{orderCode}";
+
+            // Check if we are running in simulated/dummy mode due to empty or placeholder credentials
+            if (string.IsNullOrEmpty(clientId) || clientId.StartsWith("payos_dummy") ||
+                string.IsNullOrEmpty(apiKey) || apiKey.StartsWith("payos_dummy") ||
+                string.IsNullOrEmpty(checksumKey) || checksumKey.StartsWith("payos_dummy"))
+            {
+                _logger.LogInformation("Using Simulated PayOS Flow (Dummy Keys detected).");
+
+                var mockCheckoutUrl = $"{returnUrl.TrimEnd('/')}?orderCode={orderCode}&status=PAID";
+                var mockPaymentLinkId = $"simulated_link_{Guid.NewGuid():N}";
+
+                // Save order directly as PAID so it displays correctly on success page
+                var mockOrder = new Order
+                {
+                    OrderCode = orderCode,
+                    Status = "PAID",
+                    TotalAmount = totalAmount,
+                    Description = description,
+                    BuyerName = request.BuyerName,
+                    BuyerEmail = request.BuyerEmail,
+                    BuyerPhone = request.BuyerPhone,
+                    BuyerAddress = request.BuyerAddress,
+                    PaymentLinkId = mockPaymentLinkId,
+                    CheckoutUrl = mockCheckoutUrl,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    OrderItems = request.Items.Select(i => new OrderItem
+                    {
+                        ItemName = i.Name,
+                        Quantity = i.Quantity,
+                        Price = i.Price
+                    }).ToList()
+                };
+
+                _context.Orders.Add(mockOrder);
+                await _context.SaveChangesAsync();
+
+                return new CreateOrderResponseDto
+                {
+                    OrderId = mockOrder.OrderId,
+                    OrderCode = orderCode,
+                    CheckoutUrl = mockCheckoutUrl,
+                    PaymentLinkId = mockPaymentLinkId,
+                    Status = "PAID",
+                    Amount = totalAmount
+                };
+            }
 
             // Build signature data (alphabetical order of keys)
             var signatureData = $"amount={totalAmount}&cancelUrl={cancelUrl}&description={description}&orderCode={orderCode}&returnUrl={returnUrl}";
