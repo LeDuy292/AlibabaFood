@@ -12,20 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Configure Entity Framework
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-if (!string.IsNullOrEmpty(connectionString) && connectionString.StartsWith("postgres", StringComparison.OrdinalIgnoreCase))
-{
-    // Render provides PostgreSQL URLs in the format postgres://user:password@host:port/database
-    if (Uri.TryCreate(connectionString, UriKind.Absolute, out var uri))
-    {
-        var userInfo = uri.UserInfo.Split(':');
-        connectionString = $"Host={uri.Host};Port={(uri.Port > 0 ? uri.Port : 5432)};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={(userInfo.Length > 1 ? userInfo[1] : "")};SslMode=Prefer";
-    }
-}
-
 builder.Services.AddDbContext<AlibabaFoodContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
