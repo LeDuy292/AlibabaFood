@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 
 // Configure Entity Framework
 builder.Services.AddDbContext<AlibabaFoodContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
