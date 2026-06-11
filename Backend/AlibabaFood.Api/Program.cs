@@ -13,7 +13,8 @@ builder.Services.AddControllers();
 
 // Configure Entity Framework
 builder.Services.AddDbContext<AlibabaFoodContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+           .UseSnakeCaseNamingConvention());
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -88,7 +89,33 @@ app.MapGet("/", () => Results.Ok(new { message = "AlibabaFood API is running", s
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AlibabaFoodContext>();
-    context.Database.EnsureCreated();
+    var created = context.Database.EnsureCreated();
+    
+    // Check if database needs seeding
+    if (!context.Users.Any())
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogInformation("Database is empty. Seeding data from SQL file...");
+        
+        try
+        {
+            var sqlFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "AlibabaFood_PostgreSQL.sql");
+            if (File.Exists(sqlFilePath))
+            {
+                var sql = File.ReadAllText(sqlFilePath);
+                context.Database.ExecuteSqlRaw(sql);
+                logger.LogInformation("Data seeding completed successfully.");
+            }
+            else
+            {
+                logger.LogWarning("Seed file not found at {SqlFilePath}", sqlFilePath);
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while seeding the database.");
+        }
+    }
 }
 
 app.Run();

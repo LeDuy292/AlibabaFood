@@ -35,7 +35,7 @@ namespace AlibabaFood.Api.Data
                 entity.HasKey(e => e.RoleId);
                 entity.HasIndex(e => e.RoleName).IsUnique();
                 entity.Property(e => e.RoleName).IsRequired().HasMaxLength(50);
-                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
             });
 
             // Configure User entity
@@ -52,8 +52,8 @@ namespace AlibabaFood.Api.Data
                 entity.Property(e => e.AvatarUrl).HasMaxLength(500);
                 entity.Property(e => e.IsVerified).HasDefaultValue(false);
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
-                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
-                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 // Configure foreign key relationship
                 entity.HasOne(u => u.Role)
@@ -70,7 +70,7 @@ namespace AlibabaFood.Api.Data
                 entity.Property(e => e.SessionToken).IsRequired().HasMaxLength(2048);
                 entity.Property(e => e.IpAddress).HasMaxLength(45);
                 entity.Property(e => e.ExpiresAt).IsRequired();
-                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 // Configure foreign key relationship
                 entity.HasOne(s => s.User)
@@ -89,7 +89,7 @@ namespace AlibabaFood.Api.Data
                 entity.Property(e => e.IpAddress).HasMaxLength(45);
                 entity.Property(e => e.LoginStatus).IsRequired().HasMaxLength(20).HasDefaultValue("success");
                 entity.Property(e => e.FailureReason).HasMaxLength(255);
-                entity.Property(e => e.LoginTime).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.LoginTime).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 // Configure foreign key relationship
                 entity.HasOne(l => l.User)
@@ -114,8 +114,8 @@ namespace AlibabaFood.Api.Data
                 entity.Property(e => e.BuyerAddress).HasMaxLength(500);
                 entity.Property(e => e.PaymentLinkId).HasMaxLength(500);
                 entity.Property(e => e.CheckoutUrl).HasMaxLength(1000);
-                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
-                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.HasIndex(e => e.OrderCode).IsUnique();
 
@@ -156,8 +156,8 @@ namespace AlibabaFood.Api.Data
                 entity.Property(e => e.Longitude).HasColumnType("decimal(11,8)");
                 entity.Property(e => e.RatingAverage).HasColumnType("decimal(3,2)");
                 entity.Property(e => e.TotalFoodSavedKg).HasColumnType("decimal(10,2)");
-                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
-                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.HasOne(s => s.User)
                       .WithMany()
@@ -170,8 +170,8 @@ namespace AlibabaFood.Api.Data
             {
                 entity.HasKey(e => e.CategoryId);
                 entity.Property(e => e.CategoryName).IsRequired().HasMaxLength(100);
-                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
-                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
             });
 
             // Configure FoodItem entity
@@ -183,8 +183,8 @@ namespace AlibabaFood.Api.Data
                 entity.Property(e => e.DiscountedPrice).HasColumnType("decimal(10,2)");
                 entity.Property(e => e.DiscountPercentage).HasColumnType("decimal(5,2)");
                 entity.Property(e => e.WeightKg).HasColumnType("decimal(8,3)");
-                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
-                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.HasOne(f => f.Supplier)
                       .WithMany(s => s.FoodItems)
@@ -202,7 +202,7 @@ namespace AlibabaFood.Api.Data
             {
                 entity.HasKey(e => e.ImageId);
                 entity.Property(e => e.ImageUrl).IsRequired().HasMaxLength(500);
-                entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
+                entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.HasOne(i => i.FoodItem)
                       .WithMany(f => f.Images)
