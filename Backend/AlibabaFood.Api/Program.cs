@@ -104,6 +104,12 @@ using (var scope = app.Services.CreateScope())
         {
             // Table might not exist yet if EnsureCreated didn't make snake_case tables
             needsSeeding = true;
+            
+            // SELF-HEAL: If the schema is broken (e.g. PascalCase vs snake_case conflict),
+            // we must drop and recreate the schema so EnsureCreated can generate the correct tables.
+            Console.WriteLine("Database schema mismatch detected. Recreating database...");
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
         }
 
         if (needsSeeding)
