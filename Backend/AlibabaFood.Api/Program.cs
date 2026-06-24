@@ -133,6 +133,25 @@ using (var scope = app.Services.CreateScope())
         );
     ");
 
+    // Ensure default roles exist to fix Google Login 401 Unauthorized
+    try
+    {
+        if (!context.Roles.Any())
+        {
+            context.Roles.AddRange(
+                new Role { RoleName = "customer" },
+                new Role { RoleName = "supplier" },
+                new Role { RoleName = "admin" }
+            );
+            context.SaveChanges();
+            Console.WriteLine("Successfully seeded default roles.");
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error seeding roles: {ex.Message}");
+    }
+
     // Check if database needs seeding
     EnsureCommunityTablesCreated(context);
 }
