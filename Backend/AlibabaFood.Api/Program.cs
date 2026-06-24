@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Data;
 using AlibabaFood.Api.Data;
 using AlibabaFood.Api.Services;
 using AlibabaFood.Api.Models;
@@ -14,7 +13,8 @@ builder.Services.AddControllers();
 
 // Configure Entity Framework
 builder.Services.AddDbContext<AlibabaFoodContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+           .UseSnakeCaseNamingConvention());
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -89,138 +89,33 @@ app.MapGet("/", () => Results.Ok(new { message = "AlibabaFood API is running", s
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AlibabaFoodContext>();
-    // context.Database.EnsureCreated(); // Comment out since database already exists
-    EnsureCommunityTablesCreated(context);
+    var created = context.Database.EnsureCreated();
+    
+    // Check if database needs seeding
+    if (!context.Users.Any())
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogInformation("Database is empty. Seeding data from SQL file...");
+        
+        try
+        {
+            var sqlFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "AlibabaFood_PostgreSQL.sql");
+            if (File.Exists(sqlFilePath))
+            {
+                var sql = File.ReadAllText(sqlFilePath);
+                context.Database.ExecuteSqlRaw(sql);
+                logger.LogInformation("Data seeding completed successfully.");
+            }
+            else
+            {
+                logger.LogWarning("Seed file not found at {SqlFilePath}", sqlFilePath);
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while seeding the database.");
+        }
+    }
 }
 
 app.Run();
-
-// Local function to ensure community-related tables exist in the database
-void EnsureCommunityTablesCreated(AlibabaFoodContext context)
-{
-    // Create tables if not exist using standard PostgreSQL syntax
-    string createTablesSql = @"
-        CREATE TABLE IF NOT EXISTS community_posts (
-            post_id SERIAL PRIMARY KEY,
-            user_id INT NOT NULL,
-            title VARCHAR(255) NOT NULL,
-            content TEXT NOT NULL,
-            image_url VARCHAR(500),
-            likes_count INT DEFAULT 0,
-            comments_count INT DEFAULT 0,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
-        );
-
-        CREATE TABLE IF NOT EXISTS community_comments (
-            comment_id SERIAL PRIMARY KEY,
-            post_id INT NOT NULL,
-            user_id INT NOT NULL,
-            content TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (post_id) REFERENCES community_posts(post_id) ON DELETE CASCADE,
-            FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE NO ACTION
-        );
-
-        CREATE TABLE IF NOT EXISTS product_reviews (
-            review_id SERIAL PRIMARY KEY,
-            user_id INT NOT NULL,
-            item_id INT NOT NULL,
-            rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
-            comment TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-            FOREIGN KEY (item_id) REFERENCES food_items(item_id) ON DELETE NO ACTION
-        );
-
-        CREATE TABLE IF NOT EXISTS supplier_reviews (
-            review_id SERIAL PRIMARY KEY,
-            user_id INT NOT NULL,
-            supplier_id INT NOT NULL,
-            rating_food INT NOT NULL CHECK (rating_food BETWEEN 1 AND 5),
-            rating_accuracy INT NOT NULL CHECK (rating_accuracy BETWEEN 1 AND 5),
-            rating_service INT NOT NULL CHECK (rating_service BETWEEN 1 AND 5),
-            rating_speed INT NOT NULL CHECK (rating_speed BETWEEN 1 AND 5),
-            comment TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-            FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id) ON DELETE NO ACTION
-        );
-
-        CREATE TABLE IF NOT EXISTS user_feedbacks (
-            feedback_id SERIAL PRIMARY KEY,
-            user_id INT NOT NULL,
-            feedback_type VARCHAR(50) NOT NULL,
-            title VARCHAR(255) NOT NULL,
-            description TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
-        );
-
-        CREATE TABLE IF NOT EXISTS violation_reports (
-            report_id SERIAL PRIMARY KEY,
-            reporter_id INT NOT NULL,
-            reported_supplier_id INT,
-            reported_item_id INT,
-            report_type VARCHAR(50) NOT NULL,
-            description TEXT NOT NULL,
-            status VARCHAR(20) DEFAULT 'pending',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (reporter_id) REFERENCES users(user_id) ON DELETE CASCADE,
-            FOREIGN KEY (reported_supplier_id) REFERENCES suppliers(supplier_id) ON DELETE NO ACTION,
-            FOREIGN KEY (reported_item_id) REFERENCES food_items(item_id) ON DELETE NO ACTION
-        );
-    ";
-
-    try
-    {
-        context.Database.ExecuteSqlRaw(createTablesSql);
-
-
-
-        // Repair existing database data encoding issues using PostgreSQL syntax
-        string repairUnicodeSql = @"
-            UPDATE users SET full_name = 'Nguyễn Văn A' WHERE username = 'supplier1';
-            UPDATE users SET full_name = 'Trần Thị B' WHERE username = 'supplier2';
-            UPDATE users SET full_name = 'Lê Văn C' WHERE username = 'supplier3';
-            UPDATE users SET full_name = 'Phạm Thị D' WHERE username = 'supplier4';
-            UPDATE users SET full_name = 'Hoàng Văn E' WHERE username = 'supplier5';
-            UPDATE users SET full_name = 'Nguyễn Thị F' WHERE username = 'supplier6';
-
-            UPDATE suppliers s
-            SET business_name = 'Quán Cơm Gia Đình A'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier1';
-
-            UPDATE suppliers s
-            SET business_name = 'Bánh Mì Việt B'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier2';
-
-            UPDATE suppliers s
-            SET business_name = 'Cà Phê Góc Phố C'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier3';
-
-            UPDATE suppliers s
-            SET business_name = 'Nhà Hàng Hải Sản D'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier4';
-
-            UPDATE suppliers s
-            SET business_name = 'Tiệm Bánh Ngọt E'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier5';
-
-            UPDATE suppliers s
-            SET business_name = 'Shop Thực Phẩm F'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier6';
-        ";
-        context.Database.ExecuteSqlRaw(repairUnicodeSql);
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine("Error ensuring community tables exist and are seeded: " + ex.Message);
-    }
-}

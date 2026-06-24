@@ -9,31 +9,18 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const dropdownRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { totalItems } = useCart();
 
   useEffect(() => {
-    let lastScrollY = window.scrollY;
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY > 50) {
+      if (window.scrollY > 50) {
         setScrolled(true);
       } else {
         setScrolled(false);
       }
-
-      // Ẩn header khi cuộn xuống, hiện lại khi cuộn lên
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setHidden(true);
-      } else {
-        setHidden(false);
-      }
-      
-      lastScrollY = currentScrollY;
     };
 
     const checkUser = () => {
@@ -103,14 +90,11 @@ const Navbar = () => {
     }
   };
 
-  const isDarkPage =
-    location.pathname === "/ai-consultant" ||
-    location.pathname === "/blind-bag" ||
-    location.pathname === "/community";
+  const isDarkPage = location.pathname === "/blind-bag";
 
   return (
     <nav
-      className={`navbar ${scrolled ? "navbar-scrolled" : ""} ${isDarkPage && !scrolled ? "navbar-on-dark" : ""} ${hidden ? "navbar-hidden" : ""}`}
+      className={`navbar ${scrolled ? "navbar-scrolled" : ""} ${isDarkPage && !scrolled ? "navbar-on-dark" : ""}`}
     >
       <div className="navbar-container container">
         <div className="navbar-logo">
@@ -148,14 +132,6 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              to="/community"
-              className={location.pathname === "/community" ? "active" : ""}
-            >
-              CỘNG ĐỒNG
-            </Link>
-          </li>
-          <li>
-            <Link
               to="/ai-consultant"
               className={location.pathname === "/ai-consultant" ? "active" : ""}
             >
@@ -164,18 +140,18 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              to="/about"
-              className={location.pathname === "/about" ? "active" : ""}
+              to="/rescue-streak"
+              className={location.pathname === "/rescue-streak" ? "active" : ""}
             >
-              GIỚI THIỆU
+              STREAK
             </Link>
           </li>
           <li>
             <Link
-              to="/mystery-bag"
-              className={location.pathname === "/mystery-bag" ? "active" : ""}
+              to="/about"
+              className={location.pathname === "/about" ? "active" : ""}
             >
-              TÚI MÙ
+              GIỚI THIỆU
             </Link>
           </li>
         </ul>

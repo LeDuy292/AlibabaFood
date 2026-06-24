@@ -1,5 +1,6 @@
 import React from 'react';
 import HeroSection from '../components/HeroSection';
+
 import FeatureSlider from '../components/FeatureSlider';
 import AboutSection from '../components/AboutSection';
 import PopularFoodSection from '../components/PopularFoodSection';

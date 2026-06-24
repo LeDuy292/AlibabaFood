@@ -18,15 +18,12 @@ import PartnerRegistration from "../pages/PartnerRegistration";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import BlindBag from "../pages/BlindBag";
-import MysteryBagPage from "../pages/MysteryBagPage";
 import AIConsultant from "../pages/AIConsultant";
-import Community from "../pages/Community";
 import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
 import PaymentSuccess from "../pages/PaymentSuccess";
 import PaymentCancel from "../pages/PaymentCancel";
-import Profile from "../pages/Profile";
-import About from "../pages/About";
+import RescueStreak from "../pages/RescueStreak";
 
 const SupplierCtx = createContext(null);
 
@@ -145,10 +142,7 @@ const AppRoutes = () => {
         <Route path="food-detail" element={<FoodDetail />} />
         <Route path="news" element={<News />} />
         <Route path="ai-consultant" element={<AIConsultant />} />
-        <Route path="community" element={<Community />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="about" element={<About />} />
-        <Route path="mystery-bag" element={<MysteryBagPage />} />
+        <Route path="rescue-streak" element={<RescueStreak />} />
       </Route>
       <Route path="/partner-register" element={<PartnerRegistration />} />
       <Route path="/login" element={<Login />} />

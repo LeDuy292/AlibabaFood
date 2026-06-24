@@ -54,7 +54,7 @@ const HotDealSection = ({ userLocation, onChangeLocation }) => {
         const result = await getNearbyProducts(
           userLocation.lat,
           userLocation.lng,
-          10
+          5
         );
         setProducts(result?.data || []);
         setStartIdx(0);
