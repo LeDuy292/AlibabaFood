@@ -108,7 +108,7 @@ using (var scope = app.Services.CreateScope())
             // SELF-HEAL: If the schema is broken (e.g. PascalCase vs snake_case conflict),
             // we must drop and recreate the schema so EnsureCreated can generate the correct tables.
             Console.WriteLine("Database schema mismatch detected. Recreating database...");
-            context.Database.EnsureDeleted();
+            context.Database.ExecuteSqlRaw("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
             context.Database.EnsureCreated();
         }
 
