@@ -245,6 +245,19 @@ void EnsureCommunityTablesCreated(AlibabaFoodContext context)
     {
         context.Database.ExecuteSqlRaw(createTablesSql);
 
+        // Ensure session_token and refresh_token can store longer tokens (JWTs)
+        try
+        {
+            context.Database.ExecuteSqlRaw(@"
+                ALTER TABLE user_sessions ALTER COLUMN session_token TYPE VARCHAR(2048);
+                ALTER TABLE user_sessions ALTER COLUMN refresh_token TYPE VARCHAR(2048);
+            ");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Warning: Could not alter user_sessions columns. " + ex.Message);
+        }
+
 
 
         // Repair existing database data encoding issues using PostgreSQL syntax

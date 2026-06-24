@@ -170,14 +170,7 @@ const Navbar = () => {
               GIỚI THIỆU
             </Link>
           </li>
-          <li>
-            <Link
-              to="/mystery-bag"
-              className={location.pathname === "/mystery-bag" ? "active" : ""}
-            >
-              TÚI MÙ
-            </Link>
-          </li>
+
         </ul>
 
         <div className="navbar-actions">
@@ -202,7 +195,7 @@ const Navbar = () => {
 
           <div className="user-profile-container" ref={dropdownRef}>
             <button
-              className={`icon-btn user-btn ${user ? "has-user" : ""}`}
+              className={`icon-btn user-btn ${user ? "has-user" : ""} ${user && (user.AvatarUrl || user.avatarUrl) ? "has-avatar" : ""}`}
               onClick={toggleDropdown}
             >
               {user && (user.AvatarUrl || user.avatarUrl) ? (
