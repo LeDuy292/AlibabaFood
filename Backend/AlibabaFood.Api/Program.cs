@@ -14,7 +14,8 @@ builder.Services.AddControllers();
 
 // Configure Entity Framework
 builder.Services.AddDbContext<AlibabaFoodContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+           .UseSnakeCaseNamingConvention());
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -90,6 +91,36 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AlibabaFoodContext>();
     var created = context.Database.EnsureCreated();
+    
+    // Check if database needs seeding (if users table is empty or doesn't exist)
+    try 
+    {
+        bool needsSeeding = false;
+        try 
+        {
+            needsSeeding = !context.Users.Any();
+        }
+        catch (Exception)
+        {
+            // Table might not exist yet if EnsureCreated didn't make snake_case tables
+            needsSeeding = true;
+        }
+
+        if (needsSeeding)
+        {
+            var sqlFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "AlibabaFood_PostgreSQL.sql");
+            if (File.Exists(sqlFilePath))
+            {
+                var sql = File.ReadAllText(sqlFilePath);
+                context.Database.ExecuteSqlRaw(sql);
+                Console.WriteLine("Successfully seeded database from AlibabaFood_PostgreSQL.sql");
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error checking or seeding database: {ex.Message}");
+    }
     
     // Ensure roll_credits table exists (since EnsureCreated won't add tables to an existing DB)
     context.Database.ExecuteSqlRaw(@"
