@@ -9,18 +9,31 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const dropdownRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { totalItems } = useCart();
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
     const handleScroll = () => {
-      if (window.scrollY > 50) {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > 50) {
         setScrolled(true);
       } else {
         setScrolled(false);
       }
+
+      // Ẩn header khi cuộn xuống, hiện lại khi cuộn lên
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setHidden(true);
+      } else {
+        setHidden(false);
+      }
+      
+      lastScrollY = currentScrollY;
     };
 
     const checkUser = () => {
@@ -97,7 +110,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`navbar ${scrolled ? "navbar-scrolled" : ""} ${isDarkPage && !scrolled ? "navbar-on-dark" : ""}`}
+      className={`navbar ${scrolled ? "navbar-scrolled" : ""} ${isDarkPage && !scrolled ? "navbar-on-dark" : ""} ${hidden ? "navbar-hidden" : ""}`}
     >
       <div className="navbar-container container">
         <div className="navbar-logo">
@@ -155,6 +168,14 @@ const Navbar = () => {
               className={location.pathname === "/about" ? "active" : ""}
             >
               GIỚI THIỆU
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/mystery-bag"
+              className={location.pathname === "/mystery-bag" ? "active" : ""}
+            >
+              TÚI MÙ
             </Link>
           </li>
         </ul>

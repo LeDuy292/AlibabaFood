@@ -89,7 +89,7 @@ app.MapGet("/", () => Results.Ok(new { message = "AlibabaFood API is running", s
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AlibabaFoodContext>();
-    context.Database.EnsureCreated();
+    // context.Database.EnsureCreated(); // Comment out since database already exists
     EnsureCommunityTablesCreated(context);
 }
 

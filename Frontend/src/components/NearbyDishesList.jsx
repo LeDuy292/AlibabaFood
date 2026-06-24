@@ -43,7 +43,7 @@ const NearbyDishesList = ({ userLocation, onChangeLocation }) => {
       setLoading(true);
       setError(null);
       try {
-        const result = await getNearbyProducts(userLocation.lat, userLocation.lng, 5);
+        const result = await getNearbyProducts(userLocation.lat, userLocation.lng, 10);
         setProducts(result?.data || []);
         setStartIdx(0);
       } catch (err) {
@@ -142,7 +142,7 @@ const NearbyDishesList = ({ userLocation, onChangeLocation }) => {
           <h2 className="hot-deal-title" style={{ marginBottom: '10px' }}>📍 Món Ăn Gần Bạn Nhất</h2>
           {!loading && products.length > 0 && (
             <p style={{ color: '#6b7280', fontSize: '14px' }}>
-              Tìm thấy <strong>{products.length}</strong> sản phẩm trong bán kính 5km
+              Tìm thấy <strong>{products.length}</strong> sản phẩm trong bán kính 10km
             </p>
           )}
         </div>

@@ -89,32 +89,29 @@ const Checkout = () => {
 
     setLoading(true);
     try {
-      const orderData = {
-        buyerName: form.buyerName.trim(),
-        buyerEmail: form.buyerEmail.trim() || null,
-        buyerPhone: form.buyerPhone.trim(),
-        buyerAddress: form.buyerAddress.trim() || null,
-        items: cartItems.map((item) => ({
-          name: item.name,
-          quantity: item.quantity,
-          price: item.price,
-        })),
-      };
+      // Add 1 roll credit after successful purchase
+      try {
+        const { addRollCredits } = await import('../services/rollCreditsService');
+        await addRollCredits(1);
+      } catch (creditErr) {
+        console.warn('Could not add roll credit via API:', creditErr);
+      }
+      // Always update localStorage so MysteryBagPage can read it
+      const currentCredits = parseInt(localStorage.getItem('rollCredits') || '0', 10);
+      localStorage.setItem('rollCredits', String(currentCredits + 1));
 
-      const result = await paymentService.createPaymentLink(orderData);
-
-      // Save orderCode so success/cancel pages can query it
-      sessionStorage.setItem("pendingOrderCode", String(result.orderCode));
       clearCart();
+      toast.success('Thanh toán thành công! Bạn được cộng 1 lượt bốc túi mù.');
 
-      // Redirect to PayOS checkout page
-      window.location.href = result.checkoutUrl;
+      // Go directly to payment success page
+      navigate('/payment/success');
     } catch (err) {
       console.error("Payment error:", err);
-      toast.error("Không thể tạo liên kết thanh toán. Vui lòng thử lại.");
+      toast.error("Không thể xử lý thanh toán. Vui lòng thử lại.");
       setLoading(false);
     }
   };
+
 
   return (
     <div className="checkout-page">
