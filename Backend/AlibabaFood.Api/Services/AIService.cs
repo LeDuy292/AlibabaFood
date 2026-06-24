@@ -1,6 +1,3 @@
-using OpenAI;
-using OpenAI.Chat;
-using System.ClientModel;
 using AlibabaFood.Api.DTOs.AI;
 using System.Text;
 using System.Text.Json;
@@ -16,9 +13,9 @@ namespace AlibabaFood.Api.Services
         private readonly IConfiguration _configuration;
         private readonly ILogger<AIService> _logger;
         private readonly HttpClient _httpClient;
-        private readonly string _groqApiKey;
-        private readonly string _groqModel;
-        private readonly string _elevenLabsApiKey;
+        private readonly string _geminiApiKey;
+        private readonly string _geminiModel;
+        private readonly string? _elevenLabsApiKey;
         private readonly string _defaultVoiceId;
 
         public AIService(IConfiguration configuration, ILogger<AIService> logger, HttpClient httpClient)
@@ -27,14 +24,12 @@ namespace AlibabaFood.Api.Services
             _logger = logger;
             _httpClient = httpClient;
 
-            // Initialize Groq settings
-            _groqApiKey = _configuration["AISettings:Groq:ApiKey"] 
-                ?? throw new InvalidOperationException("Groq API key not configured");
-            _groqModel = _configuration["AISettings:Groq:Model"] ?? "llama-3.3-70b-versatile";
+            // Initialize Gemini settings with a resilient fallback to the provided key
+            _geminiApiKey = _configuration["AISettings:Gemini:ApiKey"] ?? "";
+            _geminiModel = _configuration["AISettings:Gemini:Model"] ?? "gemini-2.5-flash";
 
-            // Initialize ElevenLabs
-            _elevenLabsApiKey = _configuration["AISettings:ElevenLabs:ApiKey"] 
-                ?? throw new InvalidOperationException("ElevenLabs API key not configured");
+            // Initialize ElevenLabs (resilient, no throwing exceptions if missing)
+            _elevenLabsApiKey = _configuration["AISettings:ElevenLabs:ApiKey"];
             _defaultVoiceId = _configuration["AISettings:ElevenLabs:VoiceId"] ?? "21m00Tcm4TlvDq8ikWAM";
         }
 
@@ -42,11 +37,11 @@ namespace AlibabaFood.Api.Services
         {
             try
             {
-                _logger.LogInformation("Getting food consultation via Groq for question: {Question}", request.Question);
+                _logger.LogInformation("Getting food consultation via Gemini for question: {Question}", request.Question);
 
-                // Generate AI response using Groq
+                // Generate AI response using Gemini
                 var prompt = BuildFoodConsultationPrompt(request);
-                var aiResponse = await GenerateGroqResponseAsync(prompt);
+                var aiResponse = await GenerateGeminiResponseAsync(prompt, jsonMode: false);
 
                 // Parse recommendations from AI response
                 var recommendations = await GenerateFoodSuggestions(request);
@@ -60,8 +55,8 @@ namespace AlibabaFood.Api.Services
                     Message = "Tư vấn thành công"
                 };
 
-                // Generate voice response if requested
-                if (request.IncludeVoiceResponse)
+                // Generate voice response if requested and ElevenLabs key is present
+                if (request.IncludeVoiceResponse && !string.IsNullOrEmpty(_elevenLabsApiKey))
                 {
                     var voiceResponse = await TextToSpeechAsync(aiResponse, request.VoiceId);
                     response.VoiceBase64 = voiceResponse.AudioBase64;
@@ -71,7 +66,7 @@ namespace AlibabaFood.Api.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting food consultation via Groq");
+                _logger.LogError(ex, "Error getting food consultation via Gemini");
                 return new FoodConsultationResponse
                 {
                     Success = false,
@@ -84,6 +79,17 @@ namespace AlibabaFood.Api.Services
         {
             try
             {
+                if (string.IsNullOrEmpty(_elevenLabsApiKey))
+                {
+                    _logger.LogWarning("ElevenLabs API key is not configured. Skipping Text-to-Speech.");
+                    return new VoiceResponse
+                    {
+                        AudioBase64 = string.Empty,
+                        ContentType = "audio/mpeg",
+                        Duration = 0
+                    };
+                }
+
                 _logger.LogInformation("Converting text to speech: {TextLength} characters", text.Length);
 
                 voiceId ??= _defaultVoiceId;
@@ -111,7 +117,7 @@ namespace AlibabaFood.Api.Services
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
                     _logger.LogError("ElevenLabs API error: {StatusCode} - {Error}", response.StatusCode, errorContent);
-                    throw new InvalidOperationException($"ElevenLabs API error: {response.StatusCode}");
+                    return new VoiceResponse { AudioBase64 = string.Empty, ContentType = "audio/mpeg", Duration = 0 };
                 }
 
                 var audioBytes = await response.Content.ReadAsByteArrayAsync();
@@ -125,8 +131,13 @@ namespace AlibabaFood.Api.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error converting text to speech");
-                throw new InvalidOperationException("Không thể tạo giọng nói: " + ex.Message);
+                _logger.LogWarning(ex, "Error converting text to speech, falling back gracefully");
+                return new VoiceResponse
+                {
+                    AudioBase64 = string.Empty,
+                    ContentType = "audio/mpeg",
+                    Duration = 0
+                };
             }
         }
 
@@ -145,11 +156,11 @@ namespace AlibabaFood.Api.Services
                 Hãy trả lời một cách thân thiện, chuyên nghiệp và đưa ra gợi ý cụ thể.
                 """;
 
-                return await GenerateGroqResponseAsync(prompt);
+                return await GenerateGeminiResponseAsync(prompt, jsonMode: false);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error generating food recommendations via Groq");
+                _logger.LogError(ex, "Error generating food recommendations via Gemini");
                 throw new InvalidOperationException("Không thể tạo gợi ý món ăn: " + ex.Message);
             }
         }
@@ -184,43 +195,68 @@ namespace AlibabaFood.Api.Services
             return prompt;
         }
 
-        private async Task<string> GenerateGroqResponseAsync(string prompt)
+        private async Task<string> GenerateGeminiResponseAsync(string prompt, bool jsonMode = false)
         {
             try
             {
-                var requestUrl = "https://api.groq.com/openai/v1/chat/completions";
+                var requestUrl = $"https://generativelanguage.googleapis.com/v1beta/models/{_geminiModel}:generateContent?key={_geminiApiKey}";
+                
+                object generationConfig = jsonMode 
+                    ? new { temperature = 0.1, responseMimeType = "application/json" }
+                    : new { temperature = 0.3, maxOutputTokens = 800 };
+
                 var requestBody = new
                 {
-                    model = _groqModel,
-                    messages = new[]
+                    contents = new[]
                     {
-                        new { role = "system", content = "Bạn là Nhân viên ảo của Alibaba Food. Bạn trả lời khách hàng cực kỳ ngắn gọn, đúng trọng tâm. Nếu câu hỏi không liên quan đến ẩm thực hoặc website Alibaba Food, hãy từ chối trả lời. Nếu khách chào, hãy trả lời theo mẫu: 'Xin chào bạn, tôi là nhân viên ảo của Alibaba Food, tôi có thể giúp gì cho bạn?'" },
-                        new { role = "user", content = prompt }
+                        new
+                        {
+                            parts = new[]
+                            {
+                                new { text = prompt }
+                            }
+                        }
                     },
-                    temperature = 0.3, // Lower temperature for more consistency
-                    max_tokens = 300
+                    systemInstruction = new
+                    {
+                        parts = new[]
+                        {
+                            new { text = "Bạn là Nhân viên ảo của Alibaba Food. Bạn trả lời khách hàng cực kỳ ngắn gọn, đúng trọng tâm. Nếu câu hỏi không liên quan đến ẩm thực hoặc website Alibaba Food, hãy từ chối trả lời. Nếu khách chào (ví dụ: 'xin chào', 'hello', 'hi'), bạn PHẢI trả lời chính xác là: 'Xin chào bạn, tôi là nhân viên ảo của Alibaba Food, tôi có thể giúp gì cho bạn?'" }
+                        }
+                    },
+                    generationConfig = generationConfig
                 };
 
                 var requestMessage = new HttpRequestMessage(HttpMethod.Post, requestUrl)
                 {
                     Content = JsonContent.Create(requestBody)
                 };
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _groqApiKey);
 
                 var response = await _httpClient.SendAsync(requestMessage);
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    _logger.LogError("Groq API error: {StatusCode} - {Error}", response.StatusCode, errorContent);
-                    throw new InvalidOperationException($"Groq API error: {response.StatusCode}");
+                    _logger.LogError("Gemini API error: {StatusCode} - {Error}", response.StatusCode, errorContent);
+                    throw new InvalidOperationException($"Gemini API error: {response.StatusCode}");
                 }
 
                 var jsonResult = await response.Content.ReadFromJsonAsync<JsonElement>();
-                return jsonResult.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString() ?? "";
+                
+                if (jsonResult.TryGetProperty("candidates", out var candidates) && 
+                    candidates.GetArrayLength() > 0 &&
+                    candidates[0].TryGetProperty("content", out var content) &&
+                    content.TryGetProperty("parts", out var parts) &&
+                    parts.GetArrayLength() > 0 &&
+                    parts[0].TryGetProperty("text", out var text))
+                {
+                    return text.GetString() ?? "";
+                }
+
+                return "";
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error generating Groq response");
+                _logger.LogError(ex, "Error generating Gemini response");
                 throw new InvalidOperationException("Không thể tạo phản hồi AI: " + ex.Message);
             }
         }
@@ -229,7 +265,6 @@ namespace AlibabaFood.Api.Services
         {
             try
             {
-                // Improved greeting check: only skip if it's ONLY a greeting
                 string q = request.Question.ToLower().Trim();
                 var greetings = new[] { "xin chào", "hello", "hi", "chào", "chào bạn" };
                 if (greetings.Any(g => q == g) || q.Length < 3) 
@@ -237,35 +272,33 @@ namespace AlibabaFood.Api.Services
                     return new List<FoodRecommendation>();
                 }
 
-                var prompt = $@"Dựa trên yêu cầu ""{request.Question}"", hãy gợi ý chính xác 3 món ăn từ thực đơn Alibaba Food bên dưới.
+                var prompt = $@"Dựa trên yêu cầu ""{request.Question}"", hãy gợi ý chính xác 3 món ăn phù hợp nhất từ thực đơn Alibaba Food bên dưới.
                     QUY TẮC: 
-                    1. CHỈ được chọn từ danh sách: [Classic Burger, Crispy Chicken, Burger Combo, Family Combo, Black Forest Cake, Strawberry Cake, Beef Jerky, Mixed Nuts].
-                    2. Trả về DUY NHẤT dữ liệu JSON, không kèm lời giải thích hay chữ nào khác.
+                    1. CHỈ được chọn từ danh sách này: [Classic Burger, Crispy Chicken, Burger Combo, Family Combo, Black Forest Cake, Strawberry Cake, Beef Jerky, Mixed Nuts].
+                    2. Trả về DUY NHẤT dữ liệu JSON khớp với schema bên dưới, không kèm bất kỳ giải thích nào.
                     
-                    Định dạng JSON:
+                    Định dạng JSON yêu cầu:
                     {{
                         ""suggestions"": [
                             {{
                                 ""name"": ""Tên món khớp 100% danh sách trên"",
-                                ""description"": ""Mô tả tại sao món này hợp"",
+                                ""description"": ""Mô tả lý do món này phù hợp"",
                                 ""category"": ""Phân loại"",
                                 ""priceRange"": ""Giá niêm yết"",
                                 ""ingredients"": [""thành phần""],
                                 ""benefits"": [""lợi ích""],
-                                ""preparationTime"": ""15-20 min"",
+                                ""preparationTime"": ""15-20 phút"",
                                 ""matchScore"": 95
                             }}
                         ]
                     }}";
 
-                var response = await GenerateGroqResponseAsync(prompt);
+                var response = await GenerateGeminiResponseAsync(prompt, jsonMode: true);
                 
-                // Robust JSON extraction using Regex
                 var jsonMatch = Regex.Match(response, @"\{.*\}", RegexOptions.Singleline);
                 if (!jsonMatch.Success)
                 {
-                    Console.WriteLine("AI Response did not contain valid JSON structure.");
-                    Console.WriteLine("Raw Response: " + response);
+                    _logger.LogWarning("Gemini response did not contain valid JSON: {Response}", response);
                     return new List<FoodRecommendation>();
                 }
 
@@ -299,8 +332,7 @@ namespace AlibabaFood.Api.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in GenerateFoodSuggestions: {ex.Message}");
-                _logger.LogError(ex, "Error generating food suggestions via Groq");
+                _logger.LogError(ex, "Error generating food suggestions via Gemini");
                 return new List<FoodRecommendation>();
             }
         }

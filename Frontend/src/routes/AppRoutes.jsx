@@ -19,6 +19,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import BlindBag from "../pages/BlindBag";
 import AIConsultant from "../pages/AIConsultant";
+import Community from "../pages/Community";
 import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
 import PaymentSuccess from "../pages/PaymentSuccess";
@@ -141,6 +142,7 @@ const AppRoutes = () => {
         <Route path="food-detail" element={<FoodDetail />} />
         <Route path="news" element={<News />} />
         <Route path="ai-consultant" element={<AIConsultant />} />
+        <Route path="community" element={<Community />} />
       </Route>
       <Route path="/partner-register" element={<PartnerRegistration />} />
       <Route path="/login" element={<Login />} />
