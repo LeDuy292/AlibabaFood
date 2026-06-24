@@ -18,6 +18,7 @@ import PartnerRegistration from "../pages/PartnerRegistration";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import BlindBag from "../pages/BlindBag";
+import MysteryBagPage from "../pages/MysteryBagPage";
 import AIConsultant from "../pages/AIConsultant";
 import Community from "../pages/Community";
 import Cart from "../pages/Cart";
@@ -147,6 +148,7 @@ const AppRoutes = () => {
         <Route path="community" element={<Community />} />
         <Route path="profile" element={<Profile />} />
         <Route path="about" element={<About />} />
+        <Route path="mystery-bag" element={<MysteryBagPage />} />
       </Route>
       <Route path="/partner-register" element={<PartnerRegistration />} />
       <Route path="/login" element={<Login />} />

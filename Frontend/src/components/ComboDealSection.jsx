@@ -66,7 +66,7 @@ const ComboDealSection = ({ userLocation, onChangeLocation }) => {
         const result = await getNearbyProducts(
           userLocation.lat,
           userLocation.lng,
-          5
+          10
         );
         // Ưu tiên những sản phẩm có giảm giá (combo deals)
         const sorted = (result?.data || []).sort(
