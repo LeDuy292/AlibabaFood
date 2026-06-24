@@ -9,6 +9,10 @@ services:
         fromDatabase:
           name: alibabafood-db
           property: connectionString
+      - key: PayOS__ReturnUrl
+        value: "https://alibabafood-frontend-jqay.onrender.com/payment-success"
+      - key: PayOS__CancelUrl
+        value: "https://alibabafood-frontend-jqay.onrender.com/payment-cancel"
 
   - type: web
     name: alibabafood-frontend
