@@ -29,7 +29,7 @@ CREATE TABLE users (
     username VARCHAR(100) NOT NULL UNIQUE,
     phone VARCHAR(20),
     password_hash VARCHAR(255) NOT NULL,
-    full_name VARCHAR(255) NOT NULL,
+    full_name NVARCHAR(255) NOT NULL,
     avatar_url VARCHAR(500),
     role_id INT NOT NULL,
     is_verified BIT DEFAULT 0,
@@ -45,12 +45,12 @@ CREATE TABLE user_addresses (
     address_id INT PRIMARY KEY IDENTITY(1,1),
     user_id INT NOT NULL,
     address_type VARCHAR(20),
-    address_line1 VARCHAR(500) NOT NULL,
-    address_line2 VARCHAR(500),
-    ward VARCHAR(100),
-    district VARCHAR(100),
-    city VARCHAR(100) NOT NULL,
-    province VARCHAR(100) NOT NULL,
+    address_line1 NVARCHAR(500) NOT NULL,
+    address_line2 NVARCHAR(500),
+    ward NVARCHAR(100),
+    district NVARCHAR(100),
+    city NVARCHAR(100) NOT NULL,
+    province NVARCHAR(100) NOT NULL,
     postal_code VARCHAR(20),
     latitude DECIMAL(10, 8),
     longitude DECIMAL(11, 8),
@@ -90,19 +90,19 @@ CREATE TABLE business_types (
 CREATE TABLE suppliers (
     supplier_id INT PRIMARY KEY IDENTITY(1,1),
     user_id INT NOT NULL UNIQUE,
-    business_name VARCHAR(255) NOT NULL,
+    business_name NVARCHAR(255) NOT NULL,
     business_type_id INT NOT NULL,
     business_registration_number VARCHAR(100),
     tax_code VARCHAR(50),
     logo_url VARCHAR(500),
     cover_image_url VARCHAR(500),
-    description TEXT,
-    address_line1 VARCHAR(500) NOT NULL,
-    address_line2 VARCHAR(500),
-    ward VARCHAR(100),
-    district VARCHAR(100),
-    city VARCHAR(100) NOT NULL,
-    province VARCHAR(100) NOT NULL,
+    description NVARCHAR(MAX),
+    address_line1 NVARCHAR(500) NOT NULL,
+    address_line2 NVARCHAR(500),
+    ward NVARCHAR(100),
+    district NVARCHAR(100),
+    city NVARCHAR(100) NOT NULL,
+    province NVARCHAR(100) NOT NULL,
     latitude DECIMAL(10, 8),
     longitude DECIMAL(11, 8),
     phone VARCHAR(20) NOT NULL,
@@ -569,6 +569,87 @@ CREATE TABLE system_settings (
     is_public BIT DEFAULT 0,
     created_at DATETIME DEFAULT GETDATE(),
     updated_at DATETIME DEFAULT GETDATE()
+);
+
+-- =====================================================
+-- CỘNG ĐỒNG & ĐÁNH GIÁ (COMMUNITY & REVIEWS)
+-- =====================================================
+
+-- Bảng bài viết cộng đồng
+CREATE TABLE community_posts (
+    post_id INT PRIMARY KEY IDENTITY(1,1),
+    user_id INT NOT NULL,
+    title NVARCHAR(255) NOT NULL,
+    content NVARCHAR(MAX) NOT NULL,
+    image_url VARCHAR(500),
+    likes_count INT DEFAULT 0,
+    comments_count INT DEFAULT 0,
+    created_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+-- Bảng bình luận cộng đồng
+CREATE TABLE community_comments (
+    comment_id INT PRIMARY KEY IDENTITY(1,1),
+    post_id INT NOT NULL,
+    user_id INT NOT NULL,
+    content NVARCHAR(MAX) NOT NULL,
+    created_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (post_id) REFERENCES community_posts(post_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE NO ACTION
+);
+
+-- Bảng đánh giá sản phẩm
+CREATE TABLE product_reviews (
+    review_id INT PRIMARY KEY IDENTITY(1,1),
+    user_id INT NOT NULL,
+    item_id INT NOT NULL,
+    rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    comment NVARCHAR(MAX),
+    created_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES food_items(item_id) ON DELETE NO ACTION
+);
+
+-- Bảng đánh giá cửa hàng
+CREATE TABLE supplier_reviews (
+    review_id INT PRIMARY KEY IDENTITY(1,1),
+    user_id INT NOT NULL,
+    supplier_id INT NOT NULL,
+    rating_food INT NOT NULL CHECK (rating_food BETWEEN 1 AND 5),
+    rating_accuracy INT NOT NULL CHECK (rating_accuracy BETWEEN 1 AND 5),
+    rating_service INT NOT NULL CHECK (rating_service BETWEEN 1 AND 5),
+    rating_speed INT NOT NULL CHECK (rating_speed BETWEEN 1 AND 5),
+    comment NVARCHAR(MAX),
+    created_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id) ON DELETE NO ACTION
+);
+
+-- Bảng phản hồi và góp ý
+CREATE TABLE user_feedbacks (
+    feedback_id INT PRIMARY KEY IDENTITY(1,1),
+    user_id INT NOT NULL,
+    feedback_type VARCHAR(50) NOT NULL, -- 'feature', 'bug', 'ui', 'promo', 'other'
+    title NVARCHAR(255) NOT NULL,
+    description NVARCHAR(MAX) NOT NULL,
+    created_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+-- Bảng báo cáo vi phạm
+CREATE TABLE violation_reports (
+    report_id INT PRIMARY KEY IDENTITY(1,1),
+    reporter_id INT NOT NULL,
+    reported_supplier_id INT,
+    reported_item_id INT,
+    report_type VARCHAR(50) NOT NULL, -- 'incorrect_info', 'wrong_image', 'bad_quality', 'fraud', 'other'
+    description NVARCHAR(MAX) NOT NULL,
+    status VARCHAR(20) DEFAULT 'pending', -- 'pending', 'resolved'
+    created_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (reporter_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (reported_supplier_id) REFERENCES suppliers(supplier_id) ON DELETE NO ACTION,
+    FOREIGN KEY (reported_item_id) REFERENCES food_items(item_id) ON DELETE NO ACTION
 );
 
 PRINT '✅ Done! Created all tables for complete database.';
