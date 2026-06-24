@@ -95,7 +95,6 @@ namespace AlibabaFood.Api.Services
                 };
 
                 // Validate the token signature and claims
-                _logger.LogInformation("Validating Google token. Configured ClientId: '{ClientId}'", clientId);
                 var payload = await GoogleJsonWebSignature.ValidateAsync(request.IdToken, settings);
                 if (payload == null)
                 {
