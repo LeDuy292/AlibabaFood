@@ -16,6 +16,9 @@ services:
     rootDir: Frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: "https://alibabafood-api-jqay.onrender.com/api"
     routes:
       - type: rewrite
         source: /*
