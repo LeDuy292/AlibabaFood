@@ -89,7 +89,20 @@ app.MapGet("/", () => Results.Ok(new { message = "AlibabaFood API is running", s
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AlibabaFoodContext>();
-    // context.Database.EnsureCreated(); // Comment out since database already exists
+    var created = context.Database.EnsureCreated();
+    
+    // Ensure roll_credits table exists (since EnsureCreated won't add tables to an existing DB)
+    context.Database.ExecuteSqlRaw(@"
+        CREATE TABLE IF NOT EXISTS roll_credits (
+            credit_id serial PRIMARY KEY,
+            user_id integer NOT NULL REFERENCES users (user_id) ON DELETE CASCADE,
+            credits integer NOT NULL DEFAULT 0,
+            created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
+    ");
+
+    // Check if database needs seeding
     EnsureCommunityTablesCreated(context);
 }
 
