@@ -9,6 +9,12 @@ services:
         fromDatabase:
           name: alibabafood-db
           property: connectionString
+      - key: JwtSettings__SecretKey
+        generateValue: true
+      - key: JwtSettings__Issuer
+        value: "AlibabaFoodApi"
+      - key: JwtSettings__Audience
+        value: "AlibabaFoodUsers"
 
   - type: web
     name: alibabafood-frontend

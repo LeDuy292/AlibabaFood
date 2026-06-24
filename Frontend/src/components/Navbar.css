@@ -257,8 +257,3 @@
 .navbar.navbar-on-dark .search-bar input::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
-
-/* Hide navbar when scrolling down */
-.navbar.navbar-hidden {
-  transform: translateY(-100%);
-}

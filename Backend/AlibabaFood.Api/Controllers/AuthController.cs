@@ -56,54 +56,6 @@ namespace AlibabaFood.Api.Controllers
             }
         }
 
-        [HttpPost("google-login")]
-        public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginRequest request)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(new
-                    {
-                        success = false,
-                        message = "Dữ liệu xác thực Google không hợp lệ."
-                    });
-                }
-
-                var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
-                var userAgent = Request.Headers["User-Agent"].ToString();
-
-                var result = await _authService.LoginWithGoogleAsync(request, ipAddress, userAgent);
-
-                _logger.LogInformation("User logged in successfully via Google: {Email}", result.User.Email);
-
-                return Ok(new
-                {
-                    success = true,
-                    message = "Đăng nhập bằng Google thành công",
-                    data = result
-                });
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                _logger.LogWarning("Google login failed. Reason: {Reason}", ex.Message);
-                return Unauthorized(new
-                {
-                    success = false,
-                    message = ex.Message
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error during Google Login");
-                return StatusCode(500, new
-                {
-                    success = false,
-                    message = "Đã xảy ra lỗi trong quá trình đăng nhập bằng Google"
-                });
-            }
-        }
-
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
@@ -243,60 +195,6 @@ namespace AlibabaFood.Api.Controllers
                 {
                     success = false,
                     message = "Đã xảy ra lỗi khi lấy thông tin người dùng"
-                });
-            }
-        }
-
-        [HttpPost("update-profile")]
-        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest request)
-        {
-            try
-            {
-                var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                
-                if (string.IsNullOrEmpty(token))
-                {
-                    return Unauthorized(new
-                    {
-                        success = false,
-                        message = "Token không được cung cấp"
-                    });
-                }
-
-                if (string.IsNullOrWhiteSpace(request.FullName))
-                {
-                    return BadRequest(new
-                    {
-                        success = false,
-                        message = "Họ và tên không được để trống"
-                    });
-                }
-
-                var updatedUser = await _authService.UpdateProfileAsync(token, request);
-
-                if (updatedUser == null)
-                {
-                    return Unauthorized(new
-                    {
-                        success = false,
-                        message = "Token không hợp lệ hoặc đã hết hạn"
-                    });
-                }
-
-                return Ok(new
-                {
-                    success = true,
-                    message = "Cập nhật hồ sơ thành công",
-                    data = updatedUser
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error updating user profile");
-                return StatusCode(500, new
-                {
-                    success = false,
-                    message = "Đã xảy ra lỗi khi cập nhật thông tin người dùng"
                 });
             }
         }

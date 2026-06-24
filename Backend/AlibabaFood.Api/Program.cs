@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Data;
 using AlibabaFood.Api.Data;
 using AlibabaFood.Api.Services;
 using AlibabaFood.Api.Models;
@@ -14,7 +13,8 @@ builder.Services.AddControllers();
 
 // Configure Entity Framework
 builder.Services.AddDbContext<AlibabaFoodContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+           .UseSnakeCaseNamingConvention());
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -187,53 +187,28 @@ void EnsureCommunityTablesCreated(AlibabaFoodContext context)
 
     try
     {
-        context.Database.ExecuteSqlRaw(createTablesSql);
-
-
-
-        // Repair existing database data encoding issues using PostgreSQL syntax
-        string repairUnicodeSql = @"
-            UPDATE users SET full_name = 'Nguyễn Văn A' WHERE username = 'supplier1';
-            UPDATE users SET full_name = 'Trần Thị B' WHERE username = 'supplier2';
-            UPDATE users SET full_name = 'Lê Văn C' WHERE username = 'supplier3';
-            UPDATE users SET full_name = 'Phạm Thị D' WHERE username = 'supplier4';
-            UPDATE users SET full_name = 'Hoàng Văn E' WHERE username = 'supplier5';
-            UPDATE users SET full_name = 'Nguyễn Thị F' WHERE username = 'supplier6';
-
-            UPDATE suppliers s
-            SET business_name = 'Quán Cơm Gia Đình A'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier1';
-
-            UPDATE suppliers s
-            SET business_name = 'Bánh Mì Việt B'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier2';
-
-            UPDATE suppliers s
-            SET business_name = 'Cà Phê Góc Phố C'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier3';
-
-            UPDATE suppliers s
-            SET business_name = 'Nhà Hàng Hải Sản D'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier4';
-
-            UPDATE suppliers s
-            SET business_name = 'Tiệm Bánh Ngọt E'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier5';
-
-            UPDATE suppliers s
-            SET business_name = 'Shop Thực Phẩm F'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier6';
-        ";
-        context.Database.ExecuteSqlRaw(repairUnicodeSql);
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine("Error ensuring community tables exist and are seeded: " + ex.Message);
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogInformation("Database is empty. Seeding data from SQL file...");
+        
+        try
+        {
+            var sqlFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "AlibabaFood_PostgreSQL.sql");
+            if (File.Exists(sqlFilePath))
+            {
+                var sql = File.ReadAllText(sqlFilePath);
+                context.Database.ExecuteSqlRaw(sql);
+                logger.LogInformation("Data seeding completed successfully.");
+            }
+            else
+            {
+                logger.LogWarning("Seed file not found at {SqlFilePath}", sqlFilePath);
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while seeding the database.");
+        }
     }
 }
+
+app.Run();

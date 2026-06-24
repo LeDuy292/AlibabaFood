@@ -14,7 +14,6 @@ namespace AlibabaFood.Api.Data
         public DbSet<User> Users { get; set; }
         public DbSet<UserSession> UserSessions { get; set; }
         public DbSet<LoginHistory> LoginHistories { get; set; }
-        public DbSet<RollCredit> RollCredits { get; set; }
 
         // Orders
         public DbSet<Order> Orders { get; set; }
@@ -211,21 +210,6 @@ namespace AlibabaFood.Api.Data
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // Configure RollCredit entity
-            modelBuilder.Entity<RollCredit>(entity =>
-            {
-                entity.HasKey(e => e.CreditId);
-                entity.HasIndex(e => e.UserId).IsUnique();
-                entity.Property(e => e.Credits).HasDefaultValue(0);
-                entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.HasOne(r => r.User)
-                      .WithMany()
-                      .HasForeignKey(r => r.UserId)
-                      .OnDelete(DeleteBehavior.Cascade);
-            });
-
             // Seed initial data
             SeedData(modelBuilder);
         }
@@ -233,12 +217,11 @@ namespace AlibabaFood.Api.Data
         private void SeedData(ModelBuilder modelBuilder)
         {
             // Seed default roles
-            var seedDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             modelBuilder.Entity<Role>().HasData(
-                new Role { RoleId = 1, RoleName = "customer", Description = "Khách hàng mua thực phẩm", CreatedAt = seedDate },
-                new Role { RoleId = 2, RoleName = "supplier", Description = "Nhà cung cấp/cửa hàng", CreatedAt = seedDate },
-                new Role { RoleId = 3, RoleName = "admin", Description = "Quản trị viên hệ thống", CreatedAt = seedDate },
-                new Role { RoleId = 4, RoleName = "moderator", Description = "Kiểm duyệt viên", CreatedAt = seedDate }
+                new Role { RoleId = 1, RoleName = "customer", Description = "Khách hàng mua thực phẩm", CreatedAt = DateTime.UtcNow },
+                new Role { RoleId = 2, RoleName = "supplier", Description = "Nhà cung cấp/cửa hàng", CreatedAt = DateTime.UtcNow },
+                new Role { RoleId = 3, RoleName = "admin", Description = "Quản trị viên hệ thống", CreatedAt = DateTime.UtcNow },
+                new Role { RoleId = 4, RoleName = "moderator", Description = "Kiểm duyệt viên", CreatedAt = DateTime.UtcNow }
             );
         }
     }
