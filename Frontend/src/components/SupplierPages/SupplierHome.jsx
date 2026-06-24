@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./SupplierHome.css";
 import SupplierNavbar from "./SupplierNavbar";
+import {
+  getSupplierProfile,
+  getSupplierStats,
+  getSupplierOrders,
+  getPopularProducts,
+  getSupplierReviews,
+  getSupplierFoodItems,
+  updateFoodItem,
+} from "../../services/supplierService";
+import toast from "react-hot-toast";
 
 /* ─────────────────────────────────────────────
    FAQ Item
@@ -148,12 +158,12 @@ const POPULAR_ITEMS = [
 
 const CARD_W = 296; // 280px card + 16px gap
 
-const PopularCarousel = () => {
+const PopularCarousel = ({ items }) => {
   const trackRef = useRef(null);
   const rafRef = useRef(null);
   const pausedRef = useRef(false);
   const posRef = useRef(0);
-  const halfWidth = useRef(POPULAR_ITEMS.length * CARD_W);
+  const halfWidth = useRef(items.length * CARD_W);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -169,7 +179,7 @@ const PopularCarousel = () => {
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
-  }, []);
+  }, [items]);
 
   const scrollCards = (dir) => {
     const half = halfWidth.current;
@@ -196,7 +206,7 @@ const PopularCarousel = () => {
         }}
       >
         <div ref={trackRef} className="pop-carousel-track">
-          {[...POPULAR_ITEMS, ...POPULAR_ITEMS].map((p, i) => (
+          {[...items, ...items].map((p, i) => (
             <div key={i} className="pop-card">
               <div className="pop-card-img-wrap">
                 <img
@@ -441,14 +451,23 @@ const NO_STATUS_CLS = [
   "no-st-ready",
 ];
 
-const NewOrdersSection = () => {
-  const [orders, setOrders] = useState(NEW_ORDERS_DATA);
-  const advance = (idx) =>
+const NewOrdersSection = ({ orders: ordersProp, onAdvanceOrder }) => {
+  const [orders, setOrders] = useState(ordersProp);
+
+  useEffect(() => {
+    setOrders(ordersProp);
+  }, [ordersProp]);
+
+  const advance = (idx) => {
     setOrders((prev) =>
       prev.map((o, i) =>
         i === idx ? { ...o, step: Math.min(o.step + 1, 3) } : o,
       ),
     );
+    if (onAdvanceOrder && orders[idx]) {
+      onAdvanceOrder(orders[idx].id);
+    }
+  };
 
   return (
     <section className="sl-new-orders-section" data-reveal>
@@ -537,6 +556,108 @@ const NewOrdersSection = () => {
    MAIN COMPONENT
 ───────────────────────────────────────────── */
 const SupplierHome = ({ onSwitchToCustomer, onGoToDashboard, onNavigate }) => {
+  const [popularItems, setPopularItems] = useState(POPULAR_ITEMS);
+  const [reviews, setReviews] = useState([...REVIEWS_A, ...REVIEWS_B]);
+  const [newOrders, setNewOrders] = useState(NEW_ORDERS_DATA);
+  const [supplierItems, setSupplierItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [itemModalOpen, setItemModalOpen] = useState(false);
+  const [supplierProfile, setSupplierProfile] = useState({
+    businessName: "Bếp Xanh",
+    description: "",
+    addressLine1: "",
+    city: "",
+  });
+  const [supplierStats, setSupplierStats] = useState({
+    total_food_saved_kg: 0,
+    total_revenue: 0,
+    average_rating: 0,
+    total_orders: 0,
+  });
+  const [loading, setLoading] = useState(true);
+
+  const normalizeSupplierStats = (stats) => {
+    if (!stats)
+      return {
+        total_food_saved_kg: 0,
+        total_revenue: 0,
+        average_rating: 0,
+        total_orders: 0,
+      };
+
+    return {
+      total_food_saved_kg:
+        stats.total_food_saved_kg ??
+        stats.totalFoodSavedKg ??
+        stats.total_food_saved_kg ??
+        0,
+      total_revenue:
+        stats.total_revenue ?? stats.totalRevenue ?? stats.TotalRevenue ?? 0,
+      average_rating:
+        stats.average_rating ?? stats.averageRating ?? stats.AverageRating ?? 0,
+      total_orders:
+        stats.total_orders ?? stats.totalOrders ?? stats.TotalOrders ?? 0,
+    };
+  };
+
+  // Fetch data from API
+  useEffect(() => {
+    const fetchSupplierData = async () => {
+      try {
+        setLoading(true);
+        // Fetch supplier profile
+        const profileData = await getSupplierProfile();
+        if (profileData) {
+          setSupplierProfile({
+            businessName:
+              profileData.businessName ??
+              profileData.BusinessName ??
+              "Bếp Xanh",
+            description:
+              profileData.description ?? profileData.Description ?? "",
+            addressLine1:
+              profileData.addressLine1 ?? profileData.AddressLine1 ?? "",
+            city: profileData.city ?? profileData.City ?? "",
+          });
+        }
+
+        // Fetch supplier stats
+        const statsData = await getSupplierStats();
+        setSupplierStats(normalizeSupplierStats(statsData));
+
+        // Fetch popular products
+        const popularData = await getPopularProducts();
+        if (popularData && popularData.length > 0) {
+          setPopularItems(popularData);
+        }
+
+        // Fetch supplier reviews
+        const reviewsData = await getSupplierReviews();
+        if (reviewsData && reviewsData.length > 0) {
+          setReviews(reviewsData);
+        }
+
+        // Fetch new orders
+        const ordersData = await getSupplierOrders("pending");
+        if (ordersData && ordersData.length > 0) {
+          setNewOrders(ordersData);
+        }
+        // Fetch supplier items (for SupplierHome editing)
+        const itemsData = await getSupplierFoodItems();
+        if (itemsData && itemsData.length > 0) {
+          setSupplierItems(itemsData);
+        }
+      } catch (error) {
+        console.error("Error fetching supplier data:", error);
+        // Keep using hardcoded data if API fails
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSupplierData();
+  }, []);
+
   /* Scroll reveal for all [data-reveal] elements */
   useEffect(() => {
     const els = document.querySelectorAll("[data-reveal]");
@@ -655,7 +776,9 @@ const SupplierHome = ({ onSwitchToCustomer, onGoToDashboard, onNavigate }) => {
               />
               <div className="supplier-img-overlay" />
               <div className="supplier-img-label">
-                <span className="sil-badge">🏪 Bếp Xanh</span>
+                <span className="sil-badge">
+                  🏪 {supplierProfile.businessName}
+                </span>
                 <span className="sil-status">● Đang Mở Cửa</span>
               </div>
             </div>
@@ -710,14 +833,216 @@ const SupplierHome = ({ onSwitchToCustomer, onGoToDashboard, onNavigate }) => {
             </div>
           </div>
 
-          <PopularCarousel />
+          <PopularCarousel items={popularItems} />
         </div>
       </section>
 
       {/* ══════════════════════════════
+          MY ITEMS (Supplier editable list + detail modal)
+      ══════════════════════════════ */}
+      <section className="sl-my-items" data-reveal>
+        <div className="sl-container">
+          <div className="sl-section-header">
+            <div className="sl-chip">🧾 Danh Sách Món Của Tôi</div>
+            <h2 className="sl-section-h2">
+              Món Đang Bán <span className="sl-gradient-text">(Quản lý)</span>
+            </h2>
+            <div className="sl-section-sub-row">
+              <small>
+                Nhấn vào 1 món để xem chi tiết và sửa (chỉ Supplier).
+              </small>
+            </div>
+          </div>
+
+          <div className="mi-grid">
+            {(supplierItems.length > 0 ? supplierItems : []).map((it, i) => {
+              const itemId =
+                it.id ?? it.itemId ?? it.foodItemId ?? it.food_item_id;
+              const name =
+                it.itemName ??
+                it.ItemName ??
+                it.name ??
+                it.Name ??
+                it.item_name ??
+                "Không tên";
+              const img =
+                it.imageUrl ??
+                it.image_url ??
+                it.img ??
+                it.image ??
+                "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=60";
+              const price =
+                it.discountedPrice ??
+                it.discountPrice ??
+                it.price ??
+                it.originalPrice ??
+                it.original_price ??
+                0;
+              return (
+                <div
+                  key={i}
+                  className="mi-card"
+                  onClick={() => {
+                    setSelectedItem(it);
+                    setItemModalOpen(true);
+                  }}
+                >
+                  <div className="mi-img-wrap">
+                    <img src={img} alt={name} />
+                  </div>
+                  <div className="mi-body">
+                    <div className="mi-name">{name}</div>
+                    <div className="mi-price">
+                      {Number(price).toLocaleString("vi-VN")}₫
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Item Detail / Edit Modal */}
+      {itemModalOpen && selectedItem && (
+        <div
+          className="mi-modal-overlay"
+          onClick={() => setItemModalOpen(false)}
+        >
+          <div className="mi-modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Chi tiết món</h3>
+            <div className="mi-modal-grid">
+              <div className="mi-modal-img">
+                <img
+                  src={
+                    selectedItem.imageUrl ??
+                    selectedItem.image_url ??
+                    selectedItem.img ??
+                    selectedItem.image
+                  }
+                  alt=""
+                />
+              </div>
+              <div className="mi-modal-form">
+                <label>Tên</label>
+                <input
+                  defaultValue={
+                    selectedItem.itemName ??
+                    selectedItem.ItemName ??
+                    selectedItem.name
+                  }
+                  id="mi-name"
+                />
+                <label>Mô tả</label>
+                <textarea
+                  defaultValue={
+                    selectedItem.description ??
+                    selectedItem.Description ??
+                    selectedItem.desc
+                  }
+                  id="mi-desc"
+                />
+                <label>Giá gốc</label>
+                <input
+                  defaultValue={
+                    selectedItem.originalPrice ??
+                    selectedItem.original_price ??
+                    selectedItem.price
+                  }
+                  id="mi-original"
+                />
+                <label>Giá giảm</label>
+                <input
+                  defaultValue={
+                    selectedItem.discountedPrice ?? selectedItem.discountPrice
+                  }
+                  id="mi-discount"
+                />
+                <label>Số lượng</label>
+                <input
+                  defaultValue={
+                    selectedItem.quantityAvailable ??
+                    selectedItem.quantity ??
+                    selectedItem.qty
+                  }
+                  id="mi-qty"
+                />
+                <div className="mi-modal-actions">
+                  <button
+                    className="pc-btn pc-btn-outline"
+                    onClick={() => setItemModalOpen(false)}
+                  >
+                    Hủy
+                  </button>
+                  <button
+                    className="pc-btn pc-btn-filled"
+                    onClick={async () => {
+                      try {
+                        const payload = {
+                          itemName: document.getElementById("mi-name").value,
+                          description: document.getElementById("mi-desc").value,
+                          originalPrice:
+                            Number(
+                              document.getElementById("mi-original").value,
+                            ) || 0,
+                          discountedPrice:
+                            Number(
+                              document.getElementById("mi-discount").value,
+                            ) || 0,
+                          quantityAvailable:
+                            Number(document.getElementById("mi-qty").value) ||
+                            0,
+                        };
+                        const id =
+                          selectedItem.id ??
+                          selectedItem.itemId ??
+                          selectedItem.foodItemId ??
+                          selectedItem.food_item_id;
+                        await updateFoodItem(id, payload);
+                        // update local list
+                        setSupplierItems((prev) =>
+                          prev.map((p) => {
+                            const pid =
+                              p.id ??
+                              p.itemId ??
+                              p.foodItemId ??
+                              p.food_item_id;
+                            if (pid === id) return { ...p, ...payload };
+                            return p;
+                          }),
+                        );
+                        toast.success("Cập nhật món thành công");
+                        setItemModalOpen(false);
+                      } catch (err) {
+                        console.error("Update item failed", err);
+                        toast.error("Cập nhật món thất bại");
+                      }
+                    }}
+                  >
+                    Lưu thay đổi
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════
           NEW ORDERS
       ══════════════════════════════ */}
-      <NewOrdersSection />
+      <NewOrdersSection
+        orders={newOrders}
+        onAdvanceOrder={async (orderId) => {
+          try {
+            // Call API to update order status
+            // await updateOrderStatus(orderId, 'confirmed');
+            console.log("Advance order:", orderId);
+          } catch (error) {
+            console.error("Error advancing order:", error);
+          }
+        }}
+      />
 
       {/* ══════════════════════════════
           STORE OVERVIEW (MERGED)
@@ -740,23 +1065,25 @@ const SupplierHome = ({ onSwitchToCustomer, onGoToDashboard, onNavigate }) => {
             {[
               {
                 icon: "🥗",
-                val: "85 suất",
+                val: supplierStats
+                  ? `${supplierStats.total_food_saved_kg} kg`
+                  : "85 suất",
                 label: "Thực Phẩm Được Cứu",
                 sub: "↑ +12% so với tuần trước",
                 good: true,
               },
               {
                 icon: "💰",
-                val: "2,800,000₫",
+                val: `${Number(supplierStats.total_revenue || 0).toLocaleString("vi-VN")}₫`,
                 label: "Doanh Thu",
                 sub: "↑ +8% so với tuần trước",
                 good: true,
               },
               {
                 icon: "⭐",
-                val: "4.7 ★",
+                val: `${Number(supplierStats.average_rating || 0).toFixed(1)} ★`,
                 label: "Điểm Đánh Giá",
-                sub: "42 đánh giá mới",
+                sub: `${Number(supplierStats.total_orders || 0)} đánh giá`,
                 good: false,
               },
               {

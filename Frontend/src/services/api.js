@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:5012/api',
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5012/api',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -19,6 +19,17 @@ api.interceptors.request.use(
             // Silently ignore storage access errors
             console.warn('API interceptor: LocalStorage access blocked');
         }
+        
+        // Strip leading slash from url to prevent overriding baseURL path
+        if (config.url && config.url.startsWith('/')) {
+            config.url = config.url.substring(1);
+        }
+        
+        // Ensure baseURL has a trailing slash to prevent concatenation issues
+        if (config.baseURL && !config.baseURL.endsWith('/')) {
+            config.baseURL += '/';
+        }
+        
         return config;
     },
     (error) => {

@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./SupplierInventory.css";
 import SupplierNavbar from "./SupplierNavbar";
 import { INITIAL_ITEMS } from "./supplierInventoryData";
+import {
+  getSupplierFoodItems,
+  updateFoodItem as apiUpdateFoodItem,
+  deleteFoodItem as apiDeleteFoodItem,
+} from "../../services/supplierService";
 
 const UNSPLASH = (id, w = 600, h = 400) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&h=${h}&q=80`;
@@ -62,6 +67,57 @@ const SupplierInventory = ({
   const [search, setSearch] = useState("");
   const [editId, setEditId] = useState(null);
   const [editQty, setEditQty] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // Fetch food items from API
+  useEffect(() => {
+    const fetchFoodItems = async () => {
+      try {
+        setLoading(true);
+        const foodItems = await getSupplierFoodItems();
+        if (foodItems && foodItems.length > 0) {
+          // Transform API data to match the component's expected format
+          const transformedItems = foodItems.map((item) => {
+            const qty = item.quantity_available ?? item.quantityAvailable ?? 0;
+            const discountPrice =
+              item.discounted_price ?? item.discountedPrice ?? 0;
+            const expiryValue = item.expiry_time ?? item.expiryTime;
+            const imageUrl =
+              item.image_url ?? item.imageUrl ?? item.image ?? null;
+            const categoryName =
+              item.category_name ?? item.categoryName ?? "Khác";
+            return {
+              id: item.item_id ?? item.itemId,
+              name: item.item_name ?? item.itemName ?? "Không tên",
+              category: categoryName,
+              emoji: "🍽️",
+              price: `${Number(discountPrice || 0).toLocaleString()}đ`,
+              qty,
+              expireH: expiryValue
+                ? Math.max(
+                    0,
+                    Math.floor(
+                      (new Date(expiryValue) - new Date()) / (1000 * 60 * 60),
+                    ),
+                  )
+                : 0,
+              image: imageUrl,
+              isNew: false,
+              status: qty > 0 ? "active" : "out",
+            };
+          });
+          setItems(transformedItems);
+        }
+      } catch (error) {
+        console.error("Error fetching food items:", error);
+        // Keep using INITIAL_ITEMS if API fails
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFoodItems();
+  }, [setItems]);
 
   useEffect(() => {
     const els = document.querySelectorAll("[data-reveal]");
@@ -79,23 +135,46 @@ const SupplierInventory = ({
     return () => obs.disconnect();
   }, []);
 
-  const saveEdit = (id) => {
+  const saveEdit = async (id) => {
     const n = parseInt(editQty, 10);
     if (!isNaN(n) && n >= 0) {
-      setItems((prev) =>
-        prev.map((it) =>
-          it.id === id
-            ? { ...it, qty: n, status: n === 0 ? "out" : "active" }
-            : it,
-        ),
-      );
+      try {
+        // Call API to update food item
+        await apiUpdateFoodItem(id, { quantityAvailable: n });
+        setItems((prev) =>
+          prev.map((it) =>
+            it.id === id
+              ? { ...it, qty: n, status: n === 0 ? "out" : "active" }
+              : it,
+          ),
+        );
+      } catch (error) {
+        console.error("Error updating food item:", error);
+        // Still update local state even if API fails
+        setItems((prev) =>
+          prev.map((it) =>
+            it.id === id
+              ? { ...it, qty: n, status: n === 0 ? "out" : "active" }
+              : it,
+          ),
+        );
+      }
     }
     setEditId(null);
     setEditQty("");
   };
 
-  const removeItem = (id) =>
-    setItems((prev) => prev.filter((it) => it.id !== id));
+  const removeItem = async (id) => {
+    try {
+      // Call API to delete food item
+      await apiDeleteFoodItem(id);
+      setItems((prev) => prev.filter((it) => it.id !== id));
+    } catch (error) {
+      console.error("Error deleting food item:", error);
+      // Still update local state even if API fails
+      setItems((prev) => prev.filter((it) => it.id !== id));
+    }
+  };
 
   const filtered = items.filter((it) => {
     const matchCat = catFilter === "Tất cả" || it.category === catFilter;

@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: alibabafood-api
+    env: docker
+    rootDir: Backend/AlibabaFood.Api
+    plan: free
+    envVars:
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: alibabafood-db
+          property: connectionString
+
+  - type: web
+    name: alibabafood-frontend
+    env: static
+    rootDir: Frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  - name: alibabafood-db
+    databaseName: alibabafood
+    user: alibabafood_user
+    plan: free
