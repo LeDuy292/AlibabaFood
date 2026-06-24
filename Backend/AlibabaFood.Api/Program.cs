@@ -335,48 +335,48 @@ void EnsureCommunityTablesCreated(AlibabaFoodContext context)
 
         // Repair existing database data encoding issues
         string repairUnicodeSql = @"
-            UPDATE users SET full_name = N'Nguyễn Văn A' WHERE username = 'supplier1' AND full_name LIKE '%?%';
-            UPDATE users SET full_name = N'Trần Thị B' WHERE username = 'supplier2' AND full_name LIKE '%?%';
-            UPDATE users SET full_name = N'Lê Văn C' WHERE username = 'supplier3' AND full_name LIKE '%?%';
-            UPDATE users SET full_name = N'Phạm Thị D' WHERE username = 'supplier4' AND full_name LIKE '%?%';
-            UPDATE users SET full_name = N'Hoàng Văn E' WHERE username = 'supplier5' AND full_name LIKE '%?%';
-            UPDATE users SET full_name = N'Nguyễn Thị F' WHERE username = 'supplier6' AND full_name LIKE '%?%';
+            UPDATE users SET full_name = N'Nguyễn Văn A' WHERE username = 'supplier1';
+            UPDATE users SET full_name = N'Trần Thị B' WHERE username = 'supplier2';
+            UPDATE users SET full_name = N'Lê Văn C' WHERE username = 'supplier3';
+            UPDATE users SET full_name = N'Phạm Thị D' WHERE username = 'supplier4';
+            UPDATE users SET full_name = N'Hoàng Văn E' WHERE username = 'supplier5';
+            UPDATE users SET full_name = N'Nguyễn Thị F' WHERE username = 'supplier6';
 
             UPDATE s
             SET s.business_name = N'Quán Cơm Gia Đình A'
             FROM suppliers s
             JOIN users u ON s.user_id = u.user_id
-            WHERE u.username = 'supplier1' AND s.business_name LIKE '%?%';
+            WHERE u.username = 'supplier1';
 
             UPDATE s
             SET s.business_name = N'Bánh Mì Việt B'
             FROM suppliers s
             JOIN users u ON s.user_id = u.user_id
-            WHERE u.username = 'supplier2' AND s.business_name LIKE '%?%';
+            WHERE u.username = 'supplier2';
 
             UPDATE s
             SET s.business_name = N'Cà Phê Góc Phố C'
             FROM suppliers s
             JOIN users u ON s.user_id = u.user_id
-            WHERE u.username = 'supplier3' AND s.business_name LIKE '%?%';
+            WHERE u.username = 'supplier3';
 
             UPDATE s
             SET s.business_name = N'Nhà Hàng Hải Sản D'
             FROM suppliers s
             JOIN users u ON s.user_id = u.user_id
-            WHERE u.username = 'supplier4' AND s.business_name LIKE '%?%';
+            WHERE u.username = 'supplier4';
 
             UPDATE s
             SET s.business_name = N'Tiệm Bánh Ngọt E'
             FROM suppliers s
             JOIN users u ON s.user_id = u.user_id
-            WHERE u.username = 'supplier5' AND s.business_name LIKE '%?%';
+            WHERE u.username = 'supplier5';
 
             UPDATE s
             SET s.business_name = N'Shop Thực Phẩm F'
             FROM suppliers s
             JOIN users u ON s.user_id = u.user_id
-            WHERE u.username = 'supplier6' AND s.business_name LIKE '%?%';
+            WHERE u.username = 'supplier6';
         ";
         context.Database.ExecuteSqlRaw(repairUnicodeSql);
     }
