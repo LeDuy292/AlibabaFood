@@ -5,6 +5,8 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
+using AlibabaFood.Api.Data;
 
 namespace AlibabaFood.Api.Services
 {
@@ -13,16 +15,18 @@ namespace AlibabaFood.Api.Services
         private readonly IConfiguration _configuration;
         private readonly ILogger<AIService> _logger;
         private readonly HttpClient _httpClient;
+        private readonly AlibabaFoodContext _context;
         private readonly string _geminiApiKey;
         private readonly string _geminiModel;
         private readonly string? _elevenLabsApiKey;
         private readonly string _defaultVoiceId;
 
-        public AIService(IConfiguration configuration, ILogger<AIService> logger, HttpClient httpClient)
+        public AIService(IConfiguration configuration, ILogger<AIService> logger, HttpClient httpClient, AlibabaFoodContext context)
         {
             _configuration = configuration;
             _logger = logger;
             _httpClient = httpClient;
+            _context = context;
 
             // Initialize Gemini settings from configuration
             _geminiApiKey = _configuration["AISettings:Gemini:ApiKey"] ?? string.Empty;
@@ -39,12 +43,23 @@ namespace AlibabaFood.Api.Services
             {
                 _logger.LogInformation("Getting food consultation via Gemini for question: {Question}", request.Question);
 
-                // Generate AI response using Gemini
-                var prompt = BuildFoodConsultationPrompt(request);
-                var aiResponse = await GenerateGeminiResponseAsync(prompt, jsonMode: false);
+                string aiResponse;
+                List<FoodRecommendation> recommendations;
 
-                // Parse recommendations from AI response
-                var recommendations = await GenerateFoodSuggestions(request);
+                try
+                {
+                    // Generate AI response using Gemini
+                    var prompt = await BuildFoodConsultationPromptAsync(request);
+                    aiResponse = await GenerateGeminiResponseAsync(prompt, jsonMode: false);
+                    recommendations = await GenerateFoodSuggestions(request);
+                }
+                catch (Exception aiEx)
+                {
+                    _logger.LogWarning(aiEx, "Gemini API call failed, falling back to local database recommendation logic");
+                    var fallbackResult = await GetLocalFallbackSuggestionsAsync(request);
+                    aiResponse = fallbackResult.TextResponse;
+                    recommendations = fallbackResult.Recommendations;
+                }
 
                 var response = new FoodConsultationResponse
                 {
@@ -58,21 +73,107 @@ namespace AlibabaFood.Api.Services
                 // Generate voice response if requested and ElevenLabs key is present
                 if (request.IncludeVoiceResponse && !string.IsNullOrEmpty(_elevenLabsApiKey))
                 {
-                    var voiceResponse = await TextToSpeechAsync(aiResponse, request.VoiceId);
-                    response.VoiceBase64 = voiceResponse.AudioBase64;
+                    try
+                    {
+                        var voiceResponse = await TextToSpeechAsync(aiResponse, request.VoiceId);
+                        response.VoiceBase64 = voiceResponse.AudioBase64;
+                    }
+                    catch (Exception ttsEx)
+                    {
+                        _logger.LogWarning(ttsEx, "TTS generation failed during callback, skipping audio");
+                    }
                 }
 
                 return response;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting food consultation via Gemini");
+                _logger.LogError(ex, "Critical error getting food consultation");
                 return new FoodConsultationResponse
                 {
                     Success = false,
                     Message = "Đã xảy ra lỗi khi tư vấn món ăn: " + ex.Message
                 };
             }
+        }
+
+        private async Task<(string TextResponse, List<FoodRecommendation> Recommendations)> GetLocalFallbackSuggestionsAsync(FoodConsultationRequest request)
+        {
+            var menuItems = await GetDatabaseMenuAsync();
+            string question = request.Question.ToLower().Trim();
+            
+            // Default response
+            string text = "Xin lỗi bạn, trợ lý ảo Alibaba đang bận hoặc gặp sự cố kết nối với máy chủ AI. Dựa trên thực đơn hiện có, tôi xin đề xuất một số món ăn nổi bật sau đây phù hợp với bạn:";
+            
+            // Check for greeting
+            var greetings = new[] { "xin chào", "hello", "hi", "chào", "chào bạn" };
+            if (greetings.Any(g => question == g) || question.Length < 3)
+            {
+                return ("Xin chào bạn, tôi là nhân viên ảo của Alibaba Food, tôi có thể giúp gì cho bạn?", new List<FoodRecommendation>());
+            }
+
+            var matchedItems = new List<MenuEntry>();
+
+            if (question.Contains("healthy") || question.Contains("sức khỏe") || question.Contains("chay") || question.Contains("vegan") || question.Contains("rau"))
+            {
+                text = "Hiện tại máy chủ AI đang tải chậm, nhưng tôi khuyên bạn nên thử các món ăn thanh đạm, lành mạnh hoặc hạt dinh dưỡng sau đây:";
+                matchedItems = menuItems.Where(m => m.Category.Contains("Chay", StringComparison.OrdinalIgnoreCase) 
+                                               || m.Category.Contains("Healthy", StringComparison.OrdinalIgnoreCase)
+                                               || m.Category.Contains("Ăn vặt", StringComparison.OrdinalIgnoreCase)
+                                               || m.Name.Contains("Salad", StringComparison.OrdinalIgnoreCase)
+                                               || m.Name.Contains("Nut", StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            else if (question.Contains("combo") || question.Contains("gia đình") || question.Contains("nhiều") || question.Contains("nhóm"))
+            {
+                text = "Dưới đây là các gói combo tiết kiệm và nhiều món của chúng tôi, cực kỳ phù hợp cho nhóm hoặc gia đình:";
+                matchedItems = menuItems.Where(m => m.Category.Contains("Combo", StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            else if (question.Contains("burger") || question.Contains("bánh mì") || question.Contains("nhanh"))
+            {
+                text = "Nếu bạn muốn ăn nhanh gọn, hãy thử các dòng bánh mì và burger thơm ngon nóng hổi này:";
+                matchedItems = menuItems.Where(m => m.Category.Contains("Burger", StringComparison.OrdinalIgnoreCase) 
+                                               || m.Name.Contains("Burger", StringComparison.OrdinalIgnoreCase)
+                                               || m.Name.Contains("Bánh mì", StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            else if (question.Contains("gà") || question.Contains("chicken"))
+            {
+                text = "Đây là các món gà rán giòn rụm thơm ngon được yêu thích tại cửa hàng:";
+                matchedItems = menuItems.Where(m => m.Category.Contains("Gà", StringComparison.OrdinalIgnoreCase) 
+                                               || m.Name.Contains("Gà", StringComparison.OrdinalIgnoreCase)
+                                               || m.Name.Contains("Chicken", StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            else if (question.Contains("bánh") || question.Contains("ngọt") || question.Contains("tráng miệng"))
+            {
+                text = "Để tráng miệng hoặc ăn nhẹ ngọt ngào, đây là danh sách bánh ngọt hấp dẫn dành cho bạn:";
+                matchedItems = menuItems.Where(m => m.Category.Contains("Bánh", StringComparison.OrdinalIgnoreCase) 
+                                               || m.Name.Contains("Cake", StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            // Fallback: If no match or match is empty, take first 3 items
+            if (matchedItems.Count == 0)
+            {
+                matchedItems = menuItems.Take(3).ToList();
+            }
+            else
+            {
+                matchedItems = matchedItems.Take(3).ToList();
+            }
+
+            var recommendations = matchedItems.Select(m => new FoodRecommendation
+            {
+                Name = m.Name,
+                Description = m.Description,
+                Category = m.Category,
+                PriceRange = $"{m.Price:N0}đ",
+                Ingredients = new List<string> { "Thành phần tự nhiên", "Đảm bảo vệ sinh an toàn thực phẩm" },
+                Benefits = new List<string> { "Hương vị thơm ngon", "Dinh dưỡng cân bằng" },
+                PreparationTime = "10-15 phút",
+                MatchScore = 95,
+                ImageUrl = m.ImageUrl,
+                OrderLink = $"/food-detail?id={m.Id}"
+            }).ToList();
+
+            return (text, recommendations);
         }
 
         public async Task<VoiceResponse> TextToSpeechAsync(string text, string? voiceId = null)
@@ -165,8 +266,46 @@ namespace AlibabaFood.Api.Services
             }
         }
 
-        private string BuildFoodConsultationPrompt(FoodConsultationRequest request)
+        private async Task<List<MenuEntry>> GetDatabaseMenuAsync()
         {
+            try
+            {
+                var items = await _context.FoodItems
+                    .AsNoTracking()
+                    .Include(f => f.Images)
+                    .Include(f => f.Category)
+                    .Where(f => f.IsActive && f.QuantityAvailable > 0)
+                    .Select(f => new MenuEntry
+                    {
+                        Id = f.ItemId,
+                        Name = f.ItemName,
+                        Category = f.Category.CategoryName,
+                        Price = (double)f.DiscountedPrice,
+                        Description = f.Description ?? string.Empty,
+                        ImageUrl = f.Images.OrderByDescending(img => img.IsPrimary).Select(img => img.ImageUrl).FirstOrDefault() 
+                                   ?? "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400"
+                    })
+                    .Take(25)
+                    .ToListAsync();
+
+                if (items.Count == 0)
+                {
+                    return GetOfficialMenu();
+                }
+                return items;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching food items from database, falling back to static menu");
+                return GetOfficialMenu();
+            }
+        }
+
+        private async Task<string> BuildFoodConsultationPromptAsync(FoodConsultationRequest request)
+        {
+            var menuItems = await GetDatabaseMenuAsync();
+            var menuListStr = string.Join(", ", menuItems.Select(m => m.Name));
+
             var prompt = $"""
                 Bạn là Nhân viên ảo của Alibaba Food.
                 QUY TẮC CỐ ĐỊNH:
@@ -174,10 +313,11 @@ namespace AlibabaFood.Api.Services
                 2. Khách hỏi gì thì trả lời nấy, NGẮN GỌN và ĐÚNG TRỌNG TÂM.
                 3. Chỉ trả lời các nội dung liên quan đến ẩm thực, món ăn, dinh dưỡng hoặc về website Alibaba Food.
                 4. Nếu câu hỏi KHÔNG liên quan đến website hoặc ẩm thực, bạn PHẢI từ chối trả lời một cách lịch sự nhưng dứt khoát.
+                5. Chỉ gợi ý và trả lời bằng các món ăn thực tế có sẵn trong thực đơn sau đây: [{menuListStr}].
 
                 Câu hỏi của khách: {request.Question}
 
-                Thông tin bổ sung:
+                Thông tin bổ sung của khách hàng:
                 """;
 
             if (!string.IsNullOrEmpty(request.DietaryPreferences))
@@ -278,21 +418,29 @@ namespace AlibabaFood.Api.Services
                     return new List<FoodRecommendation>();
                 }
 
-                var prompt = $@"Dựa trên yêu cầu ""{request.Question}"", hãy gợi ý chính xác 3 món ăn phù hợp nhất từ thực đơn Alibaba Food bên dưới.
-                    QUY TẮC: 
-                    1. CHỈ được chọn từ danh sách này: [Classic Burger, Crispy Chicken, Burger Combo, Family Combo, Black Forest Cake, Strawberry Cake, Beef Jerky, Mixed Nuts].
+                // Get database active menu items
+                var menuItems = await GetDatabaseMenuAsync();
+                var menuListStr = string.Join("\n", menuItems.Select(m => $"- {m.Name} (Danh mục: {m.Category}, Giá: {m.Price:N0}đ, Mô tả: {m.Description})"));
+
+                var prompt = $@"Dựa trên yêu cầu và câu hỏi của khách hàng: ""{request.Question}"", hãy gợi ý chính xác tối đa 3 món ăn phù hợp nhất từ thực đơn của Alibaba Food bên dưới.
+                    
+                    DANH SÁCH THỰC ĐƠN ĐANG CÓ:
+                    {menuListStr}
+
+                    QUY TẮC:
+                    1. CHỈ được chọn món ăn nằm trong danh sách thực đơn đang có ở trên. Không tự ý bịa ra món ăn mới.
                     2. Trả về DUY NHẤT dữ liệu JSON khớp với schema bên dưới, không kèm bất kỳ giải thích nào.
                     
                     Định dạng JSON yêu cầu:
                     {{
                         ""suggestions"": [
                             {{
-                                ""name"": ""Tên món khớp 100% danh sách trên"",
-                                ""description"": ""Mô tả lý do món này phù hợp"",
-                                ""category"": ""Phân loại"",
-                                ""priceRange"": ""Giá niêm yết"",
-                                ""ingredients"": [""thành phần""],
-                                ""benefits"": [""lợi ích""],
+                                ""name"": ""Tên món khớp chính xác 100%"",
+                                ""description"": ""Mô tả tại sao món này phù hợp với yêu cầu của khách"",
+                                ""category"": ""Danh mục món ăn"",
+                                ""priceRange"": ""Ví dụ: 45.000đ"",
+                                ""ingredients"": [""thành phần chính""],
+                                ""benefits"": [""lợi ích sức khỏe hoặc dinh dưỡng""],
                                 ""preparationTime"": ""15-20 phút"",
                                 ""matchScore"": 95
                             }}
@@ -317,19 +465,26 @@ namespace AlibabaFood.Api.Services
                     var suggestions = new List<FoodRecommendation>();
                     foreach (var suggestion in suggestionsContainer.Suggestions)
                     {
-                        suggestions.Add(new FoodRecommendation
+                        var matchingItem = menuItems.FirstOrDefault(m => m.Name.Equals(suggestion.Name, StringComparison.OrdinalIgnoreCase)
+                                            || m.Name.Contains(suggestion.Name, StringComparison.OrdinalIgnoreCase)
+                                            || suggestion.Name.Contains(m.Name, StringComparison.OrdinalIgnoreCase));
+                        
+                        if (matchingItem != null)
                         {
-                            Name = suggestion.Name,
-                            Description = suggestion.Description,
-                            Category = suggestion.Category,
-                            PriceRange = suggestion.PriceRange,
-                            Ingredients = suggestion.Ingredients,
-                            Benefits = suggestion.Benefits,
-                            PreparationTime = suggestion.PreparationTime,
-                            MatchScore = suggestion.MatchScore,
-                            ImageUrl = MapImageUrl(suggestion.Name),
-                            OrderLink = MapOrderLink(suggestion.Name)
-                        });
+                            suggestions.Add(new FoodRecommendation
+                            {
+                                Name = matchingItem.Name,
+                                Description = suggestion.Description,
+                                Category = matchingItem.Category,
+                                PriceRange = $"{matchingItem.Price:N0}đ",
+                                Ingredients = suggestion.Ingredients,
+                                Benefits = suggestion.Benefits,
+                                PreparationTime = suggestion.PreparationTime,
+                                MatchScore = suggestion.MatchScore,
+                                ImageUrl = matchingItem.ImageUrl,
+                                OrderLink = $"/food-detail?id={matchingItem.Id}"
+                            });
+                        }
                     }
                     return suggestions;
                 }
@@ -343,51 +498,24 @@ namespace AlibabaFood.Api.Services
             }
         }
 
-        private List<string> ParseStringArray(JsonElement element, string propertyName)
-        {
-            var result = new List<string>();
-            if (element.TryGetProperty(propertyName, out var arrayElement))
-            {
-                foreach (var item in arrayElement.EnumerateArray())
-                {
-                    result.Add(item.GetString() ?? "");
-                }
-            }
-            return result;
-        }
-
         private int EstimateAudioDuration(string text)
         {
             var wordCount = text.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
             return (int)Math.Ceiling(wordCount / 150.0 * 60); 
         }
 
-        private string MapImageUrl(string name)
-        {
-            var menu = GetOfficialMenu();
-            var item = menu.FirstOrDefault(m => name.Contains(m.Name, StringComparison.OrdinalIgnoreCase) || m.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
-            return item?.ImageUrl ?? "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400";
-        }
-
-        private string MapOrderLink(string name)
-        {
-            var menu = GetOfficialMenu();
-            var item = menu.FirstOrDefault(m => name.Contains(m.Name, StringComparison.OrdinalIgnoreCase) || m.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
-            return item != null ? $"/menu#item-{item.Id}" : "/menu";
-        }
-
         private List<MenuEntry> GetOfficialMenu()
         {
             return new List<MenuEntry>
             {
-                new MenuEntry { Id = 1, Name = "Classic Burger", ImageUrl = "https://png.pngtree.com/png-vector/20230321/ourmid/pngtree-beef-burger-food-png-image_6655517.png" },
-                new MenuEntry { Id = 2, Name = "Crispy Chicken", ImageUrl = "https://png.pngtree.com/png-clipart/20220924/ourmid/pngtree-crispy-fried-chicken-food-png-image_6222027.png" },
-                new MenuEntry { Id = 3, Name = "Burger Combo", ImageUrl = "https://png.pngtree.com/png-clipart/20221001/ourmid/pngtree-fast-food-big-ham-burger-png-image_6244235.png" },
-                new MenuEntry { Id = 4, Name = "Family Combo", ImageUrl = "https://png.pngtree.com/png-clipart/20221006/ourmid/pngtree-food-combo-fast-food-png-image_6270777.png" },
-                new MenuEntry { Id = 5, Name = "Black Forest Cake", ImageUrl = "https://png.pngtree.com/png-clipart/20240406/ourmid/pngtree-detailed-black-forest-cake-png-image_12235948.png" },
-                new MenuEntry { Id = 6, Name = "Strawberry Cake", ImageUrl = "https://png.pngtree.com/png-vector/20221103/ourmid/pngtree-birthday-strawberry-birthday-cake-png-image_6404248.png" },
-                new MenuEntry { Id = 7, Name = "Beef Jerky", ImageUrl = "https://png.pngtree.com/png-clipart/20230922/ourmid/pngtree-premium-fresh-beef-jerky-with-spices-snack-png-image_10143891.png" },
-                new MenuEntry { Id = 8, Name = "Mixed Nuts", ImageUrl = "https://png.pngtree.com/png-vector/20231030/ourmid/pngtree-mixed-nuts-png-image_10291097.png" }
+                new MenuEntry { Id = 1, Name = "Classic Burger", ImageUrl = "https://png.pngtree.com/png-vector/20230321/ourmid/pngtree-beef-burger-food-png-image_6655517.png", Category = "Burger", Price = 45000, Description = "Hamburger bò truyền thống kèm phô mai" },
+                new MenuEntry { Id = 2, Name = "Crispy Chicken", ImageUrl = "https://png.pngtree.com/png-clipart/20220924/ourmid/pngtree-crispy-fried-chicken-food-png-image_6222027.png", Category = "Gà rán", Price = 35000, Description = "Gà rán giòn rụm cay nhẹ" },
+                new MenuEntry { Id = 3, Name = "Burger Combo", ImageUrl = "https://png.pngtree.com/png-clipart/20221001/ourmid/pngtree-fast-food-big-ham-burger-png-image_6244235.png", Category = "Combo", Price = 75000, Description = "Combo burger bò kèm khoai tây chiên và nước ngọt" },
+                new MenuEntry { Id = 4, Name = "Family Combo", ImageUrl = "https://png.pngtree.com/png-clipart/20221006/ourmid/pngtree-food-combo-fast-food-png-image_6270777.png", Category = "Combo", Price = 150000, Description = "Combo gia đình siêu to khổng lồ" },
+                new MenuEntry { Id = 5, Name = "Black Forest Cake", ImageUrl = "https://png.pngtree.com/png-clipart/20240406/ourmid/pngtree-detailed-black-forest-cake-png-image_12235948.png", Category = "Bánh ngọt", Price = 60000, Description = "Bánh gato sô cô la rừng đen ngọt ngào" },
+                new MenuEntry { Id = 6, Name = "Strawberry Cake", ImageUrl = "https://png.pngtree.com/png-vector/20221103/ourmid/pngtree-birthday-strawberry-birthday-cake-png-image_6404248.png", Category = "Bánh ngọt", Price = 55000, Description = "Bánh sinh nhật kem dâu tây tươi" },
+                new MenuEntry { Id = 7, Name = "Beef Jerky", ImageUrl = "https://png.pngtree.com/png-clipart/20230922/ourmid/pngtree-premium-fresh-beef-jerky-with-spices-snack-png-image_10143891.png", Category = "Ăn vặt", Price = 90000, Description = "Thịt bò khô cay xé sợi thơm ngon" },
+                new MenuEntry { Id = 8, Name = "Mixed Nuts", ImageUrl = "https://png.pngtree.com/png-vector/20231030/ourmid/pngtree-mixed-nuts-png-image_10291097.png", Category = "Ăn vặt", Price = 50000, Description = "Hạt tổng hợp dinh dưỡng" }
             };
         }
 
@@ -396,6 +524,9 @@ namespace AlibabaFood.Api.Services
             public int Id { get; set; }
             public string Name { get; set; } = "";
             public string ImageUrl { get; set; } = "";
+            public string Category { get; set; } = "";
+            public double Price { get; set; }
+            public string Description { get; set; } = "";
         }
 
         private class SuggestionsContainer
