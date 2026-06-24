@@ -26,7 +26,7 @@ const Login = () => {
     script.onload = () => {
       if (window.google) {
         window.google.accounts.id.initialize({
-          client_id: "350325390044-6fufn7lrrnvo75elgab42vnafvh54slp.apps.googleusercontent.com",
+          client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID || "350325390044-6fufn7lrrnvo75elgab42vnafvh54slp.apps.googleusercontent.com",
           callback: handleGoogleLogin,
         });
 
