@@ -24,6 +24,8 @@ import Cart from "../pages/Cart";
 import Checkout from "../pages/Checkout";
 import PaymentSuccess from "../pages/PaymentSuccess";
 import PaymentCancel from "../pages/PaymentCancel";
+import Profile from "../pages/Profile";
+import About from "../pages/About";
 
 const SupplierCtx = createContext(null);
 
@@ -143,6 +145,8 @@ const AppRoutes = () => {
         <Route path="news" element={<News />} />
         <Route path="ai-consultant" element={<AIConsultant />} />
         <Route path="community" element={<Community />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="about" element={<About />} />
       </Route>
       <Route path="/partner-register" element={<PartnerRegistration />} />
       <Route path="/login" element={<Login />} />
