@@ -131,7 +131,7 @@ namespace AlibabaFood.Api.Controllers
                     {
                         cmd.CommandText = @"
                             INSERT INTO community_posts (user_id, title, content, image_url, likes_count, comments_count, created_at)
-                            VALUES (@UserId, @Title, @Content, @ImageUrl, 0, 0, GETDATE())";
+                            VALUES (@UserId, @Title, @Content, @ImageUrl, 0, 0, CURRENT_TIMESTAMP)";
 
                         AddParameter(cmd, "@UserId", userId);
                         AddParameter(cmd, "@Title", dto.Title);
@@ -201,7 +201,7 @@ namespace AlibabaFood.Api.Controllers
                     {
                         cmd.CommandText = @"
                             INSERT INTO community_comments (post_id, user_id, content, created_at)
-                            VALUES (@PostId, @UserId, @Content, GETDATE());
+                            VALUES (@PostId, @UserId, @Content, CURRENT_TIMESTAMP);
                             
                             UPDATE community_posts
                             SET comments_count = comments_count + 1
@@ -298,7 +298,7 @@ namespace AlibabaFood.Api.Controllers
                     {
                         cmd.CommandText = @"
                             INSERT INTO product_reviews (user_id, item_id, rating, comment, created_at)
-                            VALUES (@UserId, @ItemId, @Rating, @Comment, GETDATE())";
+                            VALUES (@UserId, @ItemId, @Rating, @Comment, CURRENT_TIMESTAMP)";
 
                         AddParameter(cmd, "@UserId", userId);
                         AddParameter(cmd, "@ItemId", dto.ItemId);
@@ -391,7 +391,7 @@ namespace AlibabaFood.Api.Controllers
                     {
                         cmd.CommandText = @"
                             INSERT INTO supplier_reviews (user_id, supplier_id, rating_food, rating_accuracy, rating_service, rating_speed, comment, created_at)
-                            VALUES (@UserId, @SupplierId, @RatingFood, @RatingAccuracy, @RatingService, @RatingSpeed, @Comment, GETDATE())";
+                            VALUES (@UserId, @SupplierId, @RatingFood, @RatingAccuracy, @RatingService, @RatingSpeed, @Comment, CURRENT_TIMESTAMP)";
 
                         AddParameter(cmd, "@UserId", userId);
                         AddParameter(cmd, "@SupplierId", dto.SupplierId);
@@ -405,19 +405,18 @@ namespace AlibabaFood.Api.Controllers
 
                         // Recalculate and update supplier rating_average
                         cmd.CommandText = @"
-                            UPDATE s
-                            SET s.rating_average = r.avg_rating,
-                                s.total_reviews = r.count_reviews
-                            FROM suppliers s
-                            JOIN (
+                            UPDATE suppliers
+                            SET rating_average = r.avg_rating,
+                                total_reviews = r.count_reviews
+                            FROM (
                                 SELECT supplier_id, 
                                        CAST(AVG(CAST(rating_food + rating_accuracy + rating_service + rating_speed AS DECIMAL(10,2)) / 4.0) AS DECIMAL(3,2)) as avg_rating,
                                        COUNT(*) as count_reviews
                                 FROM supplier_reviews
                                 WHERE supplier_id = @SupplierId
                                 GROUP BY supplier_id
-                            ) r ON s.supplier_id = r.supplier_id
-                            WHERE s.supplier_id = @SupplierId";
+                            ) r
+                            WHERE suppliers.supplier_id = r.supplier_id AND suppliers.supplier_id = @SupplierId";
                         
                         await cmd.ExecuteNonQueryAsync();
                     }
@@ -449,7 +448,7 @@ namespace AlibabaFood.Api.Controllers
                         cmd.CommandText = @"
                             SELECT supplier_id, business_name
                             FROM suppliers
-                            WHERE is_active = 1
+                            WHERE is_active = TRUE
                             ORDER BY business_name ASC";
 
                         using (var reader = await cmd.ExecuteReaderAsync())
@@ -610,7 +609,7 @@ namespace AlibabaFood.Api.Controllers
                     {
                         cmd.CommandText = @"
                             INSERT INTO user_feedbacks (user_id, feedback_type, title, description, created_at)
-                            VALUES (@UserId, @FeedbackType, @Title, @Description, GETDATE())";
+                            VALUES (@UserId, @FeedbackType, @Title, @Description, CURRENT_TIMESTAMP)";
 
                         AddParameter(cmd, "@UserId", userId);
                         AddParameter(cmd, "@FeedbackType", dto.FeedbackType);
@@ -646,7 +645,7 @@ namespace AlibabaFood.Api.Controllers
                     {
                         cmd.CommandText = @"
                             INSERT INTO violation_reports (reporter_id, reported_supplier_id, reported_item_id, report_type, description, status, created_at)
-                            VALUES (@ReporterId, @ReportedSupplierId, @ReportedItemId, @ReportType, @Description, 'pending', GETDATE())";
+                            VALUES (@ReporterId, @ReportedSupplierId, @ReportedItemId, @ReportType, @Description, 'pending', CURRENT_TIMESTAMP)";
 
                         AddParameter(cmd, "@ReporterId", userId);
                         AddParameter(cmd, "@ReportedSupplierId", dto.ReportedSupplierId ?? (object)DBNull.Value);
@@ -725,10 +724,11 @@ namespace AlibabaFood.Api.Controllers
                     using (var cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = @"
-                            SELECT TOP 3 u.full_name, u.avatar_url, s.total_food_saved_kg
+                            SELECT u.full_name, u.avatar_url, s.total_food_saved_kg
                             FROM user_impact_stats s
                             JOIN users u ON s.user_id = u.user_id
-                            ORDER BY s.total_food_saved_kg DESC";
+                            ORDER BY s.total_food_saved_kg DESC
+                            LIMIT 3";
 
                         using (var reader = await cmd.ExecuteReaderAsync())
                         {
