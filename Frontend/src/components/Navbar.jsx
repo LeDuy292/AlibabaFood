@@ -90,7 +90,10 @@ const Navbar = () => {
     }
   };
 
-  const isDarkPage = location.pathname === "/blind-bag";
+  const isDarkPage =
+    location.pathname === "/ai-consultant" ||
+    location.pathname === "/blind-bag" ||
+    location.pathname === "/community";
 
   return (
     <nav
@@ -132,18 +135,18 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              to="/ai-consultant"
-              className={location.pathname === "/ai-consultant" ? "active" : ""}
+              to="/community"
+              className={location.pathname === "/community" ? "active" : ""}
             >
-              TƯ VẤN MÓN ĂN
+              CỘNG ĐỒNG
             </Link>
           </li>
           <li>
             <Link
-              to="/rescue-streak"
-              className={location.pathname === "/rescue-streak" ? "active" : ""}
+              to="/ai-consultant"
+              className={location.pathname === "/ai-consultant" ? "active" : ""}
             >
-              STREAK
+              TƯ VẤN MÓN ĂN
             </Link>
           </li>
           <li>
