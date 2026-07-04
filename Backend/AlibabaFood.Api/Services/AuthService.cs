@@ -87,11 +87,23 @@ namespace AlibabaFood.Api.Services
             try
             {
                 var googleSettings = _configuration.GetSection("GoogleSettings");
-                var clientId = googleSettings["ClientId"] ?? throw new InvalidOperationException("Google ClientId not configured");
+                var clientIds = googleSettings.GetSection("ClientIds")
+                    .GetChildren()
+                    .Select(c => c.Value)
+                    .Concat((googleSettings["ClientId"] ?? string.Empty).Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
+                    .Select(id => id?.Trim())
+                    .Where(id => !string.IsNullOrWhiteSpace(id))
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToArray();
+
+                if (clientIds.Length == 0)
+                {
+                    throw new InvalidOperationException("Google ClientId not configured");
+                }
 
                 var settings = new GoogleJsonWebSignature.ValidationSettings
                 {
-                    Audience = new[] { clientId }
+                    Audience = clientIds
                 };
 
                 // Validate the token signature and claims
@@ -459,3 +471,4 @@ namespace AlibabaFood.Api.Services
         }
     }
 }
+
