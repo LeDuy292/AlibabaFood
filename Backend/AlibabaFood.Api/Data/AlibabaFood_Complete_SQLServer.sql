@@ -446,50 +446,46 @@ INSERT INTO suppliers (user_id, business_name, business_type_id, address_line1, 
 -- Insert food items (Sản phẩm Snack/Hạt từ Mart)
 INSERT INTO food_items (supplier_id, product_type_id, category_id, item_name, description, quantity_available, original_price, discounted_price, discount_percentage, food_status_id, preparation_time, safe_consumption_time, expiry_time, pickup_start_time, pickup_end_time, is_pre_order, weight_kg, calories, allergens, ingredients, storage_instructions, reheating_instructions) VALUES
 -- WinMart Hòa Phường
-((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier1@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'C&B Chà Bông Heo 80g', N'C&B Chà Bông Heo 80g', 50, 35000, 22000, 37.14, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
+((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier1@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'C&B Chà Bông Heo 80g', N'Chà bông heo 80g', 50, 35000, 22000, 37.14, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), DATEADD(hour, 180, GETDATE()),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), 0, 0.08, 200, N'pork', N'Thịt heo', N'Để nơi khô ráo', N'Ăn trực tiếp'),
 
-((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier1@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Olala Khô Gà Sạch Chicken Jerky Vị Bơ Tỏi 50g', N'Olala Khô Gà Sạch Chicken Jerky Vị Bơ Tỏi 50g', 45, 28000, 17000, 39.29, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
+((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier1@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Olala Khô Gà Sạch Chicken Jerky', N'Khô gà sạch vị bơ tỏi 50g, vị lá chanh 50g', 45, 28000, 17000, 39.29, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), DATEADD(hour, 180, GETDATE()),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), 0, 0.05, 180, N'chicken', N'Thịt gà', N'Để nơi khô ráo', N'Ăn trực tiếp'),
 
-((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier1@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Olala Khô Gà Sạch Chicken Jerky Vị Lá Chanh 50g', N'Olala Khô Gà Sạch Chicken Jerky Vị Lá Chanh 50g', 45, 28000, 17000, 39.29, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
- DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), DATEADD(hour, 180, GETDATE()),
- DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), 0, 0.05, 180, N'chicken', N'Thịt gà', N'Để nơi khô ráo', N'Ăn trực tiếp'),
-
-((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier1@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Bumbo Thịt Bò Khô (Dried Beef) 60g', N'Bumbo Thịt Bò Khô (Dried Beef) 60g', 40, 32000, 20000, 37.50, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
+((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier1@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Bumbo Thịt Bò Khô (Dried Beef) 60g', N'Thịt bò khô 60g', 40, 32000, 20000, 37.50, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), DATEADD(hour, 180, GETDATE()),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), 0, 0.06, 220, N'beef', N'Thịt bò', N'Để nơi khô ráo', N'Ăn trực tiếp'),
 
 -- Bách Hóa Xanh Võ Nguyên Giáp
-((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier2@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Orion Boom Jelly JP! Đào Dẻo Dai', N'Orion Boom Jelly JP! Đào Dẻo Dai', 60, 15000, 9000, 40.00, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
+((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier2@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Orion Boom Jelly JP! Đào Dẻo Dai', N'Kẹo dẻo đào dẻo dai', 60, 15000, 9000, 40.00, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), DATEADD(hour, 365, GETDATE()),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), 0, 0.1, 120, N'peach', N'Kẹo dẻo', N'Để nơi khô ráo', N'Ăn trực tiếp'),
 
-((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier2@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Bà Tư Bình Phước Hạt Điều Tỏi Ớt Đỏ', N'Bà Tư Bình Phước Hạt Điều Tỏi Ớt Đỏ', 35, 55000, 34000, 38.18, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
+((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier2@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Bà Tư Bình Phước Hạt Điều Tỏi Ớt Đỏ', N'Hạt điều tỏi ớt đỏ', 35, 55000, 34000, 38.18, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), DATEADD(hour, 180, GETDATE()),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), 0, 0.2, 300, N'cashew', N'Hạt điều', N'Để nơi khô ráo', N'Ăn trực tiếp'),
 
-((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier2@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Martin Hạt Hướng Dương Rang 200g', N'Martin Hạt Hướng Dương Rang 200g', 30, 45000, 28000, 37.78, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
+((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier2@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Martin Hạt Hướng Dương Rang 200g', N'Hạt hướng dương rang 200g', 30, 45000, 28000, 37.78, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), DATEADD(hour, 180, GETDATE()),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), 0, 0.2, 350, N'sunflower', N'Hạt hướng dương', N'Để nơi khô ráo', N'Ăn trực tiếp'),
 
 -- WinMart+ Trường Sa
-((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier3@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Cheer Talk Hạt Hướng Dương Vị Dừa 130g', N'Cheer Talk Hạt Hướng Dương Vị Dừa 130g', 40, 38000, 23000, 39.47, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
+((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier3@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Cheer Talk Hạt Hướng Dương Vị Dừa 130g', N'Hạt hướng dương vị dừa 130g', 40, 38000, 23000, 39.47, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), DATEADD(hour, 180, GETDATE()),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), 0, 0.13, 320, N'sunflower', N'Hạt hướng dương', N'Để nơi khô ráo', N'Ăn trực tiếp'),
 
-((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier3@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Việt San Đậu Phộng', N'Việt San Đậu Phộng', 50, 25000, 15000, 40.00, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
+((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier3@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Việt San Đậu Phộng', N'Đậu phộng', 50, 25000, 15000, 40.00, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), DATEADD(hour, 180, GETDATE()),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), 0, 0.15, 280, N'peanut', N'Đậu phộng', N'Để nơi khô ráo', N'Ăn trực tiếp'),
 
-((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier3@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Việt San Hạt Sen Sấy Khô 150g', N'Việt San Hạt Sen Sấy Khô 150g', 35, 42000, 26000, 38.10, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
+((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier3@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Việt San Hạt Sen Sấy Khô 150g', N'Hạt sen sấy khô 150g', 35, 42000, 26000, 38.10, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), DATEADD(hour, 180, GETDATE()),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), 0, 0.15, 250, N'lotus', N'Hạt sen', N'Để nơi khô ráo', N'Ăn trực tiếp'),
 
 -- Co.opmart Lê Văn Duyệt
-((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier4@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Vissan Lạp Xưởng Mai Quế Lộ 200g', N'Vissan Lạp Xưởng Mai Quế Lộ 200g', 30, 48000, 30000, 37.50, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
+((SELECT supplier_id FROM suppliers WHERE user_id = (SELECT user_id FROM users WHERE email = 'supplier4@alibabafood.com')), (SELECT product_type_id FROM product_types WHERE type_name = 'specific_raw'), (SELECT category_id FROM food_categories WHERE category_name_en = 'Pastries'), N'Vissan Lạp Xưởng Mai Quế Lộ 200g', N'Lạp xưởng mai quế lộ 200g', 30, 48000, 30000, 37.50, (SELECT status_id FROM food_statuses WHERE status_name = N'packaged'),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), DATEADD(hour, 60, GETDATE()),
  DATEADD(hour, 0, GETDATE()), DATEADD(hour, 30, GETDATE()), 0, 0.2, 350, N'pork', N'Thịt heo', N'Để trong tủ lạnh', N'Luộc hoặc chiên'),
 
@@ -542,39 +538,35 @@ INSERT INTO food_items (supplier_id, product_type_id, category_id, item_name, de
 -- Insert food item images (Sản phẩm Snack/Hạt từ Mart)
 -- C&B Chà Bông Heo 80g (WinMart Hòa Phường)
 INSERT INTO food_item_images (item_id, image_url, is_primary, display_order) VALUES
-((SELECT item_id FROM food_items WHERE item_name = N'C&B Chà Bông Heo 80g'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265865/z7967827104366_0f1daba91dd9859dbbecaa8ecbce3b65_cque02.jpg', 1, 0);
+((SELECT item_id FROM food_items WHERE item_name = N'Việt San Đậu Phộng'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265865/z7967827104366_0f1daba91dd9859dbbecaa8ecbce3b65_cque02.jpg', 1, 0);
 
--- Olala Khô Gà Sạch Chicken Jerky Vị Bơ Tỏi 50g (WinMart Hòa Phường)
+-- Olala Khô Gà Sạch Chicken Jerky (WinMart Hòa Phường)
 INSERT INTO food_item_images (item_id, image_url, is_primary, display_order) VALUES
-((SELECT item_id FROM food_items WHERE item_name = N'Olala Khô Gà Sạch Chicken Jerky Vị Bơ Tỏi 50g'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265866/z7967827105223_3cfac59a8a2a41b6b415227fe8834435_br8iv9.jpg', 1, 0);
-
--- Olala Khô Gà Sạch Chicken Jerky Vị Lá Chanh 50g (WinMart Hòa Phường)
-INSERT INTO food_item_images (item_id, image_url, is_primary, display_order) VALUES
-((SELECT item_id FROM food_items WHERE item_name = N'Olala Khô Gà Sạch Chicken Jerky Vị Lá Chanh 50g'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265866/z7967827105223_3cfac59a8a2a41b6b415227fe8834435_br8iv9.jpg', 1, 0);
+((SELECT item_id FROM food_items WHERE item_name = N'Việt San Hạt Sen Sấy Khô 150g'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265866/z7967827105223_3cfac59a8a2a41b6b415227fe8834435_br8iv9.jpg', 1, 0);
 
 -- Bumbo Thịt Bò Khô (Dried Beef) 60g (WinMart Hòa Phường)
 INSERT INTO food_item_images (item_id, image_url, is_primary, display_order) VALUES
-((SELECT item_id FROM food_items WHERE item_name = N'Bumbo Thịt Bò Khô (Dried Beef) 60g'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265853/z7967827112771_586fb7000d81efa4de8539aa1072999c_mfflbb.jpg', 1, 0);
+((SELECT item_id FROM food_items WHERE item_name = N'Vissan Lạp Xưởng Mai Quế Lộ 200g'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265853/z7967827112771_586fb7000d81efa4de8539aa1072999c_mfflbb.jpg', 1, 0);
 
 -- Orion Boom Jelly JP! Đào Dẻo Dai (Bách Hóa Xanh Võ Nguyên Giáp)
 INSERT INTO food_item_images (item_id, image_url, is_primary, display_order) VALUES
-((SELECT item_id FROM food_items WHERE item_name = N'Orion Boom Jelly JP! Đào Dẻo Dai'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265852/z7967827114866_2f474afbf20d4e40927e1096c66a8192_dh8men.jpg', 1, 0);
+((SELECT item_id FROM food_items WHERE item_name = N'C&B Chà Bông Heo 80g'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265852/z7967827114866_2f474afbf20d4e40927e1096c66a8192_dh8men.jpg', 1, 0);
 
 -- Bà Tư Bình Phước Hạt Điều Tỏi Ớt Đỏ (Bách Hóa Xanh Võ Nguyên Giáp)
 INSERT INTO food_item_images (item_id, image_url, is_primary, display_order) VALUES
-((SELECT item_id FROM food_items WHERE item_name = N'Bà Tư Bình Phước Hạt Điều Tỏi Ớt Đỏ'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265853/z7967827121168_1ba9613c163928f531c0cfe5482078ae_fiuc1f.jpg', 1, 0);
+((SELECT item_id FROM food_items WHERE item_name = N'Olala Khô Gà Sạch Chicken Jerky'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265853/z7967827121168_1ba9613c163928f531c0cfe5482078ae_fiuc1f.jpg', 1, 0);
 
 -- Martin Hạt Hướng Dương Rang 200g (Bách Hóa Xanh Võ Nguyên Giáp)
 INSERT INTO food_item_images (item_id, image_url, is_primary, display_order) VALUES
-((SELECT item_id FROM food_items WHERE item_name = N'Martin Hạt Hướng Dương Rang 200g'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265855/z7967827211201_80ad5a2ea43a7baf760fed7a07722154_lmzvyp.jpg', 1, 0);
+((SELECT item_id FROM food_items WHERE item_name = N'Bumbo Thịt Bò Khô (Dried Beef) 60g'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265855/z7967827211201_80ad5a2ea43a7baf760fed7a07722154_lmzvyp.jpg', 1, 0);
 
 -- Cheer Talk Hạt Hướng Dương Vị Dừa 130g (WinMart+ Trường Sa)
 INSERT INTO food_item_images (item_id, image_url, is_primary, display_order) VALUES
-((SELECT item_id FROM food_items WHERE item_name = N'Cheer Talk Hạt Hướng Dương Vị Dừa 130g'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265856/z7967827211306_0eb8786fd292c4e046cf849f64def384_r9bqoa.jpg', 1, 0);
+((SELECT item_id FROM food_items WHERE item_name = N'Orion Boom Jelly JP! Đào Dẻo Dai'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265856/z7967827211306_0eb8786fd292c4e046cf849f64def384_r9bqoa.jpg', 1, 0);
 
 -- Việt San Đậu Phộng (WinMart+ Trường Sa)
 INSERT INTO food_item_images (item_id, image_url, is_primary, display_order) VALUES
-((SELECT item_id FROM food_items WHERE item_name = N'Việt San Đậu Phộng'), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265856/z7967827224323_4a383b9abae4e644f9ad5dd214542eac_k2usgt.jpg', 1, 0);
+((SELECT item_id FROM food_items WHERE item_name = N'hạt điều '), 'https://res.cloudinary.com/w7jipfqd/image/upload/v1783265856/z7967827224323_4a383b9abae4e644f9ad5dd214542eac_k2usgt.jpg', 1, 0);
 
 -- Việt San Hạt Sen Sấy Khô 150g (WinMart+ Trường Sa)
 INSERT INTO food_item_images (item_id, image_url, is_primary, display_order) VALUES
