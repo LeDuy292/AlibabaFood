@@ -238,7 +238,7 @@
     100% { transform: scale(1.6); opacity: 0; }
 }
 
-.icon-btn {
+.ai-consultant-page .icon-btn {
     width: 44px;
     height: 44px;
     border-radius: 50%;
@@ -252,7 +252,7 @@
     transition: all 0.2s;
 }
 
-.icon-btn:hover {
+.ai-consultant-page .icon-btn:hover {
     background: var(--ai-bg-light);
     color: var(--ai-accent);
     border-color: var(--ai-accent);

@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Data\AlibabaFood_PostgreSQL.sql">
+    <Content Include="Data\AlibabaFood_Complete_PostgreSQL_Full.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
