@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -78,10 +78,116 @@ ul {
 }
 
 .cart-bounce {
-  animation: cart-bounce-anim 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: cart-feedback-anim 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes cart-bounce-anim {
+@keyframes cart-feedback-anim {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.4); color: #006d36; }
+  50% { transform: scale(1.12); color: #006d36; }
 }
+
+/* Responsive product UI foundation */
+:root {
+  --primary-dark: #134e15;
+  --primary: #1f6b2a;
+  --primary-hover: #185622;
+  --primary-light: #c8e6c9;
+  --surface: #ffffff;
+  --surface-raised: #f8fbf6;
+  --surface-muted: #eef6ea;
+  --text-dark: #172019;
+  --text-gray: #475569;
+  --text-muted: #64748b;
+  --border-soft: #dce8d6;
+  --danger: #dc2626;
+  --warning: #e5930f;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --shadow-sm: 0 2px 8px rgba(19, 78, 21, 0.08);
+  --shadow-md: 0 10px 24px rgba(19, 78, 21, 0.12);
+  --shadow-focus: 0 0 0 4px rgba(31, 107, 42, 0.18);
+  --container-max: 1200px;
+  --page-gutter: clamp(16px, 4vw, 32px);
+  --bottom-nav-height: 72px;
+}
+
+html {
+  text-size-adjust: 100%;
+}
+
+body {
+  min-width: 320px;
+  letter-spacing: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a,
+[role="button"] {
+  -webkit-tap-highlight-color: rgba(31, 107, 42, 0.16);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.container,
+.page-shell,
+.section-shell {
+  width: min(100% - (var(--page-gutter) * 2), var(--container-max));
+  margin-inline: auto;
+}
+
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.app-skeleton {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #edf3e9 25%, #f7faf5 37%, #edf3e9 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.35s ease infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+
+@media (max-width: 767px) {
+  body {
+    padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+

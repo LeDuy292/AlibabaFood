@@ -68,3 +68,39 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* Responsive menu grids */
+.menu-grid-container {
+  width: min(100% - (var(--page-gutter) * 2), 1200px);
+  padding: 0;
+}
+
+.menu-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(16px, 2.5vw, 28px);
+}
+
+.menu-pagination,
+.food-pagination-wrapper {
+  flex-wrap: wrap;
+}
+
+.pagination-btn,
+.food-control-btn,
+.page-dot {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+@media (max-width: 520px) {
+  .menu-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+}

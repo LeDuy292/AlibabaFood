@@ -1,4 +1,4 @@
-/* Floating Chat container placement */
+﻿/* Floating Chat container placement */
 .floating-ai-chat-container {
     position: fixed;
     bottom: 24px;
@@ -85,7 +85,7 @@
 }
 
 .floating-ai-btn .bot-pulse-icon {
-    animation: floating-bounce 3s infinite ease-in-out;
+    animation: floating-lift 3s infinite ease-in-out;
 }
 
 .online-indicator {
@@ -451,7 +451,7 @@
 }
 
 /* Keyframe animations */
-@keyframes floating-bounce {
+@keyframes floating-lift {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-4px); }
 }
@@ -480,3 +480,36 @@
         right: 16px;
     }
 }
+
+/* Mobile chat avoids bottom navigation collision */
+.floating-ai-btn,
+.minimize-btn,
+.suggestion-chip,
+.chat-send-btn {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.chat-input-form input {
+  min-height: 36px;
+}
+
+@media (max-width: 767px) {
+  .floating-ai-chat-container {
+    bottom: calc(var(--bottom-nav-height) + 16px + env(safe-area-inset-bottom));
+    right: 14px;
+  }
+
+  .chat-welcome-tooltip {
+    display: none;
+  }
+
+  .floating-ai-window {
+    width: calc(100vw - 28px);
+    height: min(70vh, 520px);
+    right: 14px;
+    bottom: calc(var(--bottom-nav-height) + 88px + env(safe-area-inset-bottom));
+    position: fixed;
+  }
+}
+

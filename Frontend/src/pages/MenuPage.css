@@ -114,3 +114,34 @@
     width: 100%;
   }
 }
+
+/* Menu page address bar responsive behavior */
+.menu-address-bar-wrapper {
+  margin-top: clamp(16px, 4vw, 30px);
+  padding-inline: var(--page-gutter);
+}
+
+.menu-address-bar {
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.change-address-btn {
+  min-height: 44px;
+  border-radius: 999px;
+}
+
+@media (max-width: 767px) {
+  .menu-page {
+    padding-bottom: calc(90px + env(safe-area-inset-bottom));
+  }
+
+  .menu-address-info {
+    align-items: flex-start;
+  }
+
+  .address-label,
+  .address-value {
+    white-space: normal;
+  }
+}
