@@ -10,9 +10,8 @@ namespace AlibabaFood.Api.Models
         [Column("order_id")]
         public int OrderId { get; set; }
 
-        [Required]
         [Column("supplier_id")]
-        public int SupplierId { get; set; }
+        public int? SupplierId { get; set; }
 
         [ForeignKey("SupplierId")]
         public Supplier? Supplier { get; set; }

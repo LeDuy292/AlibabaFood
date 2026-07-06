@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AlibabaFood.Api.Models
 {
+    [Table("RollCredits")]
     public class RollCredit
     {
         [Key]

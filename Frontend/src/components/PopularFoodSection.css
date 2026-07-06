@@ -206,3 +206,39 @@
         transform: translateY(0);
     }
 }
+/* Popular food touch and tablet refinements */
+.popular-food-section {
+  padding: clamp(44px, 7vw, 72px) var(--page-gutter);
+}
+
+.popular-food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  align-items: stretch;
+  gap: clamp(16px, 3vw, 28px);
+}
+
+.popular-card,
+.popular-card.featured,
+.popular-card.featured:hover {
+  max-width: none;
+  transform: none;
+}
+
+.btn-add-cart {
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 999px;
+}
+
+@media (max-width: 520px) {
+  .popular-price-row {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn-add-cart {
+    width: 100%;
+  }
+}

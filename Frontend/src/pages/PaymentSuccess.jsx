@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { CheckCircle2 } from "lucide-react";
 import { paymentService } from "../services/paymentService";
+import { useCart } from "../contexts/CartContext";
+import toast from "react-hot-toast";
 import "./PaymentResult.css";
 
 const formatVND = (amount) =>
@@ -13,6 +15,8 @@ const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { clearCart } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // PayOS redirects with ?orderCode=xxx&status=PAID in URL
@@ -23,14 +27,32 @@ const PaymentSuccess = () => {
     if (orderCode) {
       paymentService
         .getOrder(orderCode)
-        .then((data) => setOrder(data))
+        .then((data) => {
+          setOrder(data);
+          // Only add credits and clear cart if payment is actually PAID
+          if (data.status === "PAID") {
+            // Add 1 roll credit after successful purchase
+            try {
+              const { addRollCredits } = require('../services/rollCreditsService');
+              addRollCredits(1);
+            } catch (creditErr) {
+              console.warn('Could not add roll credit via API:', creditErr);
+            }
+            // Always update localStorage so MysteryBagPage can read it
+            const currentCredits = parseInt(localStorage.getItem('rollCredits') || '0', 10);
+            localStorage.setItem('rollCredits', String(currentCredits + 1));
+            
+            clearCart();
+            toast.success('Thanh toán thành công! Bạn được cộng 1 lượt bốc túi mù.');
+          }
+        })
         .catch(console.error)
         .finally(() => setLoading(false));
       sessionStorage.removeItem("pendingOrderCode");
     } else {
       setLoading(false);
     }
-  }, [searchParams]);
+  }, [searchParams, clearCart]);
 
   return (
     <div className="payment-result-page">

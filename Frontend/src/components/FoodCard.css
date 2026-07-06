@@ -147,3 +147,42 @@
     padding: 8px 18px;
     border-radius: 40px;
 }
+/* Touch-friendly food cards */
+.food-card {
+  max-width: 280px;
+}
+
+.food-card:hover {
+  transform: translateY(-3px);
+}
+
+.food-card:hover .food-image,
+.food-card:hover .food-img-wrapper img {
+  transform: none;
+}
+
+.food-card-footer {
+  min-height: 52px;
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+}
+
+.food-card-price {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (max-width: 520px) {
+  .food-card {
+    max-width: 100%;
+  }
+
+  .decorative-dots {
+    display: none;
+  }
+
+  .food-card-image-container {
+    margin-bottom: 1rem;
+  }
+}

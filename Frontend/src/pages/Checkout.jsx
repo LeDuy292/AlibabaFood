@@ -89,25 +89,30 @@ const Checkout = () => {
 
     setLoading(true);
     try {
-      // Add 1 roll credit after successful purchase
-      try {
-        const { addRollCredits } = await import('../services/rollCreditsService');
-        await addRollCredits(1);
-      } catch (creditErr) {
-        console.warn('Could not add roll credit via API:', creditErr);
+      // Call PayOS API to create payment link
+      const orderData = {
+        buyerName: form.buyerName,
+        buyerEmail: form.buyerEmail,
+        buyerPhone: form.buyerPhone,
+        buyerAddress: form.buyerAddress,
+        items: cartItems.map(item => ({
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price
+        }))
+      };
+
+      const response = await paymentService.createPaymentLink(orderData);
+      
+      // Redirect to PayOS checkout page
+      if (response.checkoutUrl) {
+        window.location.href = response.checkoutUrl;
+      } else {
+        throw new Error("Không nhận được URL thanh toán từ PayOS");
       }
-      // Always update localStorage so MysteryBagPage can read it
-      const currentCredits = parseInt(localStorage.getItem('rollCredits') || '0', 10);
-      localStorage.setItem('rollCredits', String(currentCredits + 1));
-
-      clearCart();
-      toast.success('Thanh toán thành công! Bạn được cộng 1 lượt bốc túi mù.');
-
-      // Go directly to payment success page
-      navigate('/payment/success');
     } catch (err) {
       console.error("Payment error:", err);
-      toast.error("Không thể xử lý thanh toán. Vui lòng thử lại.");
+      toast.error("Không thể tạo liên kết thanh toán. Vui lòng thử lại.");
       setLoading(false);
     }
   };

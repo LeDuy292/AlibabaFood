@@ -14,8 +14,7 @@ builder.Services.AddControllers();
 
 // Configure Entity Framework
 builder.Services.AddDbContext<AlibabaFoodContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-           .UseSnakeCaseNamingConvention());
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -90,219 +89,39 @@ app.MapGet("/", () => Results.Ok(new { message = "AlibabaFood API is running", s
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AlibabaFoodContext>();
-    var created = context.Database.EnsureCreated();
+    context.Database.EnsureCreated();
     
-    // Check if database needs seeding (if users table is empty or doesn't exist)
-    try 
+    // Check if database needs seeding
+    try
     {
-        bool needsSeeding = false;
-        try 
-        {
-            needsSeeding = !context.Users.Any();
-        }
-        catch (Exception)
-        {
-            // Table might not exist yet if EnsureCreated didn't make snake_case tables
-            needsSeeding = true;
-            
-            // SELF-HEAL: If the schema is broken (e.g. PascalCase vs snake_case conflict),
-            // we must drop and recreate the schema so EnsureCreated can generate the correct tables.
-            Console.WriteLine("Database schema mismatch detected. Recreating database...");
-            context.Database.ExecuteSqlRaw("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
-            context.Database.EnsureCreated();
-        }
-
+        bool needsSeeding = !context.Roles.Any();
+        
         if (needsSeeding)
         {
-            var sqlFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "AlibabaFood_PostgreSQL.sql");
+            var sqlFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "AlibabaFood_Complete_SQLServer.sql");
             if (File.Exists(sqlFilePath))
             {
                 var sql = File.ReadAllText(sqlFilePath);
                 context.Database.ExecuteSqlRaw(sql);
-                Console.WriteLine("Successfully seeded database from AlibabaFood_PostgreSQL.sql");
+                Console.WriteLine("Successfully seeded database from AlibabaFood_Complete_SQLServer.sql");
+            }
+            else
+            {
+                // Fallback to manual seeding if SQL file not found
+                context.Roles.AddRange(
+                    new Role { RoleName = "customer" },
+                    new Role { RoleName = "supplier" },
+                    new Role { RoleName = "admin" }
+                );
+                context.SaveChanges();
+                Console.WriteLine("Successfully seeded default roles (fallback).");
             }
         }
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Error checking or seeding database: {ex.Message}");
+        Console.WriteLine($"Error seeding database: {ex.Message}");
     }
-    
-    // Ensure roll_credits table exists (since EnsureCreated won't add tables to an existing DB)
-    context.Database.ExecuteSqlRaw(@"
-        CREATE TABLE IF NOT EXISTS roll_credits (
-            credit_id serial PRIMARY KEY,
-            user_id integer NOT NULL REFERENCES users (user_id) ON DELETE CASCADE,
-            credits integer NOT NULL DEFAULT 0,
-            created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            updated_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
-        );
-    ");
-
-    // Ensure default roles exist to fix Google Login 401 Unauthorized
-    try
-    {
-        if (!context.Roles.Any())
-        {
-            context.Roles.AddRange(
-                new Role { RoleName = "customer" },
-                new Role { RoleName = "supplier" },
-                new Role { RoleName = "admin" }
-            );
-            context.SaveChanges();
-            Console.WriteLine("Successfully seeded default roles.");
-        }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error seeding roles: {ex.Message}");
-    }
-
-    // Check if database needs seeding
-    EnsureCommunityTablesCreated(context);
 }
 
 app.Run();
-
-// Local function to ensure community-related tables exist in the database
-void EnsureCommunityTablesCreated(AlibabaFoodContext context)
-{
-    // Create tables if not exist using standard PostgreSQL syntax
-    string createTablesSql = @"
-        CREATE TABLE IF NOT EXISTS community_posts (
-            post_id SERIAL PRIMARY KEY,
-            user_id INT NOT NULL,
-            title VARCHAR(255) NOT NULL,
-            content TEXT NOT NULL,
-            image_url VARCHAR(500),
-            likes_count INT DEFAULT 0,
-            comments_count INT DEFAULT 0,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
-        );
-
-        CREATE TABLE IF NOT EXISTS community_comments (
-            comment_id SERIAL PRIMARY KEY,
-            post_id INT NOT NULL,
-            user_id INT NOT NULL,
-            content TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (post_id) REFERENCES community_posts(post_id) ON DELETE CASCADE,
-            FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE NO ACTION
-        );
-
-        CREATE TABLE IF NOT EXISTS product_reviews (
-            review_id SERIAL PRIMARY KEY,
-            user_id INT NOT NULL,
-            item_id INT NOT NULL,
-            rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
-            comment TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-            FOREIGN KEY (item_id) REFERENCES food_items(item_id) ON DELETE NO ACTION
-        );
-
-        CREATE TABLE IF NOT EXISTS supplier_reviews (
-            review_id SERIAL PRIMARY KEY,
-            user_id INT NOT NULL,
-            supplier_id INT NOT NULL,
-            rating_food INT NOT NULL CHECK (rating_food BETWEEN 1 AND 5),
-            rating_accuracy INT NOT NULL CHECK (rating_accuracy BETWEEN 1 AND 5),
-            rating_service INT NOT NULL CHECK (rating_service BETWEEN 1 AND 5),
-            rating_speed INT NOT NULL CHECK (rating_speed BETWEEN 1 AND 5),
-            comment TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-            FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id) ON DELETE NO ACTION
-        );
-
-        CREATE TABLE IF NOT EXISTS user_feedbacks (
-            feedback_id SERIAL PRIMARY KEY,
-            user_id INT NOT NULL,
-            feedback_type VARCHAR(50) NOT NULL,
-            title VARCHAR(255) NOT NULL,
-            description TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
-        );
-
-        CREATE TABLE IF NOT EXISTS violation_reports (
-            report_id SERIAL PRIMARY KEY,
-            reporter_id INT NOT NULL,
-            reported_supplier_id INT,
-            reported_item_id INT,
-            report_type VARCHAR(50) NOT NULL,
-            description TEXT NOT NULL,
-            status VARCHAR(20) DEFAULT 'pending',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (reporter_id) REFERENCES users(user_id) ON DELETE CASCADE,
-            FOREIGN KEY (reported_supplier_id) REFERENCES suppliers(supplier_id) ON DELETE NO ACTION,
-            FOREIGN KEY (reported_item_id) REFERENCES food_items(item_id) ON DELETE NO ACTION
-        );
-    ";
-
-    try
-    {
-        context.Database.ExecuteSqlRaw(createTablesSql);
-
-        // Ensure session_token and refresh_token can store longer tokens (JWTs)
-        try
-        {
-            context.Database.ExecuteSqlRaw(@"
-                ALTER TABLE user_sessions ALTER COLUMN session_token TYPE VARCHAR(2048);
-                ALTER TABLE user_sessions ALTER COLUMN refresh_token TYPE VARCHAR(2048);
-            ");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Warning: Could not alter user_sessions columns. " + ex.Message);
-        }
-
-
-
-        // Repair existing database data encoding issues using PostgreSQL syntax
-        string repairUnicodeSql = @"
-            UPDATE users SET full_name = 'Nguyễn Văn A' WHERE username = 'supplier1';
-            UPDATE users SET full_name = 'Trần Thị B' WHERE username = 'supplier2';
-            UPDATE users SET full_name = 'Lê Văn C' WHERE username = 'supplier3';
-            UPDATE users SET full_name = 'Phạm Thị D' WHERE username = 'supplier4';
-            UPDATE users SET full_name = 'Hoàng Văn E' WHERE username = 'supplier5';
-            UPDATE users SET full_name = 'Nguyễn Thị F' WHERE username = 'supplier6';
-
-            UPDATE suppliers s
-            SET business_name = 'Quán Cơm Gia Đình A'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier1';
-
-            UPDATE suppliers s
-            SET business_name = 'Bánh Mì Việt B'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier2';
-
-            UPDATE suppliers s
-            SET business_name = 'Cà Phê Góc Phố C'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier3';
-
-            UPDATE suppliers s
-            SET business_name = 'Nhà Hàng Hải Sản D'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier4';
-
-            UPDATE suppliers s
-            SET business_name = 'Tiệm Bánh Ngọt E'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier5';
-
-            UPDATE suppliers s
-            SET business_name = 'Shop Thực Phẩm F'
-            FROM users u
-            WHERE s.user_id = u.user_id AND u.username = 'supplier6';
-        ";
-        context.Database.ExecuteSqlRaw(repairUnicodeSql);
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine("Error ensuring community tables exist and are seeded: " + ex.Message);
-    }
-}

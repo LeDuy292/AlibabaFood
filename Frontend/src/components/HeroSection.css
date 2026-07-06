@@ -1,4 +1,4 @@
-.hero-section {
+﻿.hero-section {
   background-color: #d8e8d1;
   /* The specific light mint/sage background from reference */
   min-height: 100vh;
@@ -89,7 +89,7 @@
   pointer-events: none;
   background-color: currentColor;
   /* Color defined in JS dynamically */
-  /* Uses a clip-path to perfectly form a 5-point star! "Kim Tuyến" */
+  /* Uses a clip-path to perfectly form a 5-point star! "Kim Tuyáº¿n" */
   clip-path: polygon(
     50% 0%,
     61% 35%,
@@ -146,9 +146,7 @@
 .title-line-2 {
   font-size: 5.2rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #2b8a4a 0%, #0c3318 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #0c3318;
   padding-left: 5rem;
   letter-spacing: -0.03em;
   line-height: 1.1;
@@ -173,7 +171,7 @@
   color: #2b5936;
   margin-bottom: 2.5rem;
   text-transform: uppercase;
-  font-family: "Inter", sans-serif;
+  font-family: inherit;
 }
 
 /* Pill Buttons */
@@ -234,7 +232,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  perspective: 1500px; /* Thêm phối cảnh 3D */
+  perspective: 1500px; /* ThÃªm phá»‘i cáº£nh 3D */
 }
 
 @media (min-width: 992px) {
@@ -255,7 +253,7 @@
   border: 10px solid rgba(255, 255, 255, 0.8);
   box-shadow:
     0 30px 60px rgba(0, 0, 0, 0.25),
-    inset 0 0 20px rgba(255, 255, 255, 0.5); /* Đổ bóng sâu 3D */
+    inset 0 0 20px rgba(255, 255, 255, 0.5); /* Äá»• bÃ³ng sÃ¢u 3D */
   z-index: 2;
   transform-style: preserve-3d;
   animation: floating-3d 8s ease-in-out infinite alternate;
@@ -276,10 +274,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 30px; /* Khớp với border bên trong */
+  border-radius: 30px; /* Khá»›p vá»›i border bÃªn trong */
   object-fit: cover;
   opacity: 0;
-  /* Chuyển đổi 3D: Lật nhẹ, zoom ra và fade in */
+  /* Chuyá»ƒn Ä‘á»•i 3D: Láº­t nháº¹, zoom ra vÃ  fade in */
   transition:
     opacity 1.2s ease-in-out,
     transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
@@ -288,7 +286,7 @@
 
 .hero-slider-img.active {
   opacity: 1;
-  /* Khi active ảnh tiến tới phía trước, to lên và chuẩn góc */
+  /* Khi active áº£nh tiáº¿n tá»›i phÃ­a trÆ°á»›c, to lÃªn vÃ  chuáº©n gÃ³c */
   transform: translateZ(50px) scale(1.05) rotateY(0deg);
   z-index: 10;
 }
@@ -327,7 +325,7 @@
 }
 
 /* ===========================================
-   LEAVES  (la.png — dark green oval leaf)
+   LEAVES  (la.png â€” dark green oval leaf)
    =========================================== */
 
 /* leaf-1: top-left, large, partly off-screen */
@@ -350,7 +348,7 @@
   animation-delay: 1.8s;
 }
 
-/* leaf-3: tiny dark leaf — between lemon group and food circle, near centre */
+/* leaf-3: tiny dark leaf â€” between lemon group and food circle, near centre */
 .leaf-3 {
   width: 44px;
   top: 18%;
@@ -360,7 +358,7 @@
   animation-delay: 0.6s;
 }
 
-/* leaf-4: large — bottom-right, partially under food circle */
+/* leaf-4: large â€” bottom-right, partially under food circle */
 .leaf-4 {
   width: 160px;
   bottom: 4%;
@@ -370,7 +368,7 @@
   animation-delay: 2.2s;
 }
 
-/* leaf-5: medium — bottom-right, second leaf overlapping leaf-4 */
+/* leaf-5: medium â€” bottom-right, second leaf overlapping leaf-4 */
 .leaf-5 {
   width: 130px;
   bottom: 12%;
@@ -381,13 +379,13 @@
 }
 
 /* ===========================================
-   LEMONS  (cam.png — scattered lemon slices)
-   Strategy: place same image 3× at different
+   LEMONS  (cam.png â€” scattered lemon slices)
+   Strategy: place same image 3Ã— at different
    sizes+positions so they look like individual
    slices scattered in a diagonal arc.
    =========================================== */
 
-/* lemon-1: Ảnh cam duy nhất — căn giữa vòng tròn, nửa bị che sau vòng tròn */
+/* lemon-1: áº¢nh cam duy nháº¥t â€” cÄƒn giá»¯a vÃ²ng trÃ²n, ná»­a bá»‹ che sau vÃ²ng trÃ²n */
 .lemon-1 {
   width: 600px;
   top: 18%;
@@ -443,3 +441,98 @@
     top: 8%;
   }
 }
+
+/* Mobile-first hero and spacing pass */
+.hero-section {
+  min-height: auto;
+  padding-top: clamp(84px, 12vh, 120px);
+  padding-bottom: clamp(32px, 7vw, 72px);
+}
+
+.hero-container {
+  width: min(100% - (var(--page-gutter) * 2), 1200px);
+  margin-inline: auto;
+  padding: 0;
+  gap: clamp(28px, 5vw, 64px);
+}
+
+.hero-content {
+  max-width: 620px;
+  padding-left: 0;
+}
+
+.title-line-1,
+.title-line-2 {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  text-wrap: balance;
+}
+
+.title-line-2 {
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: currentColor;
+  color: #0c3318;
+  text-shadow: none;
+  padding-left: clamp(1.25rem, 7vw, 5rem);
+}
+
+.hero-subtitle {
+  max-width: 58ch;
+  color: #244f2e;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.hero-buttons {
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  min-height: 44px;
+  padding: 11px 22px;
+  border-radius: 999px;
+}
+
+.hero-slider {
+  border-radius: var(--radius-xl);
+  border-width: 6px;
+}
+
+.hero-slider-img {
+  border-radius: 14px;
+}
+
+@media (max-width: 767px) {
+  .hero-section {
+    padding-top: 88px;
+  }
+
+  .hero-container {
+    align-items: stretch;
+  }
+
+  .hero-title {
+    margin-bottom: 1rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-buttons a,
+  .hero-buttons button {
+    flex: 1 1 180px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hero-image-container {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}
+
