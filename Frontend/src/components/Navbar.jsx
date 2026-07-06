@@ -1,9 +1,42 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Bot,
+  Home,
+  Newspaper,
+  Search,
+  ShoppingBag,
+  ShoppingCart,
+  UserRound,
+  UsersRound,
+  Utensils,
+} from "lucide-react";
 import "./Navbar.css";
 import logoImg from "../assets/alibaba-logo.png.png";
 import toast from "react-hot-toast";
 import { useCart } from "../contexts/CartContext";
+
+const primaryLinks = [
+  { to: "/", label: "Trang chủ" },
+  { to: "/menu", label: "Menu" },
+  { to: "/news", label: "Tin tức" },
+  { to: "/community", label: "Cộng đồng" },
+  { to: "/ai-consultant", label: "Tư vấn món ăn" },
+  { to: "/about", label: "Giới thiệu" },
+];
+
+const mobileLinks = [
+  { to: "/", label: "Trang chủ", Icon: Home },
+  { to: "/menu", label: "Menu", Icon: Utensils },
+  { to: "/community", label: "Cộng đồng", Icon: UsersRound },
+  { to: "/ai-consultant", label: "AI", Icon: Bot },
+  { to: "/cart", label: "Giỏ hàng", Icon: ShoppingBag, isCart: true },
+];
+
+const isActivePath = (pathname, target) => {
+  if (target === "/") return pathname === "/";
+  return pathname === target || pathname.startsWith(`${target}/`);
+};
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -19,41 +52,24 @@ const Navbar = () => {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
-      if (currentScrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-
-      // Ẩn header khi cuộn xuống, hiện lại khi cuộn lên
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setHidden(true);
-      } else {
-        setHidden(false);
-      }
-      
+      setScrolled(currentScrollY > 50);
+      setHidden(currentScrollY > lastScrollY && currentScrollY > 120);
       lastScrollY = currentScrollY;
     };
 
     const checkUser = () => {
       try {
         const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-          setUser(JSON.parse(storedUser));
-        } else {
-          setUser(null);
-        }
+        setUser(storedUser ? JSON.parse(storedUser) : null);
       } catch (err) {
         console.warn("LocalStorage access blocked or failed:", err);
         setUser(null);
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    checkUser();
-
+    window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("storage", checkUser);
+    checkUser();
 
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -68,19 +84,6 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-  useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-      } else {
-        setUser(null);
-      }
-    } catch (err) {
-      setUser(null);
-    }
-  }, [location]);
 
   const handleLogout = () => {
     try {
@@ -97,7 +100,7 @@ const Navbar = () => {
 
   const toggleDropdown = () => {
     if (user) {
-      setShowDropdown(!showDropdown);
+      setShowDropdown((value) => !value);
     } else {
       navigate("/login");
     }
@@ -109,215 +112,108 @@ const Navbar = () => {
     location.pathname === "/community";
 
   return (
-    <nav
-      className={`navbar ${scrolled ? "navbar-scrolled" : ""} ${isDarkPage && !scrolled ? "navbar-on-dark" : ""} ${hidden ? "navbar-hidden" : ""}`}
-    >
-      <div className="navbar-container container">
-        <div className="navbar-logo">
-          <Link to="/">
-            <img
-              src={logoImg}
-              alt="ALIBABA FOOD Logo"
-              className="navbar-logo-img"
-              style={{ height: "50px", objectFit: "contain" }}
-            />
+    <>
+      <nav
+        className={`navbar ${scrolled ? "navbar-scrolled" : ""} ${isDarkPage && !scrolled ? "navbar-on-dark" : ""} ${hidden ? "navbar-hidden" : ""}`}
+      >
+        <div className="navbar-container container">
+          <Link to="/" className="navbar-logo" aria-label="AlibabaFood home">
+            <img src={logoImg} alt="AlibabaFood" className="navbar-logo-img" />
           </Link>
-        </div>
 
-        <ul className="navbar-links">
-          <li>
-            <Link to="/" className={location.pathname === "/" ? "active" : ""}>
-              TRANG CHỦ
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/menu"
-              className={location.pathname === "/menu" ? "active" : ""}
-            >
-              MENU
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/news"
-              className={location.pathname === "/news" ? "active" : ""}
-            >
-              TIN TỨC
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/community"
-              className={location.pathname === "/community" ? "active" : ""}
-            >
-              CỘNG ĐỒNG
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/ai-consultant"
-              className={location.pathname === "/ai-consultant" ? "active" : ""}
-            >
-              TƯ VẤN MÓN ĂN
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/about"
-              className={location.pathname === "/about" ? "active" : ""}
-            >
-              GIỚI THIỆU
-            </Link>
-          </li>
-
-        </ul>
-
-        <div className="navbar-actions">
-          <div className="search-bar">
-            <svg
-              className="search-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" placeholder="Tìm kiếm" />
-          </div>
-
-          <div className="user-profile-container" ref={dropdownRef}>
-            <button
-              className={`icon-btn user-btn ${user ? "has-user" : ""} ${user && (user.AvatarUrl || user.avatarUrl) ? "has-avatar" : ""}`}
-              onClick={toggleDropdown}
-            >
-              {user && (user.AvatarUrl || user.avatarUrl) ? (
-                <img
-                  src={user.AvatarUrl || user.avatarUrl}
-                  alt="User Avatar"
-                  className="navbar-avatar-img"
-                />
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
+          <ul className="navbar-links" aria-label="Primary navigation">
+            {primaryLinks.map((item) => (
+              <li key={item.to}>
+                <Link
+                  to={item.to}
+                  className={isActivePath(location.pathname, item.to) ? "active" : ""}
                 >
-                  <path d="M12 2C9.243 2 7 4.243 7 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5zm0 12c-4.418 0-8 3.582-8 8h16c0-4.418-3.582-8-8-8z" />
-                </svg>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <div className="navbar-actions">
+            <label className="search-bar" aria-label="Tìm kiếm món ăn">
+              <Search className="search-icon" size={18} aria-hidden="true" />
+              <input type="search" placeholder="Tìm kiếm" />
+            </label>
+
+            <div className="user-profile-container" ref={dropdownRef}>
+              <button
+                className={`icon-btn user-btn ${user ? "has-user" : ""} ${user && (user.AvatarUrl || user.avatarUrl) ? "has-avatar" : ""}`}
+                onClick={toggleDropdown}
+                aria-label={user ? "Mở tài khoản" : "Đăng nhập"}
+                aria-expanded={showDropdown}
+              >
+                {user && (user.AvatarUrl || user.avatarUrl) ? (
+                  <img
+                    src={user.AvatarUrl || user.avatarUrl}
+                    alt="User Avatar"
+                    className="navbar-avatar-img"
+                  />
+                ) : (
+                  <UserRound size={22} aria-hidden="true" />
+                )}
+              </button>
+
+              {showDropdown && user && (
+                <div className="user-dropdown-menu">
+                  <div className="dropdown-header">
+                    <p className="user-name">{user.FullName || user.fullName}</p>
+                    <p className="user-email">{user.Email || user.email}</p>
+                  </div>
+                  <div className="dropdown-divider" />
+                  <Link
+                    to="/profile"
+                    className="dropdown-item"
+                    onClick={() => setShowDropdown(false)}
+                  >
+                    <UserRound size={18} aria-hidden="true" />
+                    Cập nhật thông tin
+                  </Link>
+                  <button className="dropdown-item logout-btn" onClick={handleLogout}>
+                    Đăng xuất
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <button
+              className="icon-btn cart-btn"
+              onClick={() => navigate("/cart")}
+              aria-label="Mở giỏ hàng"
+            >
+              <ShoppingCart size={23} aria-hidden="true" />
+              {totalItems > 0 && (
+                <span className="cart-count-badge">{totalItems > 9 ? "9+" : totalItems}</span>
               )}
             </button>
-
-            {showDropdown && user && (
-              <div className="user-dropdown-menu">
-                <div className="dropdown-header">
-                  <p className="user-name">{user.FullName || user.fullName}</p>
-                  <p className="user-email">{user.Email || user.email}</p>
-                </div>
-                <div className="dropdown-divider"></div>
-                <Link
-                  to="/profile"
-                  className="dropdown-item"
-                  onClick={() => setShowDropdown(false)}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                  </svg>
-                  Cập nhật thông tin
-                </Link>
-                <button
-                  className="dropdown-item logout-btn"
-                  onClick={handleLogout}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                    <polyline points="16 17 21 12 16 7"></polyline>
-                    <line x1="21" y1="12" x2="9" y2="12"></line>
-                  </svg>
-                  Logout
-                </button>
-              </div>
-            )}
           </div>
-
-          <button
-            className="icon-btn cart-btn"
-            onClick={() => navigate("/cart")}
-            style={{ position: "relative" }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <path d="M16 10a4 4 0 0 1-8 0"></path>
-            </svg>
-            {totalItems > 0 && (
-              <span
-                style={{
-                  position: "absolute",
-                  top: "-6px",
-                  right: "-6px",
-                  background: "#e53e3e",
-                  color: "#fff",
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  width: "18px",
-                  height: "18px",
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  lineHeight: 1,
-                }}
-              >
-                {totalItems > 9 ? "9+" : totalItems}
-              </span>
-            )}
-          </button>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
+        {mobileLinks.map((item) => (
+          <Link
+            key={item.to}
+            to={item.to}
+            className={`mobile-bottom-link ${isActivePath(location.pathname, item.to) ? "active" : ""}`}
+          >
+            <span className="mobile-bottom-icon-wrap">
+              {React.createElement(item.Icon, { size: 21, "aria-hidden": "true" })}
+              {item.isCart && totalItems > 0 && (
+                <span className="mobile-cart-dot">{totalItems > 9 ? "9+" : totalItems}</span>
+              )}
+            </span>
+            <span>{item.label}</span>
+          </Link>
+        ))}
+      </nav>
+    </>
   );
 };
 
 export default Navbar;
-//
+

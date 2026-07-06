@@ -220,3 +220,68 @@
     background-color: #69a656;
     transform: scale(1.1);
 }
+/* Menu list mobile-first layout */
+.menu-list-section {
+  padding: clamp(44px, 8vw, 80px) 0 clamp(56px, 9vw, 96px);
+}
+
+.menu-list-header,
+.category-tabs,
+.menu-items-grid {
+  width: min(100% - (var(--page-gutter) * 2), 1120px);
+  margin-inline: auto;
+}
+
+.menu-list-title {
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  text-wrap: balance;
+}
+
+.category-tabs {
+  justify-content: flex-start;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+
+.category-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.category-tab {
+  min-height: 44px;
+  flex: 0 0 auto;
+  padding: 10px 18px;
+}
+
+.menu-items-grid {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: clamp(14px, 2.5vw, 24px);
+}
+
+.add-to-cart-btn {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+@media (max-width: 520px) {
+  .menu-items-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .food-card-body {
+    padding: 0.85rem;
+  }
+
+  .food-card-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 360px) {
+  .menu-items-grid {
+    grid-template-columns: 1fr;
+  }
+}

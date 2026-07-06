@@ -1,7 +1,7 @@
-/* ═══════════════════════════════════════════════
-   ALIBABA FOOD — SHARED SUPPLIER NAVBAR
-   Colors: #C8DDAC · #134e15 · #faefe0
-═══════════════════════════════════════════════ */
+﻿/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   ALIBABA FOOD â€” SHARED SUPPLIER NAVBAR
+   Colors: #C8DDAC Â· #134e15 Â· #faefe0
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 @keyframes snav-fadeIn {
   from {
@@ -14,7 +14,7 @@
   }
 }
 
-/* ─── Nav root ─── */
+/* â”€â”€â”€ Nav root â”€â”€â”€ */
 .snav {
   position: fixed;
   top: 0;
@@ -39,7 +39,7 @@
   gap: 8px;
 }
 
-/* ─── Logo ─── */
+/* â”€â”€â”€ Logo â”€â”€â”€ */
 .snav-logo {
   display: flex;
   align-items: center;
@@ -63,7 +63,7 @@
   white-space: nowrap;
 }
 
-/* ─── Nav tabs ─── */
+/* â”€â”€â”€ Nav tabs â”€â”€â”€ */
 .snav-tabs {
   display: flex;
   list-style: none;
@@ -117,7 +117,7 @@
   border-radius: 2px 2px 0 0;
 }
 
-/* ─── Tab icon + notification dot ─── */
+/* â”€â”€â”€ Tab icon + notification dot â”€â”€â”€ */
 .snav-tab-icon-wrap {
   position: relative;
   display: flex;
@@ -148,7 +148,7 @@
   font-size: 0.87rem;
 }
 
-/* ─── Right actions ─── */
+/* â”€â”€â”€ Right actions â”€â”€â”€ */
 .snav-actions {
   display: flex;
   align-items: center;
@@ -204,7 +204,7 @@
   background: #f5fbf3;
 }
 
-/* ─── Hamburger (mobile) ─── */
+/* â”€â”€â”€ Hamburger (mobile) â”€â”€â”€ */
 .snav-hamburger {
   display: none;
   background: none;
@@ -218,9 +218,9 @@
   line-height: 1;
 }
 
-/* ═══════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    RESPONSIVE
-═══════════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media (max-width: 1080px) {
   .snav-tab-label {
     display: none;
@@ -267,8 +267,8 @@
     display: none;
   }
   .snav-tab.active {
-    border-left: 3px solid #134e15;
-    border-radius: 0 10px 10px 0;
+    box-shadow: inset 0 0 0 1px rgba(19, 78, 21, 0.18);
+    border-radius: 10px;
   }
 
   .snav-hamburger {
@@ -296,3 +296,98 @@
     display: none;
   }
 }
+
+/* Touch-first supplier navigation */
+.snav-logo {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.snav-tab {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+@media (max-width: 768px) {
+  .snav {
+    height: 58px;
+  }
+
+  .snav-inner {
+    padding: 0 16px;
+  }
+
+  .snav-tabs {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    z-index: 1100;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 4px;
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.98);
+    border-top: 1px solid rgba(200, 221, 172, 0.7);
+    border-bottom: 0;
+    box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.08);
+  }
+
+  .snav-tabs.open {
+    display: grid;
+  }
+
+  .snav-tabs li {
+    min-width: 0;
+  }
+
+  .snav-tab {
+    width: 100%;
+    min-height: 56px;
+    height: auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px 4px;
+    border-radius: 14px;
+    color: var(--text-muted);
+  }
+
+  .snav-tab-label {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.64rem;
+    line-height: 1.1;
+  }
+
+  .snav-tab.active {
+    border-left: 0;
+    border-radius: 14px;
+    background: var(--surface-muted);
+  }
+
+  .snav-actions .snav-tab-label {
+    display: none;
+  }
+
+  .snav-actions {
+    margin-left: auto;
+  }
+
+  .snav-hamburger {
+    display: none;
+  }
+}
+
+@media (max-width: 390px) {
+  .snav-tab-label {
+    font-size: 0.58rem;
+  }
+}
+
