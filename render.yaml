@@ -7,7 +7,7 @@ services:
     envVars:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
-          name: alibabafood-db
+          name: alibabafood-db-v2
           property: connectionString
       - key: JwtSettings__SecretKey
         sync: false
@@ -45,7 +45,7 @@ services:
         value: same-origin-allow-popups
 
 databases:
-  - name: alibabafood-db
+  - name: alibabafood-db-v2
     databaseName: alibabafood
     user: alibabafood_user
     plan: free

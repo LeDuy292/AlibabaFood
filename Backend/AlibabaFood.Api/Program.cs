@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
 using System.Text;
 using AlibabaFood.Api.Data;
 using AlibabaFood.Api.Services;
@@ -12,8 +13,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Configure Entity Framework
+var postgresConnectionString = NormalizePostgresConnectionString(
+    builder.Configuration.GetConnectionString("DefaultConnection"));
+
 builder.Services.AddDbContext<AlibabaFoodContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseNpgsql(postgresConnectionString)
            .UseSnakeCaseNamingConvention());
 
 // Configure JWT Authentication
@@ -85,14 +89,13 @@ app.MapControllers();
 
 app.MapGet("/", () => Results.Ok(new { message = "AlibabaFood API is running", status = "Healthy", documentation = "/openapi/v1.json" }));
 
-// Initialize the PostgreSQL schema and seed only the data required by authentication.
-// Keep the full SQL dump as a manual import: it is not idempotent and must not run
-// every time a Render instance starts.
+// Initialize a brand-new PostgreSQL database from the full seed exactly once.
+// Existing databases are left untouched because the SQL dump is not idempotent.
 try
 {
     using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<AlibabaFoodContext>();
-    await context.Database.EnsureCreatedAsync();
+    await InitializePostgreSqlAsync(context, app.Logger);
 
     if (!await context.Roles.AnyAsync())
     {
@@ -112,3 +115,91 @@ catch (Exception ex)
 }
 
 app.Run();
+
+static string NormalizePostgresConnectionString(string? value)
+{
+    if (string.IsNullOrWhiteSpace(value))
+    {
+        throw new InvalidOperationException(
+            "ConnectionStrings:DefaultConnection is not configured.");
+    }
+
+    if (!Uri.TryCreate(value, UriKind.Absolute, out var uri) ||
+        (uri.Scheme != "postgres" && uri.Scheme != "postgresql"))
+    {
+        return value;
+    }
+
+    var credentials = uri.UserInfo.Split(':', 2);
+    if (credentials.Length != 2)
+    {
+        throw new InvalidOperationException(
+            "The PostgreSQL URL must contain both a username and password.");
+    }
+
+    var connectionString = new NpgsqlConnectionStringBuilder
+    {
+        Host = uri.Host,
+        Port = uri.IsDefaultPort ? 5432 : uri.Port,
+        Database = Uri.UnescapeDataString(uri.AbsolutePath.TrimStart('/')),
+        Username = Uri.UnescapeDataString(credentials[0]),
+        Password = Uri.UnescapeDataString(credentials[1])
+    };
+
+    return connectionString.ConnectionString;
+}
+
+static async Task InitializePostgreSqlAsync(
+    AlibabaFoodContext context,
+    ILogger logger)
+{
+    await context.Database.OpenConnectionAsync();
+
+    try
+    {
+        await using var tableCountCommand = context.Database.GetDbConnection().CreateCommand();
+        tableCountCommand.CommandText = """
+            SELECT COUNT(*)
+            FROM information_schema.tables
+            WHERE table_schema = 'public'
+              AND table_type = 'BASE TABLE';
+            """;
+
+        var tableCount = Convert.ToInt32(await tableCountCommand.ExecuteScalarAsync());
+
+        if (tableCount == 0)
+        {
+            var seedPath = Path.Combine(
+                AppContext.BaseDirectory,
+                "Data",
+                "AlibabaFood_Complete_PostgreSQL_Full.sql");
+
+            if (File.Exists(seedPath))
+            {
+                var sql = await File.ReadAllTextAsync(seedPath);
+                await using var transaction = await context.Database.BeginTransactionAsync();
+
+                try
+                {
+                    await context.Database.ExecuteSqlRawAsync(sql);
+                    await transaction.CommitAsync();
+                    logger.LogInformation("Initialized the empty PostgreSQL database from {SeedFile}.", Path.GetFileName(seedPath));
+                }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+            else
+            {
+                logger.LogWarning("PostgreSQL seed file was not found; creating the EF Core schema only.");
+                await context.Database.EnsureCreatedAsync();
+            }
+        }
+    }
+    finally
+    {
+        await context.Database.CloseConnectionAsync();
+    }
+}
