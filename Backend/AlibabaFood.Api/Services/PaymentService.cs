@@ -32,9 +32,9 @@ namespace AlibabaFood.Api.Services
 
         public async Task<CreateOrderResponseDto> CreatePaymentLinkAsync(CreateOrderRequestDto request)
         {
-            var clientId = _configuration["PayOS:ClientId"];
-            var apiKey = _configuration["PayOS:ApiKey"];
-            var checksumKey = _configuration["PayOS:ChecksumKey"];
+            var clientId = GetRequiredPayOsSetting("ClientId");
+            var apiKey = GetRequiredPayOsSetting("ApiKey");
+            var checksumKey = GetRequiredPayOsSetting("ChecksumKey");
             var returnUrl = _configuration["PayOS:ReturnUrl"] ?? "http://localhost:3000/payment/success";
             var cancelUrl = _configuration["PayOS:CancelUrl"] ?? "http://localhost:3000/payment/cancel";
 
@@ -169,8 +169,8 @@ namespace AlibabaFood.Api.Services
 
         public async Task<bool> CancelOrderAsync(long orderCode)
         {
-            var clientId = _configuration["PayOS:ClientId"]!;
-            var apiKey = _configuration["PayOS:ApiKey"]!;
+            var clientId = GetRequiredPayOsSetting("ClientId");
+            var apiKey = GetRequiredPayOsSetting("ApiKey");
 
             using var requestMessage = new HttpRequestMessage(HttpMethod.Post, $"{PayOSBaseUrl}/v2/payment-requests/{orderCode}/cancel");
             requestMessage.Headers.Add("x-client-id", clientId);
@@ -198,7 +198,7 @@ namespace AlibabaFood.Api.Services
             // Verify webhook signature
             if (webhook.Data == null) return false;
 
-            var checksumKey = _configuration["PayOS:ChecksumKey"]!;
+            var checksumKey = GetRequiredPayOsSetting("ChecksumKey");
             var isValid = VerifyWebhookSignature(webhook, checksumKey);
             if (!isValid)
             {
@@ -220,6 +220,17 @@ namespace AlibabaFood.Api.Services
 
             _logger.LogInformation("Order {OrderCode} status updated to {Status}", order.OrderCode, order.Status);
             return true;
+        }
+
+        private string GetRequiredPayOsSetting(string name)
+        {
+            var value = _configuration[$"PayOS:{name}"];
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new InvalidOperationException($"PayOS:{name} is not configured. Set PayOS__{name} in the environment.");
+            }
+
+            return value;
         }
 
         private static string ComputeHmacSha256(string data, string key)

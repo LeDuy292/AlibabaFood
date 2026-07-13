@@ -5,6 +5,36 @@ import toast from "react-hot-toast";
 import "./Login.css";
 import logoImg from "../assets/alibaba-logo.png.png";
 
+let googleIdentityScriptPromise;
+let googleIdentityInitialized = false;
+let googleLoginCallback = null;
+
+const loadGoogleIdentityScript = () => {
+  if (window.google?.accounts?.id) {
+    return Promise.resolve();
+  }
+
+  if (!googleIdentityScriptPromise) {
+    googleIdentityScriptPromise = new Promise((resolve, reject) => {
+      const existingScript = document.getElementById("google-identity-script");
+      const script = existingScript || document.createElement("script");
+
+      script.addEventListener("load", resolve, { once: true });
+      script.addEventListener("error", () => reject(new Error("Không thể tải Google Identity Services")), { once: true });
+
+      if (!existingScript) {
+        script.id = "google-identity-script";
+        script.src = "https://accounts.google.com/gsi/client";
+        script.async = true;
+        script.defer = true;
+        document.body.appendChild(script);
+      }
+    });
+  }
+
+  return googleIdentityScriptPromise;
+};
+
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -15,23 +45,27 @@ const Login = () => {
 
   useEffect(() => {
     document.body.classList.add("auth-body-active");
-    
-    // Load Google Identity Services script
-    const script = document.createElement("script");
-    script.src = "https://accounts.google.com/gsi/client";
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
+    googleLoginCallback = handleGoogleLogin;
+    let cancelled = false;
 
-    script.onload = () => {
-      if (window.google) {
-        window.google.accounts.id.initialize({
-          client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID || "350325390044-6fufn7lrrnvo75elgab42vnafvh54slp.apps.googleusercontent.com",
-          callback: handleGoogleLogin,
-        });
+    loadGoogleIdentityScript()
+      .then(() => {
+        if (cancelled || !window.google?.accounts?.id) return;
 
+        if (!googleIdentityInitialized) {
+          window.google.accounts.id.initialize({
+            client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID || "350325390044-6fufn7lrrnvo75elgab42vnafvh54slp.apps.googleusercontent.com",
+            callback: (response) => googleLoginCallback?.(response),
+          });
+          googleIdentityInitialized = true;
+        }
+
+        const buttonContainer = document.getElementById("google-signin-btn");
+        if (!buttonContainer) return;
+
+        buttonContainer.replaceChildren();
         window.google.accounts.id.renderButton(
-          document.getElementById("google-signin-btn"),
+          buttonContainer,
           { 
             theme: "outline", 
             size: "large", 
@@ -40,15 +74,14 @@ const Login = () => {
             shape: "pill"
           }
         );
-      }
-    };
+      })
+      .catch((error) => console.error("Google Identity error:", error));
 
     return () => {
+      cancelled = true;
       document.body.classList.remove("auth-body-active");
-      try {
-        document.body.removeChild(script);
-      } catch (e) {
-        // Ignore if already removed
+      if (googleLoginCallback === handleGoogleLogin) {
+        googleLoginCallback = null;
       }
     };
   }, []);

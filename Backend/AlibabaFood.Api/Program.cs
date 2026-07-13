@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Data;
 using AlibabaFood.Api.Data;
 using AlibabaFood.Api.Services;
 using AlibabaFood.Api.Models;
@@ -14,7 +13,8 @@ builder.Services.AddControllers();
 
 // Configure Entity Framework
 builder.Services.AddDbContext<AlibabaFoodContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+           .UseSnakeCaseNamingConvention());
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -85,43 +85,30 @@ app.MapControllers();
 
 app.MapGet("/", () => Results.Ok(new { message = "AlibabaFood API is running", status = "Healthy", documentation = "/openapi/v1.json" }));
 
-// Seed database
-using (var scope = app.Services.CreateScope())
+// Initialize the PostgreSQL schema and seed only the data required by authentication.
+// Keep the full SQL dump as a manual import: it is not idempotent and must not run
+// every time a Render instance starts.
+try
 {
+    using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<AlibabaFoodContext>();
-    context.Database.EnsureCreated();
-    
-    // Check if database needs seeding
-    try
+    await context.Database.EnsureCreatedAsync();
+
+    if (!await context.Roles.AnyAsync())
     {
-        bool needsSeeding = !context.Roles.Any();
-        
-        if (needsSeeding)
-        {
-            var sqlFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "AlibabaFood_Complete_SQLServer.sql");
-            if (File.Exists(sqlFilePath))
-            {
-                var sql = File.ReadAllText(sqlFilePath);
-                context.Database.ExecuteSqlRaw(sql);
-                Console.WriteLine("Successfully seeded database from AlibabaFood_Complete_SQLServer.sql");
-            }
-            else
-            {
-                // Fallback to manual seeding if SQL file not found
-                context.Roles.AddRange(
-                    new Role { RoleName = "customer" },
-                    new Role { RoleName = "supplier" },
-                    new Role { RoleName = "admin" }
-                );
-                context.SaveChanges();
-                Console.WriteLine("Successfully seeded default roles (fallback).");
-            }
-        }
+        context.Roles.AddRange(
+            new Role { RoleName = "customer" },
+            new Role { RoleName = "supplier" },
+            new Role { RoleName = "admin" }
+        );
+        await context.SaveChangesAsync();
+        app.Logger.LogInformation("Seeded default roles in PostgreSQL.");
     }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error seeding database: {ex.Message}");
-    }
+}
+catch (Exception ex)
+{
+    app.Logger.LogCritical(ex, "PostgreSQL initialization failed. Check ConnectionStrings__DefaultConnection and the database schema.");
+    throw;
 }
 
 app.Run();

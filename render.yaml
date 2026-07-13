@@ -9,6 +9,18 @@ services:
         fromDatabase:
           name: alibabafood-db
           property: connectionString
+      - key: JwtSettings__SecretKey
+        sync: false
+      - key: PayOS__ClientId
+        sync: false
+      - key: PayOS__ApiKey
+        sync: false
+      - key: PayOS__ChecksumKey
+        sync: false
+      - key: AISettings__Gemini__ApiKey
+        sync: false
+      - key: AISettings__ElevenLabs__ApiKey
+        sync: false
       - key: PayOS__ReturnUrl
         value: "https://alibabafood-frontend-jqay.onrender.com/payment-success"
       - key: PayOS__CancelUrl
