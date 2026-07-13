@@ -112,7 +112,10 @@ const Checkout = () => {
       }
     } catch (err) {
       console.error("Payment error:", err);
-      toast.error("Không thể tạo liên kết thanh toán. Vui lòng thử lại.");
+      toast.error(
+        err.response?.data?.message ||
+          "Không thể tạo liên kết thanh toán. Vui lòng thử lại.",
+      );
       setLoading(false);
     }
   };

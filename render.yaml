@@ -22,9 +22,9 @@ services:
       - key: AISettings__ElevenLabs__ApiKey
         sync: false
       - key: PayOS__ReturnUrl
-        value: "https://alibabafood-frontend-jqay.onrender.com/payment-success"
+        value: "https://alibabafood-frontend-jqay.onrender.com/payment/success"
       - key: PayOS__CancelUrl
-        value: "https://alibabafood-frontend-jqay.onrender.com/payment-cancel"
+        value: "https://alibabafood-frontend-jqay.onrender.com/payment/cancel"
 
   - type: web
     name: alibabafood-frontend

@@ -197,9 +197,74 @@ static async Task InitializePostgreSqlAsync(
                 await context.Database.EnsureCreatedAsync();
             }
         }
+
+        await EnsurePaymentSchemaAsync(context, logger);
     }
     finally
     {
         await context.Database.CloseConnectionAsync();
+    }
+}
+
+static async Task EnsurePaymentSchemaAsync(
+    AlibabaFoodContext context,
+    ILogger logger)
+{
+    const string sql = """
+        ALTER TABLE orders
+            ADD COLUMN IF NOT EXISTS order_code BIGINT,
+            ADD COLUMN IF NOT EXISTS status VARCHAR(50) NOT NULL DEFAULT 'PENDING',
+            ADD COLUMN IF NOT EXISTS description VARCHAR(255) NOT NULL DEFAULT '',
+            ADD COLUMN IF NOT EXISTS buyer_name VARCHAR(255) NOT NULL DEFAULT '',
+            ADD COLUMN IF NOT EXISTS buyer_email VARCHAR(255),
+            ADD COLUMN IF NOT EXISTS buyer_phone VARCHAR(20),
+            ADD COLUMN IF NOT EXISTS buyer_address VARCHAR(500),
+            ADD COLUMN IF NOT EXISTS payment_link_id VARCHAR(500),
+            ADD COLUMN IF NOT EXISTS checkout_url VARCHAR(1000);
+
+        ALTER TABLE orders
+            ALTER COLUMN user_id DROP NOT NULL,
+            ALTER COLUMN supplier_id DROP NOT NULL,
+            ALTER COLUMN order_status_id DROP NOT NULL,
+            ALTER COLUMN order_number DROP NOT NULL,
+            ALTER COLUMN final_amount DROP NOT NULL;
+
+        UPDATE orders
+        SET order_code = -order_id
+        WHERE order_code IS NULL;
+
+        ALTER TABLE orders
+            ALTER COLUMN order_code SET NOT NULL;
+
+        CREATE UNIQUE INDEX IF NOT EXISTS ix_orders_order_code
+            ON orders (order_code);
+
+        ALTER TABLE order_items
+            ADD COLUMN IF NOT EXISTS item_name VARCHAR(255),
+            ADD COLUMN IF NOT EXISTS price INTEGER;
+
+        UPDATE order_items
+        SET item_name = COALESCE(item_name, 'Legacy item'),
+            price = COALESCE(price, unit_price::INTEGER, 0);
+
+        ALTER TABLE order_items
+            ALTER COLUMN item_name SET NOT NULL,
+            ALTER COLUMN price SET NOT NULL,
+            ALTER COLUMN unit_price DROP NOT NULL,
+            ALTER COLUMN total_price DROP NOT NULL;
+        """;
+
+    await using var transaction = await context.Database.BeginTransactionAsync();
+
+    try
+    {
+        await context.Database.ExecuteSqlRawAsync(sql);
+        await transaction.CommitAsync();
+        logger.LogInformation("Payment schema is compatible with the current EF Core models.");
+    }
+    catch
+    {
+        await transaction.RollbackAsync();
+        throw;
     }
 }
