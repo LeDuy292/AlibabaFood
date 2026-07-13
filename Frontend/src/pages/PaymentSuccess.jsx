@@ -11,6 +11,36 @@ const formatVND = (amount) =>
     amount,
   );
 
+const trackPurchase = (order) => {
+  if (typeof window.gtag !== "function") return;
+
+  const transactionId = String(order.orderCode);
+  const storageKey = `ga4_purchase_${transactionId}`;
+
+  try {
+    if (localStorage.getItem(storageKey)) return;
+  } catch {
+    // Analytics can still run when browser storage is unavailable.
+  }
+
+  window.gtag("event", "purchase", {
+    transaction_id: transactionId,
+    value: Number(order.totalAmount),
+    currency: "VND",
+    items: (order.items || []).map((item) => ({
+      item_name: item.itemName,
+      price: Number(item.price),
+      quantity: Number(item.quantity),
+    })),
+  });
+
+  try {
+    localStorage.setItem(storageKey, "sent");
+  } catch {
+    // GA4 also deduplicates purchase events by transaction_id.
+  }
+};
+
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
   const [order, setOrder] = useState(null);
@@ -31,6 +61,8 @@ const PaymentSuccess = () => {
           setOrder(data);
           // Only add credits and clear cart if payment is actually PAID
           if (data.status === "PAID") {
+            trackPurchase(data);
+
             // Add 1 roll credit after successful purchase
             try {
               const { addRollCredits } = require('../services/rollCreditsService');
